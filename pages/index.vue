@@ -202,6 +202,8 @@
     </div>
     <!---------->
     <HomeRecomended />
+
+    <HomePlan />
   </div>
 </template>
   
