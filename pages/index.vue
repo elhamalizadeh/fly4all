@@ -186,7 +186,7 @@
                 }"
                 class="home-button02 button"
               >
-                Search →
+              Destination Now →
               </router-link>
             </div>
           </div>
