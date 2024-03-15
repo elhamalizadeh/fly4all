@@ -1,9 +1,9 @@
 <template>
-   <div class="home-container">
+  <div class="home-container">
     <HomeHeader />
     <section class="home-container003">
-    <!-- <section> -->
-    <!------- slider ------>
+      <!-- <section> -->
+      <!------- slider ------>
       <homeSlider />
       <!------- FlySearch Section ------>
       <div class="home-container004">
@@ -73,9 +73,9 @@
 
           <!--------- Source  ------>
           <div class="home-container017">
-            <div class="home-container018">
-              <select class="home-textinput input" v-model="params.origin">
-                <option disabled value="">Search by city or airport</option>
+            <div class="home-container018" style="margin-right: 15px;">
+              <select class="home-textinput input" v-model="params.origin" >
+                <option disabled value="" >Search by city or airport</option>
                 <option value="Dubai">
                   All airports in Dubai: United Arab Emirates
                 </option>
@@ -88,7 +88,10 @@
 
             <!------------------ destination ----->
             <div class="home-container022">
-              <select class="home-textinput1 input" v-model="params.destination">
+              <select
+                class="home-textinput1 input"
+                v-model="params.destination"
+              >
                 <option disabled value="">Search by city or airport</option>
                 <option value="Dubai">
                   All airports in dubai: United Arab Emirates
@@ -102,7 +105,11 @@
 
             <!------------------ Date ------>
             <div class="home-container024">
-              <input type="date" class="home-textinput2 input" v-model="params.date" />
+              <input
+                type="date"
+                class="home-textinput2 input"
+                v-model="params.date"
+              />
             </div>
 
             <!------------- Travellers ------->
@@ -116,46 +123,38 @@
               <div>
                 <input
                   type="text"
+                  placeholder="Travelers"
+                  style="height:50px;"
                   v-model="selectedOption"
                   class="home-textinput3 input"
                   @click="showOptions = true"
                 />
 
-                <!-- <div v-if="showOptions" class="options-box">
-                  <div v-for="(option, index) in options" :key="index">
-                    <div>{{ option.name }}</div>
-                    <button @click="increment">+</button>
-                    <span>{{ count }}</span>
-                    <button @click="decrement">-</button>
-                  </div>
-                  <button @click="done">Done</button>
-                </div> -->
-
                 <div v-if="showOptions" class="options-box">
-                  <div>
-                  <div>Adult</div>
-                  <!-- <p>{{ option.subTitle }}</p> -->
-                  <button @click="incrementAdult">+</button>
-                  <span>{{ countAdult }}</span>
-                  <button @click="decrementAdult">-</button>
-                </div>
+                  <div class="options-box-item">
+                    <div>Adult</div>
+                    <!-- <p>{{ option.subTitle }}</p> -->
+                    <button @click="incrementAdult">+</button>
+                    <span>{{ countAdult }}</span>
+                    <button @click="decrementAdult">-</button>
+                  </div>
 
-                <div>
-                  <div>Children</div>
-                  <!-- <p>{{ option.subTitle }}</p> -->
-                  <button @click="incrementChildren">+</button>
-                  <span>{{ countChildren }}</span>
-                  <button @click="decrementChildren">-</button>
-                </div>
+                  <div class="options-box-item">
+                    <div>Children</div>
+                    <!-- <p>{{ option.subTitle }}</p> -->
+                    <button @click="incrementChildren">+</button>
+                    <span>{{ countChildren }}</span>
+                    <button @click="decrementChildren">-</button>
+                  </div>
 
-                <div>
-                  <div>Infants</div>
-                  <!-- <p>{{ option.subTitle }}</p> -->
-                  <button @click="incrementInfant">+</button>
-                  <span>{{ countInfant }}</span>
-                  <button @click="decrementInfant">-</button>
-                </div>
-                <button @click="done">Done</button>
+                  <div class="options-box-item">
+                    <div>Infants</div>
+                    <!-- <p>{{ option.subTitle }}</p> -->
+                    <button @click="incrementInfant">+</button>
+                    <span>{{ countInfant }}</span>
+                    <button @click="decrementInfant">-</button>
+                  </div>
+                  <button @click="done" style="background-color: #003EB3;width:90%;color:white">Done</button>
                 </div>
               </div>
             </div>
@@ -167,31 +166,20 @@
               :to="{
                 name: 'about',
                 query: {
-                  params:params,
+                  params: params,
                   origin: params.origin,
                   destination: params.destination,
                   date: params.date,
                   tripType: params.tripType,
                   cabin: params.cabin,
-                  adults:countAdult,
-                  children:countChildren,
-                  infants:countInfant
+                  adults: countAdult,
+                  children: countChildren,
+                  infants: countInfant,
                 },
-                // params: {
-                //   origin: origin,
-                //   destination: destination,
-                //   date: date,
-                //   travellers: travellers,
-                //   tripType: tripType,
-                //   cabin: cabin,
-                //   adults:countAdult,
-                //   children:countChildren,
-                //   infants:countInfant
-                // },
               }"
               class="home-button02 button"
             >
-              Search →
+              Destination Now →
             </router-link>
 
             <!-- <button @click="goToSearch" class="home-button02 button">Search Flights</button> -->
@@ -220,44 +208,27 @@
           </div>
         </div>
       </div>
-
     </section>
     <!--------------------------->
     <div class="home-container028">
-          <div class="home-container029">
-            <h1 class="home-text006">
-              
-            </h1>
-            <span class="home-text007"></span>
-            <span class="home-text008">
-              
-            </span>
-            
-          </div>
-        </div>
-      <!--------More Recommended Destination  -->
-      <homeRecomended />
-      <!--------Plan for Unforgettable Trips  -->
-      <homePlan />
-       <!--------Entry Visa Service     -->
-       <homeServices />
-      <!------------ more here-------------->
-             <div class="home-container100">
-          <button type="button" class="home-button14 button">
-            More Here →
-          </button>
-        </div>
-
-      <!------------------Best Holidays Destination ---------------->
-        <HomeHolidaysDestination />
-<!----------------------Travel Packages--------------->
-<HomeTravelPackages />
-
-<!---------------------------------- Blog and News-------->
-<HomeBlogNews />
-
-<homeFooter />
-
+      <div class="home-container029">
+        <h1 class="home-text006"></h1>
+        <span class="home-text007"></span>
+        <span class="home-text008"> </span>
+      </div>
+    </div>
+    <!--------More Recommended Destination  -->
+    <homeRecomended />
+    <homePlan />
+    <homeServices />
+    <!------------ more here-------------->
+    <div class="home-container100">
+      <button type="button" class="home-button14 button">More Here →</button>
+    </div>
+    <HomeHolidaysDestination />
+    <HomeTravelPackages />
+    <HomeBlogNews />
+    <homeFooter />
   </div>
 </template>
 
@@ -271,23 +242,33 @@ export default {
 
   setup() {
     const params = reactive({
-      origin:'',
-      destination:'',
-      date:'',
-      tripType:'oneway',
-      cabin:'economy',
-      adults:0,
-      children:0,
-      infants:0
-    })
+      origin: "",
+      destination: "",
+      date: "",
+      tripType: "oneway",
+      cabin: "economy",
+      adults: 0,
+      children: 0,
+      infants: 0,
+    });
 
     const router = useRouter();
 
-    const { countAdult, incrementAdult, decrementAdult ,countChildren, incrementChildren, decrementChildren , countInfant, incrementInfant, decrementInfant} = useCounter();
-    //----------------
+    const {
+      countAdult,
+      incrementAdult,
+      decrementAdult,
+      countChildren,
+      incrementChildren,
+      decrementChildren,
+      countInfant,
+      incrementInfant,
+      decrementInfant,
+    } = useCounter();
+
+
     const selectedOption = ref("");
     const showOptions = ref(false);
-
     const done = () => {
       showOptions.value = false;
     };
@@ -315,6 +296,14 @@ export default {
   border: 1px solid gray;
   padding: 10px;
   margin-top: 5px;
+  background-color: white;
+  z-index: 1000;
+}
+.options-box-item {
+  display: flex;
+  flex-wrap: wrap;
+  /* gap:3rem; */
+  justify-content: space-between;
 }
 .options-box > div {
   display: flex;

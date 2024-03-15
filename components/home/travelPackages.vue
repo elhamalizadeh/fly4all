@@ -44,7 +44,7 @@
         </div>
       </NuxtLink>
 
-      <!-- <NuxtLink to="#" class="d"> -->
+      <NuxtLink to="#" class="d">
       <div class="home-container124">
         <div class="home-container125" id="hide3"></div>
         <div class="home-container125" id="hide1">
@@ -78,8 +78,8 @@
           </span>
         </div>
       </div>
-    </div>
-    <!-- </NuxtLink>    -->
+   
+    </NuxtLink>   
 
     <NuxtLink to="#" class="d">
       <div class="home-container124">
@@ -114,5 +114,6 @@
         </div>
       </div>
     </NuxtLink>
+  </div>
   </div>
 </template>

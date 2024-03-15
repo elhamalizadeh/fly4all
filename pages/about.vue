@@ -1,9 +1,8 @@
 <template>
-  <div>
-    <NuxtLink to="/">Home</NuxtLink>
-    <br />
-    <h3>About Page</h3>
-    <h1 style="color: blue">Search Results is:</h1>
+  <div class="home-container" style="color:white">
+    <NuxtLink to="/"> Go Home</NuxtLink>
+   
+    <h1 style="margin:3rem">Flight Search Results :</h1>
 
     <!-- Display search results -->
     <!-- <ul v-if="searchResults.length">
@@ -13,14 +12,40 @@
     </ul>
     <p v-else>No search results found.</p> -->
 
-    <b>origin is: </b>{{ origin }} <br />
-    <b>destination is : </b>{{ destination }}<br />
-    <b>date is:</b> {{ date }}<br />
-    <b>tripType: </b>{{ tripType }}<br />
-    <b>cabin: </b>{{ cabin }}
-    <h4>Travellers</h4>
-    <b>Adult</b>{{ adults }} <b>children</b>{{ children }} <b>infants</b
-    >{{ infants }}
+    <table style="font-size: 18px;">
+      <tr>
+        <td>origin :</td>
+        <td>{{ origin }}</td>
+      </tr>
+      <tr>
+        <td>destination:</td>
+        <td>{{ destination }}</td>
+      </tr>
+      <tr>
+        <td>date:</td>
+        <td>{{ date }}</td>
+      </tr>
+      <tr>
+        <td>tripType:</td>
+        <td>{{ tripType }}</td>
+      </tr>
+      <tr>
+        <td>cabin:</td>
+        <td>{{ cabin }}</td>
+      </tr>
+      <tr>
+        <td>Adult</td>
+        <td>{{ adults }}</td>
+      </tr>
+      <tr>
+        <td>children</td>
+        <td>{{ children }}</td>
+      </tr>
+      <tr>
+        <td>infants</td>
+        <td>{{ infants }}</td>
+      </tr>
+    </table>
     <!-- <ul>
       <li v-for="flight in flights" :key="flight.id" style="color: green">
         {{ flight.title }}
