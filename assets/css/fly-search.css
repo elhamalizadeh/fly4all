@@ -30,15 +30,6 @@
   margin-left: var(--dl-space-space-twounits);
 }
 
-
-
-
-
-
-
-
-
-
 @media(max-width: 1200px) {
   .navigation-links-text {
     color: #ffffff;

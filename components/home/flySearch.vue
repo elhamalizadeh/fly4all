@@ -1,12 +1,5 @@
 <template>
-   <div class="home-container">
-    <HomeHeader />
-    <section class="home-container003">
-    <!-- <section> -->
-    <!------- slider ------>
-      <homeSlider />
-      <!------- FlySearch Section ------>
-      <div class="home-container004">
+     <div class="home-container004">
         <div class="home-container005">
           <div class="home-container006">
             <span class="home-text">FLIGHT</span>
@@ -49,7 +42,7 @@
               />
               <span class="home-text005">Round-Trip</span>
             </div>
-            <div>
+            <div class="home-container012">
               <input
                 type="radio"
                 name="radio"
@@ -196,7 +189,7 @@
 
             <!-- <button @click="goToSearch" class="home-button02 button">Search Flights</button> -->
             <!--------------->
-            <!-- <section>
+            <section>
               <div>
                 <h6>Source is :</h6>
                 <p style="color: red">{{ params.origin }}</p>
@@ -215,52 +208,12 @@
                 <h6>cabin is:</h6>
                 <p style="color: red">{{ params.cabin }}</p>
               </div>
-            </section> -->
+            </section>
             <!--------------->
           </div>
         </div>
       </div>
-
-    </section>
-    <!--------------------------->
-    <div class="home-container028">
-          <div class="home-container029">
-            <h1 class="home-text006">
-              
-            </h1>
-            <span class="home-text007"></span>
-            <span class="home-text008">
-              
-            </span>
-            
-          </div>
-        </div>
-      <!--------More Recommended Destination  -->
-      <homeRecomended />
-      <!--------Plan for Unforgettable Trips  -->
-      <homePlan />
-       <!--------Entry Visa Service     -->
-       <homeServices />
-      <!------------ more here-------------->
-             <div class="home-container100">
-          <button type="button" class="home-button14 button">
-            More Here →
-          </button>
-        </div>
-
-      <!------------------Best Holidays Destination ---------------->
-        <HomeHolidaysDestination />
-<!----------------------Travel Packages--------------->
-<HomeTravelPackages />
-
-<!---------------------------------- Blog and News-------->
-<HomeBlogNews />
-
-<homeFooter />
-
-  </div>
 </template>
-
 <script>
 import { ref } from "vue";
 import axios from "axios";
@@ -270,6 +223,14 @@ export default {
   name: "Home",
 
   setup() {
+    // const options = [
+    //   { name: "Adults", quantity: 0 },
+    //   { name: "Children", subTitle:"Ages 2 to 12" , quantity: 0 },
+    //   { name: "Infants", subTitle:"Younger than 2" , quantity: 0 },
+    // ];
+
+    // const title = ref("");
+
     const params = reactive({
       origin:'',
       destination:'',
@@ -284,6 +245,9 @@ export default {
     const router = useRouter();
 
     const { countAdult, incrementAdult, decrementAdult ,countChildren, incrementChildren, decrementChildren , countInfant, incrementInfant, decrementInfant} = useCounter();
+    // const { countChildren, incrementChildren, decrementChildren } =
+    //   useCounter();
+    // const { countInfant, incrementInfant, decrementInfant } = useCounter();
     //----------------
     const selectedOption = ref("");
     const showOptions = ref(false);
@@ -291,6 +255,15 @@ export default {
     const done = () => {
       showOptions.value = false;
     };
+
+    //---------------------
+    // const goToSearch = () => {
+    //   router.push({
+    //             // path: '/about',
+    //               name: 'About',
+    //               query: { title: title.value }
+    //             });
+    // }
 
     return {
       params,
@@ -311,20 +284,3 @@ export default {
 };
 </script>
 <style scoped>
-.options-box {
-  border: 1px solid gray;
-  padding: 10px;
-  margin-top: 5px;
-}
-.options-box > div {
-  display: flex;
-  align-items: center;
-  margin-bottom: 5px;
-}
-.sub-title {
-  display: block;
-}
-.options-box button {
-  margin: 0 5px;
-}
-</style>

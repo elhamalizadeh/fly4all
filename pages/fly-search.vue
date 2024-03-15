@@ -3,7 +3,6 @@
    <div class="home-container">
         <div class="home-main">
             <flySearchMenu />
-
     <div class="home-container038">
             <div class="home-container039">
               <div class="home-container040">
@@ -15,7 +14,16 @@
           <div class="home-container060">
            <flySearchSidebar />
 
-
+<!--------------->
+<div>
+    <h1 style="color:white">Search Results is:</h1>
+    <ul>
+      <li v-for="flight in flights" :key="flight.id" style="color:white">
+        {{ flight.title }}
+      </li>
+    </ul>
+  </div>
+  <!----------------------->
             <div class="home-container095">
                 <flySearchBannerCosts />
               
@@ -31,6 +39,19 @@
               </div>
               <!------------ show search result -------->
              <flySearchResultSearch />
+
+             <!----     --> 
+             <!-- <div v-if="state.pokemons.length > 0">
+    <ul>
+      <li v-for="flight in state.pokemons" :key="flight.id">
+        Flight from {{ flight.title }} to {{ flight.body }}
+      </li>
+    </ul>
+  </div>
+  <div v-else>
+    <p>No flights found for the selected criteria.</p>
+  </div> -->
+
               <!----------->
             </div>
           </div>
@@ -41,8 +62,43 @@
     
 
 </template>
-
 <script>
+import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+
+// import { ref, onMounted } from '@nuxtjs/composition-api';
+// import { useRoute } from '@nuxtjs/composition-api';
+
+
+export default {
+  name: 'FlySearch',
+  setup() {
+    const route = useRoute();
+    const flights = ref([]);
+
+    onMounted(() => {
+      if (route.params.flights) {
+        flights.value = route.params.flights;
+        console.log("flight is:" ,route.params.flights )
+      }
+      else {
+        console.log("no param:" , route.value)
+      }
+    });
+
+    return { flights };
+  },
+  // head() {
+  //   return {
+  //     link: [
+  //       { rel: 'stylesheet', href: '~/assets/css/fly-search.css' }
+  //     ]
+  //   };
+  // }
+}
+</script>
+
+<!-- <script>
 import { useRoute } from 'vue-router';
 
 export default {
@@ -52,18 +108,31 @@ export default {
     const destination = route.query.destination;
     const date = route.query.date;
 
-    // Implement your search function here using the retrieved data
+    const state = reactive({
+      pokemons: [],
+      filteredPokemon: computed(() => updatePokemon()),
+      title: "facere",
+      urlIdLookup: {},
+    });
 
-        // Function to perform search
-        const performSearch = () => {
-      // Array of flights (sample data for demonstration)
+
+    const fetchPokemon = () => {
+      axios
+        .get("https://jsonplaceholder.typicode.com/posts")
+        .then((response) => {
+          state.pokemons = response.data.results; // 👈 get just results
+        });
+    };
+
+    fetchPokemon();
+
+      const performSearch = () => {
       const flights = [
         { id: 1, source: 'Dubai', destination: 'Istanbul', date: '2024-03-15', price: 300 },
         { id: 2, source: 'Istanbul', destination: 'Dubai', date: '2024-03-16', price: 320 },
         { id: 3, source: 'Istanbul', destination: 'Tehran', date: '2024-03-17', price: 250 },
         { id: 4, source: 'Istanbul', destination: 'Tehran', date: '2024-03-17', price: 250 },
         { id: 5, source: 'Tehran', destination: 'Istanbul', date: '2024-03-18', price: 280 },
-        // Add more flights as needed
       ];
 
       // Perform search based on source, destination, and date
@@ -73,12 +142,11 @@ export default {
                flight.date === date;
       });
 
-      // Display search results
-      return searchResults;
+      return { searchResults , fetchPokemon, updatePokemon , state };
+
       console.log('Search results:', searchResults);
     };
 
-    // Call the search function when component is mounted
     const searchResults = ref([]);
     onMounted(() => {
       searchResults.value = performSearch();
@@ -89,7 +157,7 @@ export default {
     };
   }
 };
-</script>
+</script> -->
 
 
   <!------------------------->
