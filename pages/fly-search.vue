@@ -66,9 +66,6 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
-// import { ref, onMounted } from '@nuxtjs/composition-api';
-// import { useRoute } from '@nuxtjs/composition-api';
-
 
 export default {
   name: 'FlySearch',

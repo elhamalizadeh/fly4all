@@ -189,3 +189,8 @@
                 </div>
               </div>
 </template>
+<style scoped>
+@import url("~/assets/css/fly-search.css");
+@import url("~/assets/css/style-fly-search.css");
+
+</style>

@@ -7,8 +7,11 @@
         <br />
       </span>
     </div>
-
-    <div class="home-container031">
+    <!-- <h2 style="color:white">Recommended Flights</h2>
+    <ul style="color:white">
+      <li v-for="flight in popularFlights" :key="flight.origin.city_id">{{ flight.origin.city_en }}</li>
+    </ul> -->
+     <div v-for="flight in popularFlights" :key="flight.id" class="home-container031">
       <div class="d">
         <a href="#">
           <div class="home-container050">
@@ -26,7 +29,7 @@
               <div class="home-container034">
                 <div class="home-container035">
                   <div class="home-container036">
-                    <span class="home-text013">BAGHDAD</span>
+                    <span class="home-text013">{{ flight.origin.city_en }}</span>
                   </div>
                   <div class="home-container037">
                     <div class="home-container038">
@@ -38,7 +41,7 @@
                     </div>
                   </div>
                   <div class="home-container039">
-                    <span class="home-text014">MASHHAD</span>
+                    <span class="home-text014">{{ flight.destination.city_en }}</span>
                   </div>
                 </div>
                 <div class="home-container040">
@@ -65,7 +68,7 @@
         </a>
       </div>
 
-      <div class="d">
+       <div class="d">
         <a href="#">
           <div class="home-container050">
             <div class="hover01 column">
@@ -175,7 +178,28 @@
             </section>
           </div>
         </a>
-      </div>
-    </div>
+      </div> 
+
+
+     </div>  
   </div>
 </template>
+<script>
+import { ref } from 'vue';
+
+export default {
+  props: {
+    popularFlights: {
+      type: Array,
+      required: true
+    }
+  },
+  setup(props) {
+    const { popularFlights  } = props;
+    
+    return {
+      popularFlights
+    };
+  }
+};
+</script>
