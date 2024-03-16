@@ -1,29 +1,17 @@
 <template>
-   
    <div class="home-container">
         <div class="home-main">
-            <!-- <flySearchMenu /> -->
+            <flySearchMenu />
     <div class="home-container038">
             <div class="home-container039">
               <div class="home-container040">
-                <!-- <flySearchForm /> -->
+                <flySearchForm />
 
               </div>
             </div>
           </div>
           <div class="home-container060">
-           <!-- <flySearchSidebar /> -->
-
-<!--------------->
-<!-- <div>
-    <h1 style="color:white">Search Results is:</h1>
-    <ul>
-      <li v-for="flight in flights" :key="flight.id" style="color:white">
-        {{ flight.title }}
-      </li>
-    </ul>
-  </div> -->
-  <!----------------------->
+           <flySearchSidebar />
             <div class="home-container095">
                 <flySearchBannerCosts />
               
@@ -37,28 +25,13 @@
                   </svg>
                 </div>
               </div>
-              <!------------ show search result -------->
-             <flySearchResultSearch />
-
-             <!----     --> 
-             <!-- <div v-if="state.pokemons.length > 0">
-    <ul>
-      <li v-for="flight in state.pokemons" :key="flight.id">
-        Flight from {{ flight.title }} to {{ flight.body }}
-      </li>
-    </ul>
-  </div>
-  <div v-else>
-    <p>No flights found for the selected criteria.</p>
-  </div> -->
-
-              <!----------->
+             <FlySearchResultSearch />
             </div>
           </div>
           <div class="home-margin-info"></div>
          <flySearchFooter />
         </div>
-      </div>
+      </div> 
     
 
 </template>
@@ -85,19 +58,32 @@ export default {
 
     return { flights };
   },
-  // head() {
-  //   return {
-  //     link: [
-  //       { rel: 'stylesheet', href: '~/assets/css/fly-search.css' }
-  //     ]
-  //   };
-  // }
 }
 </script>
 <style scoped>
 @import url("~/assets/css/fly-search.css");
 @import url("~/assets/css/style-fly-search.css");
+/* @import url("~/assets/css/flySearch/index.css"); */
 
+@import url("https://unpkg.com/animate.css@4.1.1/animate.css");
+@import url("https://unpkg.com/@teleporthq/teleport-custom-scripts/dist/style.css");
+
+html {
+    font-family: Inter;
+    font-size: 16px;
+  }
+
+  body {
+    font-weight: 400;
+    font-style:normal;
+    text-decoration: none;
+    text-transform: none;
+    letter-spacing: normal;
+    line-height: 1.15;
+    color: var(--dl-color-gray-black);
+    background-color: var(--dl-color-gray-white);
+
+  }
 </style>
 
 <!-- <script>

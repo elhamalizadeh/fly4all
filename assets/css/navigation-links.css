@@ -1,0 +1,93 @@
+.navigation-links-nav {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+  }
+  .navigation-links-text {
+    color: #ffffff;
+    padding: 0px;
+  }
+  .navigation-links-text1 {
+    color: var(--dl-color-gray-black);
+    margin-left: var(--dl-space-space-twounits);
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    background-color: #ffffff;
+  }
+  .navigation-links-text2 {
+    color: #ffffff;
+    margin-left: var(--dl-space-space-twounits);
+  }
+  .navigation-links-text3 {
+    color: #ffffff;
+    margin-left: var(--dl-space-space-twounits);
+  }
+  .navigation-links-text4 {
+    color: #ffffff;
+    margin-left: var(--dl-space-space-twounits);
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  @media(max-width: 1200px) {
+    .navigation-links-text {
+      color: #ffffff;
+      padding: 0px0;
+      background-color: rgba(255, 255, 255, 0);
+    }
+    .navigation-links-text1 {
+      color: #000000;
+      padding: 20px;
+      background-color: #ffffff;
+    }
+    .navigation-links-text2 {
+      color: #ffffff;
+    }
+    .navigation-links-text3 {
+      color: #ffffff;
+    }
+    .navigation-links-text4 {
+      color: #ffffff;
+    }
+  }
+  @media(max-width: 991px) {
+    .navigation-links-text4 {
+      margin-right: var(--dl-space-space-twounits);
+    }
+  }
+  @media(max-width: 767px) {
+    .navigation-links-nav {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+    .navigation-links-text {
+      margin-bottom: var(--dl-space-space-unit);
+    }
+    .navigation-links-text1 {
+      margin-left: 0;
+      margin-bottom: var(--dl-space-space-unit);
+    }
+    .navigation-links-text2 {
+      margin-left: 0;
+      margin-bottom: var(--dl-space-space-unit);
+    }
+    .navigation-links-text3 {
+      margin-left: 0;
+      margin-bottom: var(--dl-space-space-unit);
+    }
+    .navigation-links-text4 {
+      margin-left: 0;
+      margin-bottom: var(--dl-space-space-unit);
+    }
+  }
+  

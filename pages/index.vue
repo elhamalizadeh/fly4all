@@ -420,6 +420,8 @@ console.log("error dare line 40")
 };
 </script>
 <style scoped>
+@import url("../assets/css/style.css");
+@import url("../assets/css/index.css");
 
 .options-box {
   border: 1px solid gray;
