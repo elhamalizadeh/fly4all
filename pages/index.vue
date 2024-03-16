@@ -2,7 +2,6 @@
   <div class="home-container">
     <HomeHeader />
     <section class="home-container003">
-      <!-- <section> -->
       <!------- slider ------>
       <homeSlider />
       <!------- FlySearch Section ------>
@@ -74,32 +73,19 @@
           <!--------- Source  ------>
           <div class="home-container017">
             <div class="home-container018" style="margin-right: 15px;">
-              <select class="home-textinput input" v-model="params.origin" >
-                <option disabled value="" >Search by city or airport</option>
-                <option value="Dubai">
-                  All airports in Dubai: United Arab Emirates
-                </option>
-                <option value="Istanbul">
-                  All airports in Istanbul: Turkey
-                </option>
-                <option value="Tehran">All airports in Tehran: Iran</option>
+              <input class="home-textinput input" type="text" v-model="city" @keydown="handleCityInput($event)" placeholder="From">
+              <select v-if="showAirports" class="home-textinput input" v-model="selectedOriginAirport">
+                <option disabled value="">Select an airport</option>
+                <option v-for="airport in airports" :value="airport.id" :key="airport.id">{{ airport.title }}</option>
               </select>
             </div>
 
             <!------------------ destination ----->
             <div class="home-container022">
-              <select
-                class="home-textinput1 input"
-                v-model="params.destination"
-              >
-                <option disabled value="">Search by city or airport</option>
-                <option value="Dubai">
-                  All airports in dubai: United Arab Emirates
-                </option>
-                <option value="Istanbul">
-                  All airports in Istanbul: Turkey
-                </option>
-                <option value="Tehran">All airports in Tehran: Iran</option>
+              <input class="home-textinput input" type="text" v-model="destCity" @keydown="handleDestCityInput($event)" placeholder="To">
+              <select v-if="showDestAirports" class="home-textinput input" v-model="selectedDestAirport">
+                <option disabled value="">Select an airport</option>
+                <option v-for="airport in destAirports" :value="airport.id" :key="airport.id">{{ airport.title }}</option>
               </select>
             </div>
 
@@ -167,44 +153,21 @@
                 name: 'about',
                 query: {
                   params: params,
-                  origin: params.origin,
-                  destination: params.destination,
+                  origin: selectedOriginAirport,
+                  destination: selectedDestAirport,
                   date: params.date,
                   tripType: params.tripType,
                   cabin: params.cabin,
-                  adults: countAdult,
-                  children: countChildren,
-                  infants: countInfant,
+                  // adults: countAdult,
+                  // children: countChildren,
+                  // infants: countInfant,
                 },
               }"
               class="home-button02 button"
             >
               Destination Now →
             </router-link>
-
-            <!-- <button @click="goToSearch" class="home-button02 button">Search Flights</button> -->
-            <!--------------->
-            <!-- <section>
-              <div>
-                <h6>Source is :</h6>
-                <p style="color: red">{{ params.origin }}</p>
-                <h6>Destination is :</h6>
-                <p style="color: red">{{ params.destination }}</p>
-                <h6>Date is :</h6>
-                <p style="color: red">{{ params.date }}</p>
-                <h6>Adults:</h6>
-                <p style="color: red">{{ countAdult }}</p>
-                <h6>Children:</h6>
-                <p style="color: red">{{ countChildren }}</p>
-                <h6>Infant:</h6>
-                <p style="color: red">{{ countInfant }}</p>
-                <h6>tripType is:</h6>
-                <p style="color: red">{{ params.tripType }}</p>
-                <h6>cabin is:</h6>
-                <p style="color: red">{{ params.cabin }}</p>
-              </div>
-            </section> -->
-            <!--------------->
+            <!-- <button  v-on:click="searchFlights" class="home-button06 button">Search Flights</button> -->
           </div>
         </div>
       </div>
@@ -233,7 +196,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref,watch, onMounted  } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 
@@ -273,6 +236,102 @@ export default {
       showOptions.value = false;
     };
 
+   //------------------------------------
+   const city = ref('');
+  const selectedOriginAirport = ref('');
+  const airports = ref([]);
+  const showAirports = ref(false);
+  const showFlights = ref(false);
+  const airport = city.value.trim(); 
+
+  const handleCityInput = async (event) => {
+    if (city.value.trim().length >= 3) {
+        const airport = city.value.trim();
+      try {
+        const response = await axios.get(`https://marketplace.beta.luxota.network/v1/search/airports?q=${airport}&lang=en`);
+       console.log("response.data:" , response.data.data);
+       airports.value = response.data.data; 
+       showAirports.value = true;
+      } catch (error) {
+        console.error('Error fetching airports:', error);
+      }
+    } else {
+      showAirports = false;
+      airports = ref([]);
+console.log("error dare line 40")  
+  }
+  };
+  
+  const searchFlights = (event) => {
+    alert("hello world");
+
+  };
+  
+  watch(selectedOriginAirport, () => {
+    if (selectedOriginAirport.value !== '') {
+      showFlights.value = true;
+    }
+  });
+
+
+   //------------------ destination--------------------
+   const destCity = ref('');
+  const selectedDestAirport = ref('');
+  const destAirports = ref([]);
+  const showDestAirports = ref(false);
+  const destAirport = destCity.value.trim();
+
+  const handleDestCityInput = async (event) => {
+    if (destCity.value.trim().length >= 3) {
+        const destAirport = destCity.value.trim();
+      try {
+        const response = await axios.get(`https://marketplace.beta.luxota.network/v1/search/airports?q=${destAirport}&lang=en`);
+       console.log("response.data:" , response.data.data);
+       destAirports.value = response.data.data; 
+       showDestAirports.value = true;
+      } catch (error) {
+        console.error('Error fetching airports:', error);
+      }
+    } else {
+      showDestAirports = false;
+      destAirports = ref([]);
+console.log("error dare line 40")  
+  }
+  };
+  
+
+// const searchFlights = async () => {
+//       try {
+//         const response = await axios.post('https://marketplace.beta.luxota.network/v1/search/flight', {
+//             origin:255, //origin
+//             destination:7280, //destination
+//             departure:"2024-08-31",
+//             adults:2,
+//             children:1,
+//             infants:0,
+//             cabin:"economy",
+//             tripType:"oneWay",
+//             searcherIdentity:'test',
+//         });
+//          console.log("response.data:" , response.data);
+//         //  searchResults.value = response.data;
+//       } catch (error) {
+//         console.error('Error searching flights:', error);
+//       }
+//     };
+
+
+  watch(selectedOriginAirport, () => {
+    if (selectedOriginAirport.value !== '') {
+      showFlights.value = true;
+    }
+  });
+
+  // onMounted(() => {
+  //       searchFlights();
+
+  //   });
+  //----------------------------
     return {
       params,
       selectedOption,
@@ -287,11 +346,22 @@ export default {
       countChildren,
       incrementChildren,
       decrementChildren,
-    };
+      city,
+      selectedOriginAirport,
+      airports,
+      showAirports,
+      handleCityInput,
+      destCity,
+      selectedDestAirport,
+      destAirports,
+      showDestAirports,
+      handleDestCityInput
+        };
   },
 };
 </script>
 <style scoped>
+
 .options-box {
   border: 1px solid gray;
   padding: 10px;

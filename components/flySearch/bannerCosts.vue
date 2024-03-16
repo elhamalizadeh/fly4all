@@ -1,5 +1,4 @@
 <template>
-    <div>
         <div class="home-container096">
                 <div class="home-container097">
                   <span class="home-text042">Su, Jan 5</span>
@@ -84,5 +83,5 @@
                 </div>
               </div>
               <div class="home-container111"></div>
-    </div>
+
 </template>

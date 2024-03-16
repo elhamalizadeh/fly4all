@@ -2,27 +2,27 @@
    
    <div class="home-container">
         <div class="home-main">
-            <flySearchMenu />
+            <!-- <flySearchMenu /> -->
     <div class="home-container038">
             <div class="home-container039">
               <div class="home-container040">
-                <flySearchForm />
+                <!-- <flySearchForm /> -->
 
               </div>
             </div>
           </div>
           <div class="home-container060">
-           <flySearchSidebar />
+           <!-- <flySearchSidebar /> -->
 
 <!--------------->
-<div>
+<!-- <div>
     <h1 style="color:white">Search Results is:</h1>
     <ul>
       <li v-for="flight in flights" :key="flight.id" style="color:white">
         {{ flight.title }}
       </li>
     </ul>
-  </div>
+  </div> -->
   <!----------------------->
             <div class="home-container095">
                 <flySearchBannerCosts />
@@ -56,7 +56,7 @@
             </div>
           </div>
           <div class="home-margin-info"></div>
-         <!-- <flySearchFooter /> -->
+         <flySearchFooter />
         </div>
       </div>
     
@@ -97,6 +97,11 @@ export default {
   // }
 }
 </script>
+<style scoped>
+@import url("~/assets/css/fly-search.css");
+@import url("~/assets/css/style-fly-search.css");
+
+</style>
 
 <!-- <script>
 import { useRoute } from 'vue-router';

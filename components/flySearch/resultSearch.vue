@@ -1,5 +1,4 @@
 <template>
-    <div>
         <div class="home-container114"></div>
               <div class="home-container115">
                 <div class="home-container116">
@@ -189,5 +188,4 @@
 				  
                 </div>
               </div>
-    </div>
 </template>

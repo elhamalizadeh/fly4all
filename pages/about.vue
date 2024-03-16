@@ -75,38 +75,37 @@ export default {
     const adults = ref(route.query.adults);
     const children = ref(route.query.children);
     const infants = ref(route.query.infants);
+    const searcherIdentity = ref('test');
 
     // const title = route.params.title;
     console.log("title is:", title);
 
-    //------  {{host}}/v1/search/flight
+    //------  https://marketplace.beta.luxota.network/v1/search/flight
 
-    // const searchFlights = async () => {
-    //   try {
-    //     const response = await axios.post('https://marketplace.beta.luxota.network/v1/search/flight', {
-    //       params: {
-    //         origin:7909,
-    //         destination:4168,
-    //         departure:"2021-08-31",
-    //         adults:1,
-    //         children:0,
-    //         infants:0,
-    //         cabin:"economy",
-    //         tripType:"oneWay"
+    const searchFlights = async () => {
+      try {
+        const response = await axios.post('https://marketplace.beta.luxota.network/v1/search/flight', {
+            origin:255,
+            destination:7280,
+            departure:"2024-08-31",
+            adults:2,
+            children:1,
+            infants:0,
+            cabin:"economy",
+            tripType:"oneWay",
+            searcherIdentity:'test',
+        });
+         console.log("response.data:" , response.data);
+         searchResults.value = response.data;
+      } catch (error) {
+        console.error('Error searching flights:', error);
+      }
+    };
 
-    //       }
-    //     });
-    //      console.log("response.data:" , response.data);
-    //      searchResults.value = response.data;
-    //   } catch (error) {
-    //     console.error('Error searching flights:', error);
-    //   }
-    // };
+    onMounted(() => {
+        searchFlights();
 
-    // onMounted(() => {
-    //     searchFlights();
-
-    // });
+    });
     //--------------- exrea--------
     // onMounted(() => {
     //   if (route.params.flights) {
@@ -128,6 +127,7 @@ export default {
       adults,
       children,
       infants,
+      searcherIdentity
     };
   },
   head() {
