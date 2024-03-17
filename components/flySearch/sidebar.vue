@@ -1,27 +1,27 @@
 <template>
-    <div class="home-filter1">
-             <div class="home-container061">
+    <div class="fly-search-filter1">
+             <div class="fly-search-container061">
                <div class="home-container062">
                  <span class="home-text022">FILTER RESULT</span>
                </div>
-               <div class="home-container063">
+               <div class="fly-search-container063">
                  <span class="home-text023">Payment price</span>
                </div>
-               <div class="home-container064">
-                 <span class="home-text024">
-                   <span class="home-text025">
+               <div class="fly-search-container064">
+                 <span class="fly-search-text024">
+                   <span class="fly-search-text025">
                      $40&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                      &nbsp; &nbsp; &nbsp; &nbsp; $9999
                    </span>
                    <br class="home-text026" />
                    <span>●</span>
-                   <span class="home-text028">
+                   <span class="fly-search-text028">
                      ----------------------------------
                    </span>
                    <span>●</span>
                  </span>
                </div>
-               <div class="home-container065">
+               <div class="fly-search-container065">
                  <button type="button" class="home-button08 button">
                    Apply
                  </button>
@@ -30,7 +30,7 @@
                  </button>
                </div>
              </div>
-             <div class="home-container066">
+             <div class="fly-search-container066">
                <div class="home-container067">
                  <span class="home-text030">Pauses</span>
                </div>
@@ -42,13 +42,13 @@
                  </svg>
                </div> -->
              </div>
-             <div class="home-container069">
+             <div class="fly-search-container069">
                <input type="checkbox" checked="true" class="home-checkbox09" />
-               <div class="home-container070">
+               <div class="fly-search-container070">
                  <span class="home-text031">non stop</span>
                </div>
              </div>
-             <div class="home-container071">
+             <div class="fly-search-container071">
                <input type="checkbox" checked="true" class="home-checkbox10" />
                <div class="home-container072">
                  <span class="home-text032">One stop</span>
@@ -68,8 +68,8 @@
                  Reset
                </button>
              </div>
-             <div class="home-container076">
-               <div class="home-container077">
+             <div class="fly-search-container076">
+               <div class="fly-search-container077">
                  <span class="home-text034">Time to Leave</span>
                </div>
                <!-- <div class="home-container078">
@@ -80,34 +80,34 @@
                  </svg>
                </div> -->
              </div>
-             <div class="home-container079">
+             <div class="fly-search-container079">
                <input type="checkbox" checked="true" class="home-checkbox12" />
                <div class="home-container080">
                  <span class="home-text035">Early morning</span>
                </div>
              </div>
-             <div class="home-container081">
+             <div class="fly-search-container081">
                <input type="checkbox" checked="true" class="home-checkbox13" />
                <div class="home-container082">
                  <span class="home-text036">A.M.</span>
                </div>
              </div>
-             <div class="home-container083">
+             <div class="fly-search-container083">
                <input type="checkbox" checked="true" class="home-checkbox14" />
-               <div class="home-container084">
+               <div class="fly-search-container084">
                  <span class="home-text037">Midday</span>
                </div>
              </div>
-             <div class="home-container085">
-               <button type="button" class="home-button12 button">
+             <div class="fly-search-container085">
+               <button type="button" class="fly-search-button12 button">
                  Apply
                </button>
-               <button type="button" class="home-button13 button">
+               <button type="button" class="fly-search-button13 button">
                  Reset
                </button>
              </div>
              <div class="home-container086">
-               <div class="home-container087">
+               <div class="fly-search-container087">
                  <span class="home-text038">Airlines</span>
                </div>
                <!-- <div class="home-container088">
@@ -118,22 +118,22 @@
                  </svg>
                </div> -->
              </div>
-             <div class="home-container089">
+             <div class="fly-search-container089">
                <input type="checkbox" checked="true" class="home-checkbox15" />
                <div class="home-container090">
-                 <span class="home-text039">Iraqi Airways</span>
+                 <span class="flyy-search-text039">Iraqi Airways</span>
                </div>
              </div>
-             <div class="home-container091">
+             <div class="fly-search-container091">
                <input type="checkbox" checked="true" class="home-checkbox16" />
-               <div class="home-container092">
-                 <span class="home-text040">Fly Baghdad</span>
+               <div class="fly-search-container092">
+                 <span class="flyy-search-text040">Fly Baghdad</span>
                </div>
              </div>
-             <div class="home-container093">
+             <div class="fly-search-container093">
                <input type="checkbox" checked="true" class="home-checkbox17" />
                <div class="home-container094">
-                 <span class="home-text041">Fly Erbil</span>
+                 <span class="flyy-search-text041">Fly Erbil</span>
                </div>
              </div>
            </div>

@@ -167,7 +167,7 @@
             >
               Destination Now →
             </router-link> -->
-            <button @click="searchFlights" class="home-button06 button">Search Flights</button>
+            <button @click="searchFlights" class="home-button02 button">Destination Now →</button>
           </div>
         </div>
       </div>

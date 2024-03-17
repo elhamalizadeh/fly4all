@@ -1,5 +1,8 @@
 <template>
-        <div class="home-container114">
+  <div>
+
+  </div>
+        <!-- <div class="home-container114">
               <div class="home-container115">
                 <div class="home-container116">
                   <img
@@ -48,7 +51,7 @@
                   <span class="home-text079">BGW | Jan 30</span>
                 </div>
                 <div class="home-container124"></div>
-                <div class="home-container125">
+                <div class="fly-search-container125">
                   <div class="home-container126">
                     <span class="home-text080">193.96$</span>
                   </div>
@@ -188,11 +191,18 @@
 				  
                 </div>
               </div>
-            </div>
+            </div> -->
 </template>
 <style scoped>
-@import url("~/assets/css/fly-search.css");
-@import url("~/assets/css/style-fly-search.css");
-
-
+@import url("../../assets/css/fly-search.css");
+@import url("../../assets/css/style-fly-search.css");
 </style>
+<script>
+import { defineComponent } from '@vue/composition-api'
+
+export default {
+  setup() {
+    
+  },
+}
+</script>

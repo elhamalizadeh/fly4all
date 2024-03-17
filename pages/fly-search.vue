@@ -1,30 +1,21 @@
 <template>
-  <!-- <div>
-    <h3>Flight results:</h3>
-           <ul>
-      <li v-for="flight in flightResult" :key="flight.flightBufferReferenceId">
-        departure :{{ flight.serviceInfo.legs[0].info.departure.city }} <br/> arrival:{{ flight.serviceInfo.legs[0].info.arrival.city }} - date time :{{ flight.serviceInfo.legs[0].info.arrival.date_time }} - time:{{ flight.serviceInfo.legs[0].info.arrival.time }}
-      </li>
-    </ul>
-  </div> -->
-
-  <div class="home-container">
-    <div class="home-main">
+  <div class="fly-search-container">
+    <div class="fly-search-main">
       <flySearchMenu />
       <div class="home-container038">
         <div class="home-container039">
           <div class="home-container040">
-            <!-- <flySearchForm /> -->
+            <flySearchForm />
           </div>
         </div>
       </div>
-      <div class="home-container060">
-        <!-- <flySearchSidebar /> -->
-        <div class="home-container095">
-          <!-- <flySearchBannerCosts /> -->
+      <div class="fly-search-container060">
+        <flySearchSidebar />
+        <div class="fly-search-container095">
+          <flySearchBannerCosts />
 
-          <div class="home-container112">
-            <span class="home-text066">Sort by : Best Suggestions</span>
+          <div class="fly-search-container112">
+            <span class="fly-search-text066">Sort by : Best Suggestions</span>
             <div class="home-container113">
               <svg viewBox="0 0 1024 1024" class="home-icon40">
                 <path
@@ -34,15 +25,15 @@
             </div>
           </div>
           <!-------------------------------------------->
-          <!-------------------------------------------->
-          <!-- <FlySearchResultSearch /> -->
-          <div class="home-container114"></div>
+          <!---------------------flightResult----------------------->
+          <!-- <FlySearchResultSearch  :flightResult="flightResult"/> -->
+          <div class="fly-search-container114"></div>
           <div
             v-for="flight in flightResult"
             :key="flight.flightBufferReferenceId"
           >
-            <div class="home-container115" style="margin-top: 3rem">
-              <div class="home-container116">
+            <div class="fly-search-container115" style="margin-top: 3rem">
+              <div class="fly-search-container116">
                 <img
                   alt="image"
                   src="~/public/images/fly-search/iraqi_airways_logo1-500w.png"
@@ -50,8 +41,8 @@
                   class="home-image15"
                 />
               </div>
-              <div class="home-container117">
-                <span class="home-text067">
+              <div class="fly-search-container117">
+                <span class="fly-search-text067">
                   <span>One</span>
                   <br />
                   <span>way</span>
@@ -59,33 +50,33 @@
                   <span>trip</span>
                 </span>
               </div>
-              <div class="home-container118">
-                <span class="home-text073">{{
-                  flight.serviceInfo.legs[0].info.departure.time
-                }}</span>
+              <div class="fly-search-container118">
+                <span class="fly-search-text073">
+                  {{flight.serviceInfo.legs[0].info.departure.time}}</span>
                 <span class="home-text074"
                   >{{ flight.serviceInfo.legs[0].info.departure.airport.abb }} |
                   {{
                     flight.serviceInfo.legs[0].info.departure.date_time
-                  }}</span
+                  }}
+                  </span
                 >
               </div>
-              <div class="home-container119">
+              <div class="fly-search-container119">
                 <img
                   alt="image"
                   src="~/public/images/fly-search/plane-departure-200h.png"
                   class="home-image16"
                 />
               </div>
-              <div class="home-container120">
+              <div class="fly-search-container120">
                 <span class="home-text075">{{
                   flight.serviceInfo.legs[0].info.duration
                 }}</span>
                 <span class="home-text076">---------------</span>
                 <span class="home-text077">non stop</span>
               </div>
-              <div class="home-container121">
-                <div class="home-container122">
+              <div class="fly-search-container121">
+                <div class="fly-search-container122">
                   <img
                     alt="image"
                     src="~/public/images/fly-search/plane-arrical-200h.png"
@@ -93,18 +84,19 @@
                   />
                 </div>
               </div>
-              <div class="home-container123">
-                <span class="home-text078">{{
-                  flight.serviceInfo.legs[0].info.arrival.time
-                }}</span>
+              <div class="fly-search-container123">
+                <span class="home-text078">
+                  {{
+                  flight.serviceInfo.legs[0].info.arrival.time}}</span>
                 <span class="home-text079"
                   >{{ flight.serviceInfo.legs[0].info.arrival.airport.abb }} |
-                  {{ flight.serviceInfo.legs[0].info.arrival.date_time }}</span
+                  {{ flight.serviceInfo.legs[0].info.arrival.date_time }}
+                  </span
                 >
               </div>
-              <div class="home-container124"></div>
-              <!-- <div class="home-container125">
-                  <div class="home-container126">
+              <div class="fly-search-container124"></div>
+              <div class="fly-search-container125">
+                  <div class="fly-search-container126">
                     <span class="home-text080">193.96$</span>
                   </div>
                   <div class="home-container127">
@@ -112,10 +104,10 @@
                       All travelers are prohibited from traveling
                     </span>
                   </div>
-                  <div class="home-container128">
-                    <button class="home-login1 button">Login</button>
+                  <div class="fly-search-container128">
+                    <button class="fly-search-login1 button">Login</button>
                   </div>
-                </div> -->
+                </div>
             </div>
             <div class="home-info">
               <div class="home-dh02">
@@ -132,9 +124,9 @@
               </div>
               <div class="home-inf01">
                 <div class="home-ch01">
-                  <span class="home-ch01-text">{{
-                    flight.serviceInfo.legs[0].info.departure.date_time
-                  }}</span>
+                  <!-- <span class="home-ch01-text">
+                    {{flight.serviceInfo.legs[0].info.departure.date_time}}
+                    </span> -->
                 </div>
                 <div class="home-ch02">
                   <span class="home-ch02-text"
@@ -274,7 +266,7 @@
         </div>
       </div>
       <div class="home-margin-info"></div>
-      <!-- <flySearchFooter /> -->
+      <flySearchFooter />
     </div>
   </div>
 </template>
@@ -315,14 +307,9 @@ export default {
     onMounted(() => {
       if (route.query.sessionId) {
         searchResults();
-      }
+        localStorage.setItem('sessionId', route.query.sessionId);
 
-      // if (route.params.flights) {
-      //   flights.value = route.params.flights;
-      //   console.log("flight is:", route.params.flights);
-      // } else {
-      //   console.log("no param:", route.value);
-      // }
+      }
     });
 
     return { searchResults, flightResult };
@@ -330,9 +317,8 @@ export default {
 };
 </script>
 <style scoped>
-@import url("~/assets/css/fly-search.css");
-@import url("~/assets/css/style-fly-search.css");
-/* @import url("~/assets/css/flySearch/index.css"); */
+@import url("../assets/css/fly-search.css");
+@import url("../assets/css/style-fly-search.css");
 
 @import url("https://unpkg.com/animate.css@4.1.1/animate.css");
 @import url("https://unpkg.com/@teleporthq/teleport-custom-scripts/dist/style.css");
@@ -352,79 +338,5 @@ body {
   color: var(--dl-color-gray-black);
   background-color: var(--dl-color-gray-white);
 }
+html {  line-height: 1.15;}body {  margin: 0;}* {  box-sizing: border-box;  border-width: 0;  border-style: solid;}p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  padding: 0;}button {  background-color: transparent;}button,input,optgroup,select,textarea {  font-family: inherit;  font-size: 100%;  line-height: 1.15;  margin: 0;}button,select {  text-transform: none;}button,[type="button"],[type="reset"],[type="submit"] {  -webkit-appearance: button;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner {  border-style: none;  padding: 0;}button:-moz-focus,[type="button"]:-moz-focus,[type="reset"]:-moz-focus,[type="submit"]:-moz-focus {  outline: 1px dotted ButtonText;}a {  color: inherit;  text-decoration: inherit;}input {  padding: 2px 4px;}img {  display: block;}html { scroll-behavior: smooth  }
 </style>
-
-<!-- <script>
-import { useRoute } from 'vue-router';
-
-export default {
-  setup() {
-    const route = useRoute();
-    const source = route.query.source;
-    const destination = route.query.destination;
-    const date = route.query.date;
-
-    const state = reactive({
-      pokemons: [],
-      filteredPokemon: computed(() => updatePokemon()),
-      title: "facere",
-      urlIdLookup: {},
-    });
-
-
-    const fetchPokemon = () => {
-      axios
-        .get("https://jsonplaceholder.typicode.com/posts")
-        .then((response) => {
-          state.pokemons = response.data.results; // 👈 get just results
-        });
-    };
-
-    fetchPokemon();
-
-      const performSearch = () => {
-      const flights = [
-        { id: 1, source: 'Dubai', destination: 'Istanbul', date: '2024-03-15', price: 300 },
-        { id: 2, source: 'Istanbul', destination: 'Dubai', date: '2024-03-16', price: 320 },
-        { id: 3, source: 'Istanbul', destination: 'Tehran', date: '2024-03-17', price: 250 },
-        { id: 4, source: 'Istanbul', destination: 'Tehran', date: '2024-03-17', price: 250 },
-        { id: 5, source: 'Tehran', destination: 'Istanbul', date: '2024-03-18', price: 280 },
-      ];
-
-      // Perform search based on source, destination, and date
-      const searchResults = flights.filter(flight => {
-        return flight.source.toLowerCase() === source.toLowerCase() &&
-               flight.destination.toLowerCase() === destination.toLowerCase() &&
-               flight.date === date;
-      });
-
-      return { searchResults , fetchPokemon, updatePokemon , state };
-
-      console.log('Search results:', searchResults);
-    };
-
-    const searchResults = ref([]);
-    onMounted(() => {
-      searchResults.value = performSearch();
-    });
-
-    return {
-      searchResults
-    };
-  }
-};
-</script> -->
-
-
-  <!------------------------->
-  <!-- <div v-if="searchResults.length > 0">
-    <ul>
-      <li v-for="flight in searchResults" :key="flight.id">
-        Flight from {{ flight.source }} to {{ flight.destination }} on {{ flight.date }} for ${{ flight.price }}
-      </li>
-    </ul>
-  </div>
-  <div v-else>
-    <p>No flights found for the selected criteria.</p>
-  </div>
-</div> -->

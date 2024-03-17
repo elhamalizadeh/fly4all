@@ -1,7 +1,7 @@
 <template>
-    <footer class="home-footer">
-           <div class="home-container129">
-             <div class="home-logo">
+    <footer class="fly-search-footer">
+           <div class="fly-search-container129">
+             <div class="fly-search-logo">
                <img
                  alt="image"
                  src="../../public/images/fly-search/logo-fotter-200h.png"
@@ -11,9 +11,9 @@
                  Perfect System 4 Perfect Company
                </span>
              </div>
-             <div class="home-links-container">
-               <div class="home-container132">
-                 <div class="home-product-container">
+             <div class="fly-search-links-container">
+               <div class="fly-search132">
+                 <div class="fly-search-product-container">
                    <span class="home-text091">Servises</span>
                    <span class="home-text092">Flight</span>
                    <span class="home-text093">Hotel</span>
@@ -28,7 +28,7 @@
                    <span>Blog</span>
                  </div>
                </div>
-               <div class="home-container133">
+               <div class="fly-search133">
                  <div class="home-contact">
                    <span class="home-text101">Contact Us</span>
                    <span class="home-text102">info@fly4all.com</span>

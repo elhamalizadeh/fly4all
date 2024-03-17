@@ -1,7 +1,7 @@
 <template>
     <div class="home-container041">
-                  <div class="home-container042">
-                    <div class="home-container043">
+                  <div class="fly-search-container042">
+                    <div class="fly-search-container043">
                       <input
                         type="radio"
                         name="radio"
@@ -54,21 +54,21 @@
                         class="home-textinput input"
                       />
                     </div>
-                    <div class="home-container051">
+                    <div class="fly-search-container051">
                       <svg viewBox="0 0 1024 1024" class="home-icon22">
                         <path
                           d="M942 412q6 26-7 48t-39 30q-248 66-412 110l-226 60-68 20-112-192 62-16 84 64 212-56-176-306 82-22 294 274 228-60q26-8 49 6t29 40zM106 810h812v86h-812v-86z"
                         ></path>
                       </svg>
                     </div> 
-                    <div class="home-container052">
+                    <div class="fly-search-container052">
                       <svg viewBox="0 0 1024 1024" class="home-icon24">
                         <path
                           d="M320 384h128v128h-128zM512 384h128v128h-128zM704 384h128v128h-128zM128 768h128v128h-128zM320 768h128v128h-128zM512 768h128v128h-128zM320 576h128v128h-128zM512 576h128v128h-128zM704 576h128v128h-128zM128 576h128v128h-128zM832 0v64h-128v-64h-448v64h-128v-64h-128v1024h960v-1024h-128zM896 960h-832v-704h832v704z"
                         ></path>
                       </svg>
                     </div> 
-                    <div class="home-container053">
+                    <div class="fly-search-container053">
                       <svg viewBox="0 0 1024 1024" class="home-icon26">
                         <path
                           d="M170.667 384h149.333c31.403 0 59.435 16.683 78.976 42.709 13.867-25.771 31.104-49.621 50.816-70.912-34.261-35.115-79.616-57.131-129.792-57.131h-149.333c-23.595 0-42.667 19.115-42.667 42.667s19.072 42.667 42.667 42.667z"
@@ -120,8 +120,8 @@
                       </svg>
                     </div>
                   </div>
-                  <div class="home-container059">
-                    <button type="button" class="home-button07 button">
+                  <div class="fly-search-container059">
+                    <button type="button" class="fly-search-button07 button">
                       Destination Now →
                     </button>
                   </div>

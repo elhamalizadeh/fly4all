@@ -4,7 +4,7 @@
                   <span class="home-text042">Su, Jan 5</span>
                   <span class="home-text043">253$</span>
                 </div>
-                <div class="home-container098">
+                <div class="fly-search-container098">
                   <span class="home-text044">Sa, Jan 4</span>
                   <span class="home-text045">990$</span>
                 </div>
@@ -30,8 +30,8 @@
                 </div>
               </div>
               <div class="home-container104"></div>
-              <div class="home-container105">
-                <div class="home-container106">
+              <div class="fly-search-container105">
+                <div class="fly-search-container106">
                   <img
                     alt="image"
                     src="../../public/images/fly-search/iraqi_airways_logo1-500w.png"
@@ -51,7 +51,7 @@
                   <span class="home-text058">One stop</span>
                   <span class="home-text059">1998$</span>
                 </div>
-                <div class="home-container108">
+                <div class="fly-search-container108">
                   <img
                     alt="image"
                     src="../../public/images/fly-search/iraqi_airways_logo1-500w.png"
@@ -71,7 +71,7 @@
                   <span class="home-text062">One stop</span>
                   <span class="home-text063">1998$</span>
                 </div>
-                <div class="home-container110">
+                <div class="fly-search-container110">
                   <img
                     alt="image"
                     src="../../public/images/fly-search/iraqi_airways_logo1-500w.png"

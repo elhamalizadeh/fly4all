@@ -201,7 +201,7 @@
              <img
                alt="logo"
                src="../../public/images/fly-search/logo-1500h.png"
-               class="home-image01"
+               class="fly-search-image01"
              />
              <img
                alt="image"
