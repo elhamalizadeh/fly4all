@@ -148,7 +148,7 @@
 
           <div class="home-container027">
             <!-- <NuxtLink to="fly-search" rel="noreferrer noopener" class="home-button02 button">Search →</NuxtLink> -->
-            <router-link
+            <!-- <router-link
               :to="{
                 name: 'about',
                 query: {
@@ -166,8 +166,8 @@
               class="home-button02 button"
             >
               Destination Now →
-            </router-link>
-            <!-- <button  v-on:click="searchFlights" class="home-button06 button">Search Flights</button> -->
+            </router-link> -->
+            <button @click="searchFlights" class="home-button06 button">Search Flights</button>
           </div>
         </div>
       </div>
@@ -182,6 +182,7 @@
     </div>
     <!--------More Recommended Destination  -->
     <!-- <homeRecomended :popularFlights="popularFlights"/> -->
+
     <div class="home-container030">
       <span class="home-text009">More Recommended Destination</span>
       <span class="home-text010">
@@ -317,7 +318,7 @@ export default {
         const airport = city.value.trim();
       try {
         const response = await axios.get(`https://marketplace.beta.luxota.network/v1/search/airports?q=${airport}&lang=en`);
-       console.log("response.data:" , response.data.data);
+      //  console.log("response.data:" , response.data.data);
        airports.value = response.data.data; 
        showAirports.value = true;
       } catch (error) {
@@ -330,10 +331,32 @@ console.log("error dare line 40")
   }
   };
   
-  const searchFlights = (event) => {
-    alert("hello world");
+  const searchFlights = async () => {
 
-  };
+    // console.log("selectedOriginAirport:" , selectedOriginAirport);
+      try {
+        const response = await axios.post('https://marketplace.beta.luxota.network/v1/search/flight', {
+            origin:selectedOriginAirport.value,
+            destination:selectedDestAirport.value,
+            departure:"2024-08-31",
+            adults:2,
+            children:1,
+            infants:0,
+            cabin:"economy",
+            tripType:"oneWay",
+            searcherIdentity:'test',
+        });
+        //  console.log("response.data 347:" , response.data.sessionId);
+        //  searchResults.value = response.data;
+const sessionId = response.data.sessionId;
+const status = response.data.status;
+
+// Navigate to fly-search page with sessionId as a query parameter
+await router.push({ name: 'fly-search', query: { status,sessionId ,lang:'EN'} });
+      } catch (error) {
+        console.error('Error searching flights:', error);
+      }
+    };
   
   watch(selectedOriginAirport, () => {
     if (selectedOriginAirport.value !== '') {
@@ -354,7 +377,7 @@ console.log("error dare line 40")
         const destAirport = destCity.value.trim();
       try {
         const response = await axios.get(`https://marketplace.beta.luxota.network/v1/search/airports?q=${destAirport}&lang=en`);
-       console.log("response.data:" , response.data.data);
+      //  console.log("response.data:" , response.data.data);
        destAirports.value = response.data.data; 
        showDestAirports.value = true;
       } catch (error) {
@@ -378,9 +401,9 @@ console.log("error dare line 40")
   const populatFlights = async () =>{
     try {
         const response = await axios.get('https://marketplace.beta.luxota.network/v1/popularroutes/flight?lang=en&currency=158')
-         console.log("populer flights are:" , response.data.data);
+        //  console.log("populer flights are:" , response.data.data);
          popularFlights.value = response.data.data.slice(0, 3);
-         console.log("popularFlights are line 317:" , popularFlights.value);
+        //  console.log("popularFlights are line 317:" , popularFlights.value);
       } catch (error) {
         console.error('Error searching flights:', error);
       }
@@ -414,7 +437,8 @@ console.log("error dare line 40")
       destAirports,
       showDestAirports,
       handleDestCityInput,
-      popularFlights
+      popularFlights,
+      searchFlights
         };
   },
 };

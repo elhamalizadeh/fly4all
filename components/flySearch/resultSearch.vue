@@ -1,5 +1,5 @@
 <template>
-        <div class="home-container114"></div>
+        <div class="home-container114">
               <div class="home-container115">
                 <div class="home-container116">
                   <img
@@ -188,6 +188,7 @@
 				  
                 </div>
               </div>
+            </div>
 </template>
 <style scoped>
 @import url("~/assets/css/fly-search.css");
