@@ -24,7 +24,7 @@
               </svg>
             </div>
           </div>
-          <!-------------------------------------------->
+
           <!---------------------flightResult----------------------->
           <!-- <FlySearchResultSearch  :flightResult="flightResult"/> -->
           <div class="fly-search-container114"></div>
@@ -52,14 +52,12 @@
               </div>
               <div class="fly-search-container118">
                 <span class="fly-search-text073">
-                  {{flight.serviceInfo.legs[0].info.departure.time}}</span>
+                  {{ flight.serviceInfo.legs[0].info.departure.time }}</span
+                >
                 <span class="home-text074"
                   >{{ flight.serviceInfo.legs[0].info.departure.airport.abb }} |
-                  {{
-                    flight.serviceInfo.legs[0].info.departure.date_time
-                  }}
-                  </span
-                >
+                  {{ flight.serviceInfo.legs[0].info.departure.date_time }}
+                </span>
               </div>
               <div class="fly-search-container119">
                 <img
@@ -86,28 +84,27 @@
               </div>
               <div class="fly-search-container123">
                 <span class="home-text078">
-                  {{
-                  flight.serviceInfo.legs[0].info.arrival.time}}</span>
+                  {{ flight.serviceInfo.legs[0].info.arrival.time }}</span
+                >
                 <span class="home-text079"
                   >{{ flight.serviceInfo.legs[0].info.arrival.airport.abb }} |
                   {{ flight.serviceInfo.legs[0].info.arrival.date_time }}
-                  </span
-                >
+                </span>
               </div>
               <div class="fly-search-container124"></div>
               <div class="fly-search-container125">
-                  <div class="fly-search-container126">
-                    <span class="home-text080">193.96$</span>
-                  </div>
-                  <div class="home-container127">
-                    <span class="home-text081">
-                      All travelers are prohibited from traveling
-                    </span>
-                  </div>
-                  <div class="fly-search-container128">
-                    <button class="fly-search-login1 button">Login</button>
-                  </div>
+                <div class="fly-search-container126">
+                  <span class="home-text080">193.96$</span>
                 </div>
+                <div class="home-container127">
+                  <span class="home-text081">
+                    All travelers are prohibited from traveling
+                  </span>
+                </div>
+                <div class="fly-search-container128">
+                  <button class="fly-search-login1 button">Login</button>
+                </div>
+              </div>
             </div>
             <div class="home-info">
               <div class="home-dh02">
@@ -279,14 +276,11 @@ export default {
   name: "fly-search",
   setup() {
     const route = useRoute();
-    // const flights = ref([]);
     const flightResult = ref([]);
 
     const searchResults = async () => {
       try {
         const sessionId = route.query.sessionId;
-        // console.log("sessionId is: line 52" , sessionId);
-
         const response = await axios.get(
           "https://marketplace.beta.luxota.network/v1/search/results",
           {
@@ -298,7 +292,7 @@ export default {
             },
           }
         );
-        console.log("flight result is 81:", response.data.data);
+        console.log("flight result", response.data.data);
         flightResult.value = response.data.data;
       } catch (error) {
         console.error("Error searching flights:", error);
@@ -307,8 +301,7 @@ export default {
     onMounted(() => {
       if (route.query.sessionId) {
         searchResults();
-        localStorage.setItem('sessionId', route.query.sessionId);
-
+        localStorage.setItem("sessionId", route.query.sessionId);
       }
     });
 
@@ -338,5 +331,81 @@ body {
   color: var(--dl-color-gray-black);
   background-color: var(--dl-color-gray-white);
 }
-html {  line-height: 1.15;}body {  margin: 0;}* {  box-sizing: border-box;  border-width: 0;  border-style: solid;}p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  padding: 0;}button {  background-color: transparent;}button,input,optgroup,select,textarea {  font-family: inherit;  font-size: 100%;  line-height: 1.15;  margin: 0;}button,select {  text-transform: none;}button,[type="button"],[type="reset"],[type="submit"] {  -webkit-appearance: button;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner {  border-style: none;  padding: 0;}button:-moz-focus,[type="button"]:-moz-focus,[type="reset"]:-moz-focus,[type="submit"]:-moz-focus {  outline: 1px dotted ButtonText;}a {  color: inherit;  text-decoration: inherit;}input {  padding: 2px 4px;}img {  display: block;}html { scroll-behavior: smooth  }
+html {
+  line-height: 1.15;
+}
+body {
+  margin: 0;
+}
+* {
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+}
+p,
+li,
+ul,
+pre,
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+figure,
+blockquote,
+figcaption {
+  margin: 0;
+  padding: 0;
+}
+button {
+  background-color: transparent;
+}
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
+}
+button,
+select {
+  text-transform: none;
+}
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  -webkit-appearance: button;
+}
+button::-moz-focus-inner,
+[type="button"]::-moz-focus-inner,
+[type="reset"]::-moz-focus-inner,
+[type="submit"]::-moz-focus-inner {
+  border-style: none;
+  padding: 0;
+}
+button:-moz-focus,
+[type="button"]:-moz-focus,
+[type="reset"]:-moz-focus,
+[type="submit"]:-moz-focus {
+  outline: 1px dotted ButtonText;
+}
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+input {
+  padding: 2px 4px;
+}
+img {
+  display: block;
+}
+html {
+  scroll-behavior: smooth;
+}
 </style>

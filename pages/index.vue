@@ -72,20 +72,52 @@
 
           <!--------- Source  ------>
           <div class="home-container017">
-            <div class="home-container018" style="margin-right: 15px;">
-              <input class="home-textinput input" type="text" v-model="city" @keydown="handleCityInput($event)" placeholder="From">
-              <select v-if="showAirports" class="home-textinput input" v-model="selectedOriginAirport">
+            <div class="home-container018" style="margin-right: 15px">
+              <input
+                class="home-textinput input"
+                type="text"
+                v-model="city"
+                @keydown="handleCityInput($event)"
+                placeholder="From"
+              />
+              <select
+                v-if="showAirports"
+                class="home-textinput input"
+                v-model="selectedOriginAirport"
+              >
                 <option disabled value="">Select an airport</option>
-                <option v-for="airport in airports" :value="airport.id" :key="airport.id">{{ airport.title }}</option>
+                <option
+                  v-for="airport in airports"
+                  :value="airport.id"
+                  :key="airport.id"
+                >
+                  {{ airport.title }}
+                </option>
               </select>
             </div>
 
             <!------------------ destination ----->
             <div class="home-container022">
-              <input class="home-textinput input" type="text" v-model="destCity" @keydown="handleDestCityInput($event)" placeholder="To">
-              <select v-if="showDestAirports" class="home-textinput input" v-model="selectedDestAirport">
+              <input
+                class="home-textinput input"
+                type="text"
+                v-model="destCity"
+                @keydown="handleDestCityInput($event)"
+                placeholder="To"
+              />
+              <select
+                v-if="showDestAirports"
+                class="home-textinput input"
+                v-model="selectedDestAirport"
+              >
                 <option disabled value="">Select an airport</option>
-                <option v-for="airport in destAirports" :value="airport.id" :key="airport.id">{{ airport.title }}</option>
+                <option
+                  v-for="airport in destAirports"
+                  :value="airport.id"
+                  :key="airport.id"
+                >
+                  {{ airport.title }}
+                </option>
               </select>
             </div>
 
@@ -110,7 +142,7 @@
                 <input
                   type="text"
                   placeholder="Travelers"
-                  style="height:50px;"
+                  style="height: 50px"
                   v-model="selectedOption"
                   class="home-textinput3 input"
                   @click="showOptions = true"
@@ -140,7 +172,12 @@
                     <span>{{ countInfant }}</span>
                     <button @click="decrementInfant">-</button>
                   </div>
-                  <button @click="done" style="background-color: #003EB3;width:90%;color:white">Done</button>
+                  <button
+                    @click="done"
+                    style="background-color: #003eb3; width: 90%; color: white"
+                  >
+                    Done
+                  </button>
                 </div>
               </div>
             </div>
@@ -167,7 +204,9 @@
             >
               Destination Now →
             </router-link> -->
-            <button @click="searchFlights" class="home-button02 button">Destination Now →</button>
+            <button @click="searchFlights" class="home-button02 button">
+              Destination Now →
+            </button>
           </div>
         </div>
       </div>
@@ -208,7 +247,9 @@
               <div class="home-container034">
                 <div class="home-container035">
                   <div class="home-container036">
-                    <span class="home-text013">{{ flight.origin.city_en }}</span>
+                    <span class="home-text013">{{
+                      flight.origin.city_en
+                    }}</span>
                   </div>
                   <div class="home-container037">
                     <div class="home-container038">
@@ -220,7 +261,9 @@
                     </div>
                   </div>
                   <div class="home-container039">
-                    <span class="home-text014">{{ flight.destination.city_en }}</span>
+                    <span class="home-text014">{{
+                      flight.destination.city_en
+                    }}</span>
                   </div>
                 </div>
                 <div class="home-container040">
@@ -246,7 +289,7 @@
           </div>
         </a>
       </div>
-      </div>
+    </div>
     <!---------------homePlan--------------->
     <homePlan />
     <!---------------homeServices--------------->
@@ -263,11 +306,10 @@
 </template>
 
 <script>
-import { ref,watch, onMounted  } from "vue";
+import { ref, watch, onMounted } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 // import homeRecomended from '~/components/home/homeRecomended.vue'
-
 
 export default {
   name: "Home",
@@ -298,121 +340,118 @@ export default {
       decrementInfant,
     } = useCounter();
 
-
     const selectedOption = ref("");
     const showOptions = ref(false);
     const done = () => {
       showOptions.value = false;
     };
 
-   //------------------------------------
-   const city = ref('');
-  const selectedOriginAirport = ref('');
-  const airports = ref([]);
-  const showAirports = ref(false);
-  const showFlights = ref(false);
-  const airport = city.value.trim(); 
+    //------------------------------------
+    const city = ref("");
+    const selectedOriginAirport = ref("");
+    const airports = ref([]);
+    const showAirports = ref(false);
+    const showFlights = ref(false);
+    const airport = city.value.trim();
 
-  const handleCityInput = async (event) => {
-    if (city.value.trim().length >= 3) {
+    const handleCityInput = async (event) => {
+      if (city.value.trim().length >= 3) {
         const airport = city.value.trim();
-      try {
-        const response = await axios.get(`https://marketplace.beta.luxota.network/v1/search/airports?q=${airport}&lang=en`);
-      //  console.log("response.data:" , response.data.data);
-       airports.value = response.data.data; 
-       showAirports.value = true;
-      } catch (error) {
-        console.error('Error fetching airports:', error);
-      }
-    } else {
-      showAirports = false;
-      airports = ref([]);
-console.log("error dare line 40")  
-  }
-  };
-  
-  const searchFlights = async () => {
-
-    // console.log("selectedOriginAirport:" , selectedOriginAirport);
-      try {
-        const response = await axios.post('https://marketplace.beta.luxota.network/v1/search/flight', {
-            origin:selectedOriginAirport.value,
-            destination:selectedDestAirport.value,
-            departure:"2024-08-31",
-            adults:2,
-            children:1,
-            infants:0,
-            cabin:"economy",
-            tripType:"oneWay",
-            searcherIdentity:'test',
-        });
-        //  console.log("response.data 347:" , response.data.sessionId);
-        //  searchResults.value = response.data;
-const sessionId = response.data.sessionId;
-const status = response.data.status;
-
-// Navigate to fly-search page with sessionId as a query parameter
-await router.push({ name: 'fly-search', query: { status,sessionId ,lang:'EN'} });
-      } catch (error) {
-        console.error('Error searching flights:', error);
+        try {
+          const response = await axios.get(
+            `https://marketplace.beta.luxota.network/v1/search/airports?q=${airport}&lang=en`
+          );
+          airports.value = response.data.data;
+          showAirports.value = true;
+        } catch (error) {
+          console.error("Error fetching airports:", error);
+        }
+      } else {
+        showAirports = false;
+        airports = ref([]);
+        console.log("error dare line 40");
       }
     };
-  
-  watch(selectedOriginAirport, () => {
-    if (selectedOriginAirport.value !== '') {
-      showFlights.value = true;
-    }
-  });
 
-
-   //------------------ destination--------------------
-   const destCity = ref('');
-  const selectedDestAirport = ref('');
-  const destAirports = ref([]);
-  const showDestAirports = ref(false);
-  const destAirport = destCity.value.trim();
- const popularFlights = ref([]);
-  const handleDestCityInput = async (event) => {
-    if (destCity.value.trim().length >= 3) {
-        const destAirport = destCity.value.trim();
+    const searchFlights = async () => {
       try {
-        const response = await axios.get(`https://marketplace.beta.luxota.network/v1/search/airports?q=${destAirport}&lang=en`);
-      //  console.log("response.data:" , response.data.data);
-       destAirports.value = response.data.data; 
-       showDestAirports.value = true;
+        const response = await axios.post(
+          "https://marketplace.beta.luxota.network/v1/search/flight",
+          {
+            origin: selectedOriginAirport.value,
+            destination: selectedDestAirport.value,
+            departure: "2024-08-31",
+            adults: 2,
+            children: 1,
+            infants: 0,
+            cabin: "economy",
+            tripType: "oneWay",
+            searcherIdentity: "test",
+          }
+        );
+        const sessionId = response.data.sessionId;
+        const status = response.data.status;
+
+        await router.push({
+          name: "fly-search",
+          query: { status, sessionId, lang: "EN" },
+        });
       } catch (error) {
-        console.error('Error fetching airports:', error);
+        console.error("Error searching flights:", error);
       }
-    } else {
-      showDestAirports = false;
-      destAirports = ref([]);
-console.log("error dare line 40")  
-  }
-  };
-  
+    };
 
-
-  watch(selectedOriginAirport, () => {
-    if (selectedOriginAirport.value !== '') {
-      showFlights.value = true;
-    }
-  });
-
-  const populatFlights = async () =>{
-    try {
-        const response = await axios.get('https://marketplace.beta.luxota.network/v1/popularroutes/flight?lang=en&currency=158')
-        //  console.log("populer flights are:" , response.data.data);
-         popularFlights.value = response.data.data.slice(0, 3);
-        //  console.log("popularFlights are line 317:" , popularFlights.value);
-      } catch (error) {
-        console.error('Error searching flights:', error);
+    watch(selectedOriginAirport, () => {
+      if (selectedOriginAirport.value !== "") {
+        showFlights.value = true;
       }
-  }
-  onMounted(() => {
-    populatFlights();
-        // searchFlights();
     });
-  //----------------------------
+
+    //------------------ destination--------------------
+    const destCity = ref("");
+    const selectedDestAirport = ref("");
+    const destAirports = ref([]);
+    const showDestAirports = ref(false);
+    const destAirport = destCity.value.trim();
+    const popularFlights = ref([]);
+    const handleDestCityInput = async (event) => {
+      if (destCity.value.trim().length >= 3) {
+        const destAirport = destCity.value.trim();
+        try {
+          const response = await axios.get(
+            `https://marketplace.beta.luxota.network/v1/search/airports?q=${destAirport}&lang=en`
+          );
+          destAirports.value = response.data.data;
+          showDestAirports.value = true;
+        } catch (error) {
+          console.error("Error fetching airports:", error);
+        }
+      } else {
+        showDestAirports = false;
+        destAirports = ref([]);
+        console.log("error");
+      }
+    };
+
+    watch(selectedOriginAirport, () => {
+      if (selectedOriginAirport.value !== "") {
+        showFlights.value = true;
+      }
+    });
+
+    const populatFlights = async () => {
+      try {
+        const response = await axios.get(
+          "https://marketplace.beta.luxota.network/v1/popularroutes/flight?lang=en&currency=158"
+        );
+        popularFlights.value = response.data.data.slice(0, 3);
+      } catch (error) {
+        console.error("Error searching flights:", error);
+      }
+    };
+    onMounted(() => {
+      populatFlights();
+    });
     return {
       params,
       selectedOption,
@@ -438,15 +477,12 @@ console.log("error dare line 40")
       showDestAirports,
       handleDestCityInput,
       popularFlights,
-      searchFlights
-        };
+      searchFlights,
+    };
   },
 };
 </script>
 <style scoped>
-@import url("../assets/css/style.css");
-@import url("../assets/css/index.css");
-
 .options-box {
   border: 1px solid gray;
   padding: 10px;

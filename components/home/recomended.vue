@@ -7,10 +7,6 @@
         <br />
       </span>
     </div>
-    <!-- <h2 style="color:white">Recommended Flights</h2>
-    <ul style="color:white">
-      <li v-for="flight in popularFlights" :key="flight.origin.city_id">{{ flight.origin.city_en }}</li>
-    </ul> -->
      <div v-for="flight in popularFlights" :key="flight.id" class="home-container031">
       <div class="d">
         <a href="#">
