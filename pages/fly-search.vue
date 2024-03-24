@@ -380,7 +380,8 @@ button,
 [type="button"],
 [type="reset"],
 [type="submit"] {
-  -webkit-appearance: button;
+  appearance: button;
+  /* -webkit-appearance: button; */
 }
 button::-moz-focus-inner,
 [type="button"]::-moz-focus-inner,

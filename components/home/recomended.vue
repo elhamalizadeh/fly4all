@@ -25,7 +25,7 @@
               <div class="home-container034">
                 <div class="home-container035">
                   <div class="home-container036">
-                    <span class="home-text013">{{flight.origin.city_en}}</span>
+                    <span class="home-text013">{{ flight.origin.city_en }}</span>
                   </div>
                   <div class="home-container037">
                     <div class="home-container038">

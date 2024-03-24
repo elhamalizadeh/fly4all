@@ -288,64 +288,37 @@ export default {
     //--------------------
     const searchFlights = async () => {
       //----- ofetch
-      //       try{
-      //         const response = await $fetch(
-      //           "https://marketplace.beta.luxota.network/v1/search/flight",
-      //           {
-      //             method: "POST",
-      //             body: JSON.stringify({
-      //             origin: selectedOriginAirport.value,
-      //             destination: selectedDestAirport.value,
-      //             departure: "2024-08-31",
-      //             adults: 2,
-      //             children: 1,
-      //             infants: 0,
-      //             cabin: "economy",
-      //             tripType: "oneWay",
-      //             searcherIdentity: "test",
-      //           }),
-      //         headers: {
-      //           "Content-Type": "application/json", // Specify the content type
-      //         },
-      //           }
-      //         );
-      //         const sessionId = response.data.sessionId;
-      //         const status = response.data.status;
-      // console.log("sessionId is: ", sessionId);
-      //         await router.push({
-      //           name: "fly-search",
-      //           query: { status, sessionId, lang: "EN" },
-      //         });
-      //       } catch{
-      //         console.error("Error searching flights:", error);
-      //       }
-
-      //-----  axios
-      try {
-        const response = await axios.post(
-          "https://marketplace.beta.luxota.network/v1/search/flight",
-          {
-            origin: selectedOriginAirport.value,
-            destination: selectedDestAirport.value,
-            departure: "2024-08-31",
-            adults: 2,
-            children: 1,
-            infants: 0,
-            cabin: "economy",
-            tripType: "oneWay",
-            searcherIdentity: "test",
-          }
-        );
-        const sessionId = response.data.sessionId;
-        const status = response.data.status;
-
-        await router.push({
-          name: "fly-search",
-          query: { status, sessionId, lang: "EN" },
-        });
-      } catch (error) {
-        console.error("Error searching flights:", error);
-      }
+            try{
+              const response = await $fetch(
+                "https://marketplace.beta.luxota.network/v1/search/flight",
+                {
+                  method: "POST",
+                  body: JSON.stringify({
+                  origin: selectedOriginAirport.value,
+                  destination: selectedDestAirport.value,
+                  departure: "2024-08-31",
+                  adults: 2,
+                  children: 1,
+                  infants: 0,
+                  cabin: "economy",
+                  tripType: "oneWay",
+                  searcherIdentity: "test",
+                }),
+              headers: {
+                "Content-Type": "application/json",
+              },
+                }
+              );
+              // console.log("response is:" , response);
+              const sessionId = response.sessionId;
+              const status = response.status;
+              await router.push({
+                name: "fly-search",
+                query: { status, sessionId, lang: "EN" },
+              });
+            } catch{
+              console.error("Error searching flights:", error);
+            }
     };
 
     return {
