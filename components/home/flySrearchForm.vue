@@ -56,7 +56,6 @@
         <div class="home-container015"></div>
         <div class="home-container016"></div>
       </div>
-      <!-------------------------------->
       <!--------------- cabin-------------------->
       <select class="home-select1" v-model="params.cabin">
         <option value="economy">Economy</option>
@@ -66,7 +65,50 @@
 
       <!--------- Source  ------>
       <div class="home-container017">
-        <div class="home-container018" style="margin-right: 15px">
+        <!------------start2-->
+        <div style="margin-right: 15px" class="dropdown">
+          <input
+            class="home-textinput input"
+            type="text"
+            id="selectedOption"
+            name="selectedOption"
+            @input="filterList"
+            @click="toggleListOrgin"
+            @blur="toggleListOrgin"
+            @keydown="handleCityInput($event)"
+            placeholder="From"
+            v-model="city"
+          />
+          <!--value=""
+            v-model="city" -->
+          <!-- <div id="selectedAirport" v-show="showSelectedAirport">
+            Selected Airport: {{ selectedOriginAirport }}
+          </div> -->
+          <ul
+            id="myUL"
+            v-show="listVisible"
+            v-if="showAirports"
+            class="dropdown-content"
+          >
+            <div id="title">Search by city or airport</div>
+            <!-- <li id="li" @click="selectOriginAirport(255)">Option 1</li> -->
+            <li
+              id="li"
+              v-for="airport in airports"
+              :key="airport.id"
+              :value="airport.id"
+              @click="selectOriginAirport(airport)"
+            >
+              <span>{{ airport.title }}</span>
+            </li>
+            <!-- <li v-for="(name, index) in filteredNames" :key="index" >
+              <span>{{ name }}</span>
+            </li> -->
+          </ul>
+        </div>
+        <!-----end---->
+
+        <!-- <div class="home-container018" style="margin-right: 15px">
           <input
             class="home-textinput input"
             type="text"
@@ -88,11 +130,54 @@
               {{ airport.title }}
             </option>
           </select>
-        </div>
+        </div> -->
 
         <!------------------ destination ----->
-        <div class="home-container022">
+
+        <!------------ start dest 1-->
+
+        <div class="dropdown">
           <input
+            class="home-textinput input"
+            type="text"
+            id="selectedOptionDest"
+            name="selectedOptionDest"
+            @input="filterList"
+            @click="toggleListDest"
+            @blur="toggleListDest"
+            @keydown="handleDestCityInput($event)"
+            placeholder="To"
+            v-model="destCity"
+          />
+          <!--value=""
+            v-model="city" -->
+          <!-- <div id="selectedAirport" v-show="showSelectedAirport">
+            Selected Airport: {{ selectedOriginAirport }}
+          </div> -->
+          <ul
+            id="myUL"
+            v-show="listVisibleDest"
+            v-if="showDestAirports"
+            class="dropdown-content"
+          >
+            <div id="title">Search by city or airport</div>
+            <!-- <li id="li" @click="selectOriginAirport(255)">Option 1</li> -->
+            <li
+              id="liDest"
+              v-for="airport in destAirports"
+              :key="airport.id"
+              :value="airport.id"
+              @click="selectDestAirport(airport)"
+            >
+              <span>{{ airport.title }}</span>
+            </li>
+            <!-- <li v-for="(name, index) in filteredNames" :key="index" >
+              <a href="#">{{ name }}</a>
+            </li> -->
+          </ul>
+        </div>
+        <!----------- end dest-->
+        <!-- <input
             class="home-textinput input"
             type="text"
             v-model="destCity"
@@ -112,8 +197,7 @@
             >
               {{ airport.title }}
             </option>
-          </select>
-        </div>
+          </select> -->
 
         <!------------------ Date ------>
         <div class="home-container024">
@@ -204,6 +288,7 @@ export default {
     } = useCounter();
 
     const selectedOption = ref("");
+    const selectedOptionDest = ref("");
     const showOptions = ref(false);
     const done = () => {
       showOptions.value = false;
@@ -226,6 +311,19 @@ export default {
     const showAirports = ref(false);
     const showFlights = ref(false);
     const airport = city.value.trim();
+    const showSelectedAirport = ref(false); //-------
+
+    //------start2-----
+    const filter = ref("");
+    const names = ref([
+      "Al Najaf Intl (NJF): Iraq, Al Najaf",
+      "Mashad (MHD): Iran, Mashhad",
+      "Baghdad Intl (BGW): Iraq, Baghdad",
+      "All airports in Tehran:Iran",
+      "Damascus (DAM): Syrian Arab Republic, Damas",
+    ]);
+
+    //-------end -----
 
     const handleCityInput = async (event) => {
       if (city.value.trim().length >= 3) {
@@ -246,7 +344,6 @@ export default {
       }
     };
 
-    //----
     watch(selectedOriginAirport, () => {
       if (selectedOriginAirport.value !== "") {
         showFlights.value = true;
@@ -260,6 +357,7 @@ export default {
     const showDestAirports = ref(false);
     const destAirport = destCity.value.trim();
     const popularFlights = ref([]);
+
     const handleDestCityInput = async (event) => {
       if (destCity.value.trim().length >= 3) {
         const destAirport = destCity.value.trim();
@@ -287,43 +385,105 @@ export default {
 
     //--------------------
     const searchFlights = async () => {
+
       //----- ofetch
-            try{
-              const response = await $fetch(
-                "https://marketplace.beta.luxota.network/v1/search/flight",
-                {
-                  method: "POST",
-                  body: JSON.stringify({
-                  origin: selectedOriginAirport.value,
-                  destination: selectedDestAirport.value,
-                  departure: "2024-08-31",
-                  adults: 2,
-                  children: 1,
-                  infants: 0,
-                  cabin: "economy",
-                  tripType: "oneWay",
-                  searcherIdentity: "test",
-                }),
-              headers: {
-                "Content-Type": "application/json",
-              },
-                }
-              );
-              // console.log("response is:" , response);
-              const sessionId = response.sessionId;
-              const status = response.status;
-              await router.push({
-                name: "fly-search",
-                query: { status, sessionId, lang: "EN" },
-              });
-            } catch{
-              console.error("Error searching flights:", error);
-            }
+      try {
+        const response = await $fetch(
+          "https://marketplace.beta.luxota.network/v1/search/flight",
+          {
+            method: "POST",
+            body: JSON.stringify({
+              // origin: selectedOriginAirport.value,liDest
+              // destination: selectedDestAirport.value,
+              origin: document.getElementById("li").value,
+              destination: document.getElementById("liDest").value,
+              departure: "2024-08-31",
+              adults: 2,
+              children: 1,
+              infants: 0,
+              cabin: "economy",
+              tripType: "oneWay",
+              searcherIdentity: "test",
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        // console.log("response is:" , response);
+        const sessionId = response.sessionId;
+        const status = response.status;
+        await router.push({
+          name: "fly-search",
+          query: { status, sessionId, lang: "EN" },
+        });
+      } catch {
+        console.error("Error searching flights:", error);
+      }
     };
+
+    //----------------------start2 -----
+
+    const filterList = () => {
+      const filterValue = filter.value.toUpperCase();
+      for (let i = 0; i < names.value.length; i++) {
+        const a = names.value[i];
+        if (a.toUpperCase().indexOf(filterValue) > -1) {
+          names.value[i] = a;
+        } else {
+          names.value[i] = "";
+        }
+      }
+    };
+
+    const selectOriginAirport = (airport) => {
+      // Update selectedOriginAirport when an airport is selected
+      selectedOriginAirport.value = airport.id;
+      showSelectedAirport = true;
+
+      //------start3
+      document.getElementById("selectedOption").value = airport.id;
+      document.querySelector(".dropdown > span").innerText = airport.id;
+      listVisible.value = false;
+    };
+
+    //------
+    const selectDestAirport = (airport) => {
+      // Update selectedOriginAirport when an airport is selected
+      selectedDestAirport.value = airport.id;
+      showDestAirports = true;
+
+      //------start3
+      document.getElementById("selectedOptionDest").value = airport.id;
+      document.querySelector(".dropdown > span").innerText = airport.id;
+      listVisible.value = false;
+    };
+
+    const filteredNames = ref([]);
+    const updateFilteredNames = () => {
+      filteredNames.value = names.value.filter((name) => name !== "");
+    };
+
+    updateFilteredNames();
+
+    //----
+    const listVisible = ref(false);
+    const listVisibleDest = ref(false);
+
+    const toggleListOrgin = () => {
+      listVisible.value = !listVisible.value;
+    };
+    const toggleListDest = () => {
+      listVisibleDest.value = !listVisibleDest.value;
+    };
+    //----------------------------------end ----
 
     return {
       params,
       selectedOption,
+      selectedOptionDest,
+      selectDestAirport,
       showOptions,
       countAdult,
       incrementAdult,
@@ -347,10 +507,22 @@ export default {
       handleDestCityInput,
       popularFlights,
       searchFlights,
+      filter, //-----start2
+      filteredNames,
+      filterList,
+      listVisible,
+      listVisibleDest,
+      selectOriginAirport,
+      showSelectedAirport,
+      toggleListOrgin,
+      toggleListDest,
+      // showList,
+      // hideList,
     };
   },
 };
 </script>
+
 <style scoped>
 .options-box {
   border: 1px solid gray;
@@ -358,6 +530,7 @@ export default {
   margin-top: 5px;
   background-color: white;
   z-index: 1000;
+  position: absolute; /* ---- */
 }
 .options-box-item {
   display: flex;
@@ -369,11 +542,65 @@ export default {
   display: flex;
   align-items: center;
   margin-bottom: 5px;
+  position: absolute; /*-----*/
 }
 .sub-title {
   display: block;
 }
 .options-box button {
   margin: 0 5px;
+}
+
+/*-----------------start2---------------*/
+
+#myUL {
+  /* Remove default list styling */
+  position: absolute;
+  z-index: 999;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+#myUL #title {
+  border: 1px solid #ddd;
+  background-color: #f6f6f6;
+  padding: 12px;
+  font-size: 18px;
+  color: black;
+  display: block;
+}
+#myUL li span {
+  border: 1px solid #ddd;
+  margin-top: -1px;
+  background-color: #f6f6f6;
+  padding: 12px;
+  text-decoration: none;
+  font-size: 18px;
+  color: black;
+  display: block;
+}
+
+#myUL li span:hover:not(.header) {
+  background-color: #eee;
+}
+
+/*------start3--------*/
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  padding: 12px 16px;
+  z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
 }
 </style>

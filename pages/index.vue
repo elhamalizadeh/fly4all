@@ -19,7 +19,7 @@
     <div class="home-container100">
       <button type="button" class="home-button14 button">More Here →</button>
     </div>
-    <!----------->
+    <!-------->
     <HomeHolidaysDestination />
     <HomeTravelPackages />
     <HomeBlogNews />
