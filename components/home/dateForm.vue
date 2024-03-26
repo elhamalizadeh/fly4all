@@ -7,7 +7,7 @@
         v-model="selectedDate"
         @click="toggleCalendar"
         readonly
-        :placeholder="selectedDate"
+        :placeholder="placeholderText"
       />
       <div v-if="isCalendarVisible">
         <!-- <div v-for="day in daysOfMonth" :key="day" @click="selectDate(day)">{{ day }}</div> -->
@@ -78,6 +78,10 @@ export default {
     const placeholder = "Select a date"; // Placeholder for the input field
     const calendarMonth = ref(new Date().getMonth()); // Current month of the calendar
     const calendarYear = ref(new Date().getFullYear()); // Current year of the calendar
+
+    const placeholderText = computed(() => {
+      return selectedDate.value ? selectedDate.value : 'Date';
+    });
 
     const getNextMonth = (year, month) => {
       if (month === 11) {
@@ -243,6 +247,7 @@ export default {
       calendarYear,
       hoverBackground,
       resetBackground,
+      placeholderText,
       currentMonthYearEmit, // for emit
       selectedDateToSend, //for emit
     };

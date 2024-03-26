@@ -72,10 +72,9 @@
             type="text"
             id="selectedOption"
             name="selectedOption"
-            @input="filterList"
+            @input="filterList ; handleCityInput($event)"
             @click="toggleListOrgin"
             @blur="toggleListOrgin"
-            @keydown="handleCityInput($event)"
             placeholder="From"
             v-model="city"
           />
@@ -142,11 +141,10 @@
             type="text"
             id="selectedOptionDest"
             name="selectedOptionDest"
-            @input="filterList"
+            @input="filterList ; handleDestCityInput($event)"
             @click="toggleListDest"
             @blur="toggleListDest"
-            @keydown="handleDestCityInput($event)"
-            placeholder="To"
+            placeholder="placeholderTextDest"
             v-model="destCity"
           />
           <!--value=""
@@ -260,7 +258,7 @@
   </div>
 </template>
 <script>
-import { ref, watch, onMounted } from "vue";
+import { ref, watch, onMounted , computed } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 
@@ -305,7 +303,6 @@ export default {
     const showFlights = ref(false);
     const airport = city.value.trim();
     const showSelectedAirport = ref(false); //-------
-
     //------start2-----
     const filter = ref("");
     const names = ref([
@@ -319,7 +316,7 @@ export default {
     //-------end -----
 
     const handleCityInput = async (event) => {
-      if (city.value.trim().length >= 3) {
+      if (city.value.trim().length >= 2) {
         const airport = city.value.trim();
         try {
           const response = await axios.get(
@@ -352,7 +349,7 @@ export default {
     const popularFlights = ref([]);
 
     const handleDestCityInput = async (event) => {
-      if (destCity.value.trim().length >= 3) {
+      if (destCity.value.trim().length >= 2) {
         const destAirport = destCity.value.trim();
         try {
           const response = await axios.get(
@@ -376,6 +373,20 @@ export default {
       }
     });
 
+
+     //---- set placeholder text----
+    //  const placeholderTextDest = computed(() => {
+    //   return destCity ? destCity : 'To';
+    // });
+
+    const placeholderTextDest = computed(() => {
+      if (destCity.value.trim() === '' || !destCity.value) {
+        return 'TO';
+      } else {
+        return destCity.value;
+      }
+    });
+    console.log("destCity is:" , destCity);
     //--------------------
     const searchFlights = async () => {
 
@@ -520,7 +531,8 @@ const CurrentMonthYearFunction= (MonthYear) => {
       toggleListDest,
       CurrentMonthYearFunction, // for emit
       // currentMonthYearEmit, // for emit
-      selectedDate
+      selectedDate,
+      placeholderTextDest, // placeholder for destination input
 
     };
   },
@@ -586,6 +598,7 @@ const CurrentMonthYearFunction= (MonthYear) => {
 
 #myUL li span:hover:not(.header) {
   background-color: #eee;
+  cursor: pointer
 }
 
 /*------start3--------*/
@@ -606,6 +619,10 @@ const CurrentMonthYearFunction= (MonthYear) => {
 
 .dropdown:hover .dropdown-content {
   display: block;
+}
+.home-container004{
+  position:absolute;
+  top:3rem
 }
 
 </style>
