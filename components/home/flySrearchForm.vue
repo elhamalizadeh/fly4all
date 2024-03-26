@@ -200,14 +200,7 @@
           </select> -->
 
         <!------------------ Date ------>
-        <!-- <div class="home-container024">
-          <input
-            type="date"
-            class="home-textinput2 input"
-            v-model="params.date"
-          />
-        </div> -->
-        <homeDateForm />
+        <homeDateForm  @sendEmitCurrentMonthYear = "CurrentMonthYearFunction"/>
         <!------------- Travellers ------->
         <!-- <div class="home-container025">
           <input
@@ -393,11 +386,10 @@ export default {
           {
             method: "POST",
             body: JSON.stringify({
-              // origin: selectedOriginAirport.value,liDest
-              // destination: selectedDestAirport.value,
               origin: document.getElementById("li").value,
               destination: document.getElementById("liDest").value,
-              departure: "2024-08-31",
+              // departure: "2024-08-31",
+              departure: selectedDate.value.value,
               adults: 2,
               children: 1,
               infants: 0,
@@ -479,6 +471,16 @@ export default {
     };
     //----------------------------------end ----
 
+    //-----------------------send data from dataForm to this page
+// const currentMonthYearEmit = ref('');
+const selectedDate = ref('');
+const CurrentMonthYearFunction= (MonthYear) => {
+  selectedDate.value = MonthYear;
+  console.log("currentMonthYearEmit in parent is: " , selectedDate.value);
+}
+
+
+//----------------------
     return {
       params,
       selectedOption,
@@ -516,8 +518,10 @@ export default {
       showSelectedAirport,
       toggleListOrgin,
       toggleListDest,
-      // showList,
-      // hideList,
+      CurrentMonthYearFunction, // for emit
+      // currentMonthYearEmit, // for emit
+      selectedDate
+
     };
   },
 };
@@ -603,4 +607,5 @@ export default {
 .dropdown:hover .dropdown-content {
   display: block;
 }
+
 </style>

@@ -1,54 +1,49 @@
 <template>
   <div class="home-container024">
-    <input
-      class="home-textinput3 input"
-      type="text"
-      v-model="selectedDate"
-      @click="toggleCalendar"
-      readonly
-      :placeholder="selectedDate"
-    />
-    <div v-if="isCalendarVisible" class="calendar">
-      <!-- <div v-for="day in daysOfMonth" :key="day" @click="selectDate(day)">{{ day }}</div> -->
-      <div class="calendar-box">
-        <div class="nav-container">
-          <button @click="previousMonth">Previous</button>
-          <button @click="nextMonth" :disabled="!canGoNext">Next</button>
-          <div class="current-month">
-            <span>{{ currentMonthYear }}</span>
+    <div class="calendar">
+      <input
+        class="home-textinput3 input"
+        type="text"
+        v-model="selectedDate"
+        @click="toggleCalendar"
+        readonly
+        :placeholder="selectedDate"
+      />
+      <div v-if="isCalendarVisible">
+        <!-- <div v-for="day in daysOfMonth" :key="day" @click="selectDate(day)">{{ day }}</div> -->
+        <div class="calendar-box">
+          <div class="nav-container">
+            <button @click="previousMonth">Previous</button>
+            <button @click="nextMonth" :disabled="!canGoNext">Next</button>
+            <div class="current-month">
+              <span>{{ currentMonthYear }}</span>
+            </div>
           </div>
+          <hr />
+          <table>
+            <thead>
+              <tr>
+                <th v-for="dayOfWeek in daysOfWeek" :key="dayOfWeek">
+                  {{ dayOfWeek }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(week, index) in calendar" :key="index">
+                <td v-for="day in week" :key="day.id">
+                  <span
+                    @click="selectDate(day, currentMonthYear)"
+                    @mouseover="hoverBackground"
+                    @mouseleave="resetBackground"
+                    class="hoverable"
+                  >
+                    {{ day }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <hr />
-        <table>
-          <thead>
-            <tr>
-              <th v-for="dayOfWeek in daysOfWeek" :key="dayOfWeek">
-                {{ dayOfWeek }}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(week, index) in calendar" :key="index">
-              <td v-for="day in week" :key="day.id">
-                <span
-                  @click="
-                    selectDate(
-                      day,
-                      calendarMonth,
-                      calendarYear,
-                      currentMonthYear
-                    )
-                  "
-                  @mouseover="hoverBackground"
-                  @mouseleave="resetBackground"
-                  class="hoverable"
-                >
-                  {{ day }}
-                </span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
       </div>
     </div>
   </div>
@@ -57,7 +52,7 @@
 import { ref, computed } from "vue";
 
 export default {
-  setup() {
+  setup(props, { emit }) {
     const currentDate = new Date();
     let currentYear = currentDate.getFullYear();
     let currentMonth = currentDate.getMonth();
@@ -78,6 +73,7 @@ export default {
     ];
 
     const selectedDate = ref(""); // Holds the selected date
+    const selectedDateToSend = ref("");
     const isCalendarVisible = ref(false); // Flag to toggle calendar visibility
     const placeholder = "Select a date"; // Placeholder for the input field
     const calendarMonth = ref(new Date().getMonth()); // Current month of the calendar
@@ -155,6 +151,10 @@ export default {
     });
 
     const currentMonthYear = ref(`${monthNames[currentMonth]} ${currentYear}`);
+    const currentMonthYearEmit = `${monthNames[currentMonth]} ${currentYear}`;
+
+    console.log("currentMonthYearEmit in dateForm", currentMonthYearEmit);
+    emit("sendEmitCurrentMonthYear", selectedDateToSend);
 
     const nextMonth = () => {
       const { year, month } = getNextMonth(currentYear, currentMonth);
@@ -179,24 +179,34 @@ export default {
     };
 
     const toggleCalendar = () => {
-      isCalendarVisible.value = !isCalendarVisible.value; // Toggle calendar visibility
+      isCalendarVisible.value = !isCalendarVisible.value;
     };
 
     // Function to handle date selection from the calendar
-    function selectDate(day, month, year, currentMonthYear) {
-      selectedDate.value = `${day} ${currentMonthYear}`; // Update selectedDate with day, month, and year
+    function selectDate(day, currentMonthYear) {
+      selectedDate.value = `${day} ${currentMonthYear}`;
       isCalendarVisible.value = false; // Hide the calendar after date selection
       console.log("selectedDate is:", selectedDate.value);
+      const [month, year] = currentMonthYear.split(" ");
+
+      // Create a new Date object with the selected day, month, and year
+      const selectedDateObject = new Date(`${year}-${month}-${day}`);
+
+      // Get the formatted date in YYYY-MM-DD format
+      const formattedDate = selectedDateObject.toISOString().slice(0, 10);
+
+      // Update selectedDate with the formatted date
+      selectedDateToSend.value = formattedDate;
+
+      // Hide the calendar after date selection
+      isCalendarVisible.value = false;
+      // selectedDate.value = formattedDate;
+
+      console.log("selectedDateToSend is:", selectedDateToSend.value);
     }
 
-    // Function to format the date
-    const formatDate = (date) => {
-      const options = { year: "numeric", month: "short", day: "2-digit" };
-      return date.toLocaleDateString(undefined, options);
-    };
-    //-----
     const generateDaysOfMonth = () => {
-      const daysInMonth = 30; // Example: Consider 30 days for simplicity
+      const daysInMonth = 30;
       const daysArray = [];
       for (let i = 1; i <= daysInMonth; i++) {
         daysArray.push(i);
@@ -207,12 +217,10 @@ export default {
     // Initialize calendar for the current month
     calendar.value = updateCalendar(currentYear, currentMonth);
 
-    // Function to apply hover background color
     function hoverBackground(event) {
       event.target.style.backgroundColor = "lightgray";
     }
 
-    // Function to reset background color
     function resetBackground(event) {
       event.target.style.backgroundColor = "";
     }
@@ -235,23 +243,33 @@ export default {
       calendarYear,
       hoverBackground,
       resetBackground,
+      currentMonthYearEmit, // for emit
+      selectedDateToSend, //for emit
     };
   },
 };
 </script>
 <style>
 .home-container024 {
-  color: blue;
+  color: rgb(18, 18, 20);
   gap: 1rem;
+  position: relative;
 }
 .calendar {
+  position: absolute;
+  padding: 0;
+  margin: 0;
+}
+.home-textinput3 input {
   position: absolute;
 }
 .calendar-box {
   position: absolute;
   background-color: white;
-  top: 3rem;
-  height: 300px;
+  top: 2rem;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  height: 50vh;
+  z-index: 100;
 }
 ul {
   display: grid;
@@ -262,7 +280,6 @@ ul {
   padding: 0;
   margin: 0;
 }
-
 th,
 td {
   padding: 5px;

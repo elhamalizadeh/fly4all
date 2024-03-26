@@ -13,6 +13,7 @@
                 <br />
               </span>
              </div>
+             <!-- <homeDateForm  @sendEmitCurrentMonthYear = "CurrentMonthYearFunction"/> -->
             <div class="home-links-container">
               <div class="home-container136">
                 <div class="home-product-container">
@@ -87,6 +88,25 @@
         </footer>
 			   </div>
 </template>
+<!-- <script>
+
+export default defineComponent({
+  setup() {
+        //-----------------------send data from dataForm to this page
+// const currentMonthYearEmit = ref('');
+const selectedDate = ref('');
+const CurrentMonthYearFunction= (MonthYear) => {
+  selectedDate.value = MonthYear;
+  console.log("currentMonthYearEmit in parent is: " , selectedDate.value);
+}
+
+return{
+  CurrentMonthYearFunction, // for emit
+      selectedDate
+}
+  },
+})
+</script> -->
 
 <style scoped> 
 @import url("../../assets/css/style.css");
