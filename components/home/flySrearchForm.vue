@@ -200,16 +200,16 @@
           </select> -->
 
         <!------------------ Date ------>
-        <div class="home-container024">
+        <!-- <div class="home-container024">
           <input
             type="date"
             class="home-textinput2 input"
             v-model="params.date"
           />
-        </div>
-
+        </div> -->
+        <homeDateForm />
         <!------------- Travellers ------->
-        <div class="home-container025">
+        <!-- <div class="home-container025">
           <input
             type="text"
             placeholder="Travelers "
@@ -255,7 +255,7 @@
               </button>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <div class="home-container027">
