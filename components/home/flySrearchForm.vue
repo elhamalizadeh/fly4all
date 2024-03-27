@@ -110,8 +110,13 @@
             "
             @click="toggleListDest"
             @blur="toggleListDest"
-            :placeholder="placeholderTextDest"
             v-model="destCity"
+          />
+          <!-- :placeholder="placeholderTextDest" -->
+          <input type="hidden" 
+          class="home-textinput input"
+          id="selectedAirportId" 
+          v-model="hiddenInputValue"
           />
           <ul
             id="myUL"
@@ -125,6 +130,7 @@
               v-for="airport in destAirports"
               :key="airport.id"
               :value="airport.id"
+              @click="selectAirport(airport)"
             >
               <span>{{ airport.title }}</span>
             </li>
@@ -154,6 +160,8 @@ export default {
     const router = useRouter();
     const selectedOption = ref("");
     const selectedOptionDest = ref("");
+    const hiddenInputValue = ref("");
+    const selectedDestAirportId = ref(""); 
     const params = reactive({
       origin: "",
       destination: "",
@@ -252,7 +260,7 @@ export default {
     // });
     //----------- end Set placeholder text---------
 
-    //--- search flights by fiels input -----
+    //--- search flights by input fields -----
     const searchFlights = async () => {
       try {
         const response = await $fetch(
@@ -288,6 +296,15 @@ export default {
       }
     };
 
+
+    const selectAirport = (airport) => {
+      selectedDestAirportId.value = airport.id; // Update the selected airport id
+      destCity.value = airport.title; // Update the input field with the selected airport title
+      showDestAirports.value = false; // Hide the dropdown
+      hiddenInputValue.value = airport.id;
+      console.log("hiddenInputValue : ");
+      // return destCity.value;
+    };
     const filterList = () => {
       const filterValue = filter.value.toUpperCase();
       for (let i = 0; i < names.value.length; i++) {
@@ -324,6 +341,14 @@ export default {
       console.log("currentMonthYearEmit in parent is: ", selectedDate.value);
     };
 
+      //Watcher to update hidden input value when destCity changes
+    //   watch(hiddenInputValue, (newValue) => {
+    //   hiddenInputValue.value = newValue;
+    // });
+
+//     watch(() => airport.value.title, (newTitle) => {
+//   hiddenInputValue.value = newTitle;
+// });
     return {
       params,
       selectedOption,
@@ -353,6 +378,10 @@ export default {
       // currentMonthYearEmit, // for emit
       selectedDate,
       placeholderTextDest, // placeholder for destination input
+      handleDestCityInput,
+      selectAirport,
+      selectedDestAirportId,
+      hiddenInputValue
     };
   },
 };
@@ -440,8 +469,6 @@ export default {
   display: block;
 }
 .home-container004 {
-  position: absolute;
-  /* top: 9rem; */
-  z-index: 100;
+  /* position: absolute; */
 }
 </style>

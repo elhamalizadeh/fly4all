@@ -80,7 +80,7 @@ export default {
     const calendarYear = ref(new Date().getFullYear()); // Current year of the calendar
 
     const placeholderText = computed(() => {
-      return selectedDate.value ? selectedDate.value : 'Date';
+      return selectedDate.value ? selectedDate.value : "Date";
     });
 
     const getNextMonth = (year, month) => {
@@ -189,32 +189,32 @@ export default {
     // Function to handle date selection from the calendar
     function selectDate(day, currentMonthYear) {
       selectedDate.value = `${day} ${currentMonthYear}`;
-  isCalendarVisible.value = false; // Hide the calendar after date selection
-  console.log("selectedDate is:", selectedDate.value);
-  const [month, year] = currentMonthYear.split(" ");
+      isCalendarVisible.value = false; // Hide the calendar after date selection
+      console.log("selectedDate is:", selectedDate.value);
+      const [month, year] = currentMonthYear.split(" ");
 
-  // Create a new Date object with the selected day, month, and year
-  const selectedDateObject = new Date(`${year},${month},${day}`);
-  console.log("selectedDateObject : " , selectedDateObject);
+      // Create a new Date object with the selected day, month, and year
+      const selectedDateObject = new Date(`${year},${month},${day}`);
+      console.log("selectedDateObject : ", selectedDateObject);
 
-  // Function to format the date to YYYY-MM-DD
-  function formatDate(date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Adding 1 to month as it's zero-based
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  }
+      // Function to format the date to YYYY-MM-DD
+      function formatDate(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0"); // Adding 1 to month as it's zero-based
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+      }
 
-  // Get the formatted date in YYYY-MM-DD format
-  const formattedDate = formatDate(selectedDateObject);
-  console.log("formattedDate : " , formattedDate);
-  
-  // Update selectedDate with the formatted date
-  selectedDateToSend.value = formattedDate;
+      // Get the formatted date in YYYY-MM-DD format
+      const formattedDate = formatDate(selectedDateObject);
+      console.log("formattedDate : ", formattedDate);
 
-  // Hide the calendar after date selection
-  isCalendarVisible.value = false;
-  console.log("selectedDateToSend is:", selectedDateToSend.value);
+      // Update selectedDate with the formatted date
+      selectedDateToSend.value = formattedDate;
+
+      // Hide the calendar after date selection
+      isCalendarVisible.value = false;
+      console.log("selectedDateToSend is:", selectedDateToSend.value);
     }
 
     const generateDaysOfMonth = () => {
