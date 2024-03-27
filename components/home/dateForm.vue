@@ -189,24 +189,32 @@ export default {
     // Function to handle date selection from the calendar
     function selectDate(day, currentMonthYear) {
       selectedDate.value = `${day} ${currentMonthYear}`;
-      isCalendarVisible.value = false; // Hide the calendar after date selection
-      console.log("selectedDate is:", selectedDate.value);
-      const [month, year] = currentMonthYear.split(" ");
+  isCalendarVisible.value = false; // Hide the calendar after date selection
+  console.log("selectedDate is:", selectedDate.value);
+  const [month, year] = currentMonthYear.split(" ");
 
-      // Create a new Date object with the selected day, month, and year
-      const selectedDateObject = new Date(`${year}-${month}-${day}`);
+  // Create a new Date object with the selected day, month, and year
+  const selectedDateObject = new Date(`${year},${month},${day}`);
+  console.log("selectedDateObject : " , selectedDateObject);
 
-      // Get the formatted date in YYYY-MM-DD format
-      const formattedDate = selectedDateObject.toISOString().slice(0, 10);
+  // Function to format the date to YYYY-MM-DD
+  function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Adding 1 to month as it's zero-based
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
 
-      // Update selectedDate with the formatted date
-      selectedDateToSend.value = formattedDate;
+  // Get the formatted date in YYYY-MM-DD format
+  const formattedDate = formatDate(selectedDateObject);
+  console.log("formattedDate : " , formattedDate);
+  
+  // Update selectedDate with the formatted date
+  selectedDateToSend.value = formattedDate;
 
-      // Hide the calendar after date selection
-      isCalendarVisible.value = false;
-      // selectedDate.value = formattedDate;
-
-      console.log("selectedDateToSend is:", selectedDateToSend.value);
+  // Hide the calendar after date selection
+  isCalendarVisible.value = false;
+  console.log("selectedDateToSend is:", selectedDateToSend.value);
     }
 
     const generateDaysOfMonth = () => {

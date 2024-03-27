@@ -63,26 +63,23 @@
         <option value="first">First</option>
       </select>
 
-      <!--------- Source  ------>
       <div class="home-container017">
-        <!------------start2-->
+        <!--------- Source  ------>
         <div style="margin-right: 15px" class="dropdown">
           <input
             class="home-textinput input"
             type="text"
             id="selectedOption"
             name="selectedOption"
-            @input="filterList ; handleCityInput($event)"
+            @input="
+              filterList;
+              handleCityInput($event);
+            "
             @click="toggleListOrgin"
             @blur="toggleListOrgin"
             placeholder="From"
             v-model="city"
           />
-          <!--value=""
-            v-model="city" -->
-          <!-- <div id="selectedAirport" v-show="showSelectedAirport">
-            Selected Airport: {{ selectedOriginAirport }}
-          </div> -->
           <ul
             id="myUL"
             v-show="listVisible"
@@ -90,68 +87,32 @@
             class="dropdown-content"
           >
             <div id="title">Search by city or airport</div>
-            <!-- <li id="li" @click="selectOriginAirport(255)">Option 1</li> -->
             <li
               id="li"
               v-for="airport in airports"
               :key="airport.id"
               :value="airport.id"
-              @click="selectOriginAirport(airport)"
             >
               <span>{{ airport.title }}</span>
             </li>
-            <!-- <li v-for="(name, index) in filteredNames" :key="index" >
-              <span>{{ name }}</span>
-            </li> -->
           </ul>
         </div>
-        <!-----end---->
-
-        <!-- <div class="home-container018" style="margin-right: 15px">
-          <input
-            class="home-textinput input"
-            type="text"
-            v-model="city"
-            @keydown="handleCityInput($event)"
-            placeholder="From"
-          />
-          <select
-            v-if="showAirports"
-            class="home-textinput input"
-            v-model="selectedOriginAirport"
-          >
-            <option disabled value="">Select an airport</option>
-            <option
-              v-for="airport in airports"
-              :value="airport.id"
-              :key="airport.id"
-            >
-              {{ airport.title }}
-            </option>
-          </select>
-        </div> -->
-
         <!------------------ destination ----->
-
-        <!------------ start dest 1-->
-
         <div class="dropdown">
           <input
             class="home-textinput input"
             type="text"
             id="selectedOptionDest"
             name="selectedOptionDest"
-            @input="filterList ; handleDestCityInput($event)"
+            @input="
+              filterList;
+              handleDestCityInput($event);
+            "
             @click="toggleListDest"
             @blur="toggleListDest"
-            placeholder="placeholderTextDest"
+            :placeholder="placeholderTextDest"
             v-model="destCity"
           />
-          <!--value=""
-            v-model="city" -->
-          <!-- <div id="selectedAirport" v-show="showSelectedAirport">
-            Selected Airport: {{ selectedOriginAirport }}
-          </div> -->
           <ul
             id="myUL"
             v-show="listVisibleDest"
@@ -159,94 +120,20 @@
             class="dropdown-content"
           >
             <div id="title">Search by city or airport</div>
-            <!-- <li id="li" @click="selectOriginAirport(255)">Option 1</li> -->
             <li
               id="liDest"
               v-for="airport in destAirports"
               :key="airport.id"
               :value="airport.id"
-              @click="selectDestAirport(airport)"
             >
               <span>{{ airport.title }}</span>
             </li>
-            <!-- <li v-for="(name, index) in filteredNames" :key="index" >
-              <a href="#">{{ name }}</a>
-            </li> -->
           </ul>
         </div>
-        <!----------- end dest-->
-        <!-- <input
-            class="home-textinput input"
-            type="text"
-            v-model="destCity"
-            @keydown="handleDestCityInput($event)"
-            placeholder="To"
-          />
-          <select
-            v-if="showDestAirports"
-            class="home-textinput input"
-            v-model="selectedDestAirport"
-          >
-            <option disabled value="">Select an airport</option>
-            <option
-              v-for="airport in destAirports"
-              :value="airport.id"
-              :key="airport.id"
-            >
-              {{ airport.title }}
-            </option>
-          </select> -->
-
         <!------------------ Date ------>
-        <homeDateForm  @sendEmitCurrentMonthYear = "CurrentMonthYearFunction"/>
+        <homeDateForm @sendEmitCurrentMonthYear="CurrentMonthYearFunction" />
         <!------------- Travellers ------->
-        <!-- <div class="home-container025">
-          <input
-            type="text"
-            placeholder="Travelers "
-            class="home-textinput3 input"
-            v-model="travellers"
-          />
-          <div>
-            <input
-              type="text"
-              placeholder="Travelers"
-              style="height: 50px"
-              v-model="selectedOption"
-              class="home-textinput3 input"
-              @click="showOptions = true"
-            />
-
-            <div v-if="showOptions" class="options-box">
-              <div class="options-box-item">
-                <div>Adult</div>
-                <button @click="incrementAdult">+</button>
-                <span>{{ countAdult }}</span>
-                <button @click="decrementAdult">-</button>
-              </div>
-
-              <div class="options-box-item">
-                <div>Children</div>
-                <button @click="incrementChildren">+</button>
-                <span>{{ countChildren }}</span>
-                <button @click="decrementChildren">-</button>
-              </div>
-
-              <div class="options-box-item">
-                <div>Infants</div>
-                <button @click="incrementInfant">+</button>
-                <span>{{ countInfant }}</span>
-                <button @click="decrementInfant">-</button>
-              </div>
-              <button
-                @click="done"
-                style="background-color: #003eb3; width: 90%; color: white"
-              >
-                Done
-              </button>
-            </div>
-          </div>
-        </div> -->
+        <!-- <FlySearchTravellers /> -->
       </div>
 
       <div class="home-container027">
@@ -258,33 +145,15 @@
   </div>
 </template>
 <script>
-import { ref, watch, onMounted , computed } from "vue";
+import { ref, watch, onMounted, computed } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 
 export default {
   setup() {
     const router = useRouter();
-
-    const {
-      countAdult,
-      incrementAdult,
-      decrementAdult,
-      countChildren,
-      incrementChildren,
-      decrementChildren,
-      countInfant,
-      incrementInfant,
-      decrementInfant,
-    } = useCounter();
-
     const selectedOption = ref("");
     const selectedOptionDest = ref("");
-    const showOptions = ref(false);
-    const done = () => {
-      showOptions.value = false;
-    };
-
     const params = reactive({
       origin: "",
       destination: "",
@@ -295,15 +164,15 @@ export default {
       children: 0,
       infants: 0,
     });
-
+    //---------------------------------
     const city = ref("");
     const selectedOriginAirport = ref("");
     const airports = ref([]);
     const showAirports = ref(false);
-    const showFlights = ref(false);
+    // const showFlights = ref(false);
     const airport = city.value.trim();
-    const showSelectedAirport = ref(false); //-------
-    //------start2-----
+    const showSelectedAirport = ref(false);
+
     const filter = ref("");
     const names = ref([
       "Al Najaf Intl (NJF): Iraq, Al Najaf",
@@ -312,8 +181,6 @@ export default {
       "All airports in Tehran:Iran",
       "Damascus (DAM): Syrian Arab Republic, Damas",
     ]);
-
-    //-------end -----
 
     const handleCityInput = async (event) => {
       if (city.value.trim().length >= 2) {
@@ -334,17 +201,12 @@ export default {
       }
     };
 
-    watch(selectedOriginAirport, () => {
-      if (selectedOriginAirport.value !== "") {
-        showFlights.value = true;
-      }
-    });
-
     //------------------ destination--------------------
     const destCity = ref("");
     const selectedDestAirport = ref("");
     const destAirports = ref([]);
     const showDestAirports = ref(false);
+    // const showDestFlights = ref(false);
     const destAirport = destCity.value.trim();
     const popularFlights = ref([]);
 
@@ -361,36 +223,37 @@ export default {
           console.error("Error fetching airports:", error);
         }
       } else {
-        showDestAirports = false;
+        showDestAirports.value = false;
         destAirports = ref([]);
         console.log("error");
       }
     };
 
-    watch(selectedOriginAirport, () => {
-      if (selectedOriginAirport.value !== "") {
-        showFlights.value = true;
-      }
-    });
+    // //---- Set placeholder text----
 
-
-     //---- set placeholder text----
-    //  const placeholderTextDest = computed(() => {
-    //   return destCity ? destCity : 'To';
-    // });
+    //   const liDest = document.getElementById("liDest");
+    // if (liDest && liDest.value !== "") {
+    //   destCity.value = liDest.value;
+    // }
 
     const placeholderTextDest = computed(() => {
-      if (destCity.value.trim() === '' || !destCity.value) {
-        return 'TO';
-      } else {
-        return destCity.value;
-      }
+      // if(showDestAirports.value){
+      //   destCity.value = document.getElementById("liDest").value;
+      // }
+      return destCity.value ? destCity.value : "To";
     });
-    console.log("destCity is:" , destCity);
-    //--------------------
-    const searchFlights = async () => {
 
-      //----- ofetch
+    // const placeholderTextDest = computed(() => {
+    //   if (destCity.value.trim() === '' || !destCity.value) {
+    //     return 'TO';
+    //   } else {
+    //     return destCity.value;
+    //   }
+    // });
+    //----------- end Set placeholder text---------
+
+    //--- search flights by fiels input -----
+    const searchFlights = async () => {
       try {
         const response = await $fetch(
           "https://marketplace.beta.luxota.network/v1/search/flight",
@@ -413,7 +276,6 @@ export default {
             },
           }
         );
-
         // console.log("response is:" , response);
         const sessionId = response.sessionId;
         const status = response.status;
@@ -425,8 +287,6 @@ export default {
         console.error("Error searching flights:", error);
       }
     };
-
-    //----------------------start2 -----
 
     const filterList = () => {
       const filterValue = filter.value.toUpperCase();
@@ -440,29 +300,6 @@ export default {
       }
     };
 
-    const selectOriginAirport = (airport) => {
-      // Update selectedOriginAirport when an airport is selected
-      selectedOriginAirport.value = airport.id;
-      showSelectedAirport = true;
-
-      //------start3
-      document.getElementById("selectedOption").value = airport.id;
-      document.querySelector(".dropdown > span").innerText = airport.id;
-      listVisible.value = false;
-    };
-
-    //------
-    const selectDestAirport = (airport) => {
-      // Update selectedOriginAirport when an airport is selected
-      selectedDestAirport.value = airport.id;
-      showDestAirports = true;
-
-      //------start3
-      document.getElementById("selectedOptionDest").value = airport.id;
-      document.querySelector(".dropdown > span").innerText = airport.id;
-      listVisible.value = false;
-    };
-
     const filteredNames = ref([]);
     const updateFilteredNames = () => {
       filteredNames.value = names.value.filter((name) => name !== "");
@@ -470,7 +307,6 @@ export default {
 
     updateFilteredNames();
 
-    //----
     const listVisible = ref(false);
     const listVisibleDest = ref(false);
 
@@ -480,34 +316,18 @@ export default {
     const toggleListDest = () => {
       listVisibleDest.value = !listVisibleDest.value;
     };
-    //----------------------------------end ----
 
-    //-----------------------send data from dataForm to this page
-// const currentMonthYearEmit = ref('');
-const selectedDate = ref('');
-const CurrentMonthYearFunction= (MonthYear) => {
-  selectedDate.value = MonthYear;
-  console.log("currentMonthYearEmit in parent is: " , selectedDate.value);
-}
+    //-----------------------send data from dateForm to this page
+    const selectedDate = ref("");
+    const CurrentMonthYearFunction = (MonthYear) => {
+      selectedDate.value = MonthYear;
+      console.log("currentMonthYearEmit in parent is: ", selectedDate.value);
+    };
 
-
-//----------------------
     return {
       params,
       selectedOption,
       selectedOptionDest,
-      selectDestAirport,
-      showOptions,
-      countAdult,
-      incrementAdult,
-      decrementAdult,
-      done,
-      countInfant,
-      incrementInfant,
-      decrementInfant,
-      countChildren,
-      incrementChildren,
-      decrementChildren,
       city,
       selectedOriginAirport,
       airports,
@@ -520,12 +340,12 @@ const CurrentMonthYearFunction= (MonthYear) => {
       handleDestCityInput,
       popularFlights,
       searchFlights,
-      filter, //-----start2
+      filter,
       filteredNames,
       filterList,
       listVisible,
       listVisibleDest,
-      selectOriginAirport,
+      // selectOriginAirport,
       showSelectedAirport,
       toggleListOrgin,
       toggleListDest,
@@ -533,7 +353,6 @@ const CurrentMonthYearFunction= (MonthYear) => {
       // currentMonthYearEmit, // for emit
       selectedDate,
       placeholderTextDest, // placeholder for destination input
-
     };
   },
 };
@@ -598,7 +417,7 @@ const CurrentMonthYearFunction= (MonthYear) => {
 
 #myUL li span:hover:not(.header) {
   background-color: #eee;
-  cursor: pointer
+  cursor: pointer;
 }
 
 /*------start3--------*/
@@ -620,9 +439,9 @@ const CurrentMonthYearFunction= (MonthYear) => {
 .dropdown:hover .dropdown-content {
   display: block;
 }
-.home-container004{
-  position:absolute;
-  top:3rem
+.home-container004 {
+  position: absolute;
+  /* top: 9rem; */
+  z-index: 100;
 }
-
 </style>
