@@ -56,6 +56,7 @@ export default {
     const currentDate = new Date();
     let currentYear = currentDate.getFullYear();
     let currentMonth = currentDate.getMonth();
+    let currentDay = currentDate.getDay();
     const daysOfWeek = ["S", "M", "T", "W", "T", "F", "S"];
     const monthNames = [
       "January",
@@ -157,7 +158,6 @@ export default {
     const currentMonthYear = ref(`${monthNames[currentMonth]} ${currentYear}`);
     const currentMonthYearEmit = `${monthNames[currentMonth]} ${currentYear}`;
 
-    console.log("currentMonthYearEmit in dateForm", currentMonthYearEmit);
     emit("sendEmitCurrentMonthYear", selectedDateToSend);
 
     const nextMonth = () => {
@@ -188,14 +188,19 @@ export default {
 
     // Function to handle date selection from the calendar
     function selectDate(day, currentMonthYear) {
-      selectedDate.value = `${day} ${currentMonthYear}`;
-      isCalendarVisible.value = false; // Hide the calendar after date selection
-      console.log("selectedDate is:", selectedDate.value);
       const [month, year] = currentMonthYear.split(" ");
-
+      
       // Create a new Date object with the selected day, month, and year
       const selectedDateObject = new Date(`${year},${month},${day}`);
-      console.log("selectedDateObject : ", selectedDateObject);
+
+  // Check if the selected date is before the current date
+  if (selectedDateObject < currentDate) {
+    // Do not allow selection of dates before the current date
+    return;
+  }
+
+  selectedDate.value = `${day} ${currentMonthYear}`;
+  isCalendarVisible.value = false; // Hide the calendar after date selection
 
       // Function to format the date to YYYY-MM-DD
       function formatDate(date) {
@@ -207,14 +212,12 @@ export default {
 
       // Get the formatted date in YYYY-MM-DD format
       const formattedDate = formatDate(selectedDateObject);
-      console.log("formattedDate : ", formattedDate);
 
       // Update selectedDate with the formatted date
       selectedDateToSend.value = formattedDate;
 
       // Hide the calendar after date selection
       isCalendarVisible.value = false;
-      console.log("selectedDateToSend is:", selectedDateToSend.value);
     }
 
     const generateDaysOfMonth = () => {
@@ -287,8 +290,6 @@ export default {
 ul {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-
-  /*----Remove default bullet points---*/
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -296,7 +297,6 @@ ul {
 th,
 td {
   padding: 5px;
-  /* border: 1px solid black; */
 }
 .hoverable {
   padding: 5px;
@@ -306,18 +306,18 @@ td {
 }
 .nav-container {
   display: flex;
-  justify-content: space-between; /* Buttons at flex-start and flex-end */
-  align-items: center; /* Centering items vertically */
-  flex-wrap: wrap; /* Allow items to wrap */
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .navigation {
-  order: 1; /* Order the navigation section before the current month */
+  order: 1;
 }
 
 .current-month {
-  text-align: center; /* Center-align the current month */
-  width: 100%; /* Ensure full width */
-  order: 2; /* Order the current month section after the navigation */
+  text-align: center;
+  width: 100%;
+  order: 2;
 }
 </style>
