@@ -104,3 +104,9 @@ export default {
   },
 }
 </script>
+<style scoped>
+.home-container025 {
+  color: rgb(18, 18, 20);
+  display: flex-end;
+}
+</style>

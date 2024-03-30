@@ -1,6 +1,6 @@
 <template>
   <div class="home-container024">
-    <div class="calendar">
+    <div class="calendar">   
       <input
         class="home-textinput3 input"
         type="text"
@@ -8,6 +8,18 @@
         @click="toggleCalendar"
         readonly
         :placeholder="placeholderText"
+        required 
+       
+      />
+      <input
+        class="home-textinput3 input"
+        type="text"
+        v-model="selectedDate"
+        @click="toggleCalendar"
+        readonly
+        :placeholder="placeholderTextReturn"
+        required 
+        v-if="tripTypeValue == 'roundWay'"
       />
       <div v-if="isCalendarVisible">
         <!-- <div v-for="day in daysOfMonth" :key="day" @click="selectDate(day)">{{ day }}</div> -->
@@ -45,14 +57,22 @@
           </table>
         </div>
       </div>
+
+      <h2>{{ tripTypeValue }}</h2>
     </div>
+    
   </div>
 </template>
 <script>
 import { ref, computed } from "vue";
 
 export default {
+  props: ['tripType'],
+  // props:{
+  //   tripType: String, // Define tripType prop to receive the value from the parent component
+  // },
   setup(props, { emit }) {
+    // const tripType = props.tripType;
     const currentDate = new Date();
     let currentYear = currentDate.getFullYear();
     let currentMonth = currentDate.getMonth();
@@ -81,7 +101,11 @@ export default {
     const calendarYear = ref(new Date().getFullYear()); // Current year of the calendar
 
     const placeholderText = computed(() => {
-      return selectedDate.value ? selectedDate.value : "Date";
+      return selectedDate.value ? selectedDate.value : "Deprature";
+    });
+
+    const placeholderTextReturn = computed(() => {
+      return selectedDate.value ? selectedDate.value : "Return";
     });
 
     const getNextMonth = (year, month) => {
@@ -240,6 +264,11 @@ export default {
       event.target.style.backgroundColor = "";
     }
 
+    const tripTypeValue = computed(() => {
+      // You can return any value here, but for a computed property, it's common to return a derived value based on props or other reactive variables
+      return props.tripType;
+    });
+
     return {
       daysOfWeek,
       calendar,
@@ -259,8 +288,11 @@ export default {
       hoverBackground,
       resetBackground,
       placeholderText,
+      placeholderTextReturn,
       currentMonthYearEmit, // for emit
       selectedDateToSend, //for emit
+      // tripType: props.tripType,
+      tripTypeValue
     };
   },
 };
@@ -275,6 +307,7 @@ export default {
   position: absolute;
   padding: 0;
   margin: 0;
+ 
 }
 .home-textinput3 input {
   position: absolute;

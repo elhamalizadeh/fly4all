@@ -29,6 +29,7 @@
             class="home-radiobutton"
             v-model="params.tripType"
             value="oneway"
+            @change="handleTripTypeChange"
           />
           <span class="home-text004">One-Way</span>
         </div>
@@ -39,6 +40,7 @@
             class="home-radiobutton1"
             v-model="params.tripType"
             value="roundWay"
+            @change="handleTripTypeChange"
           />
           <span class="home-text005">Round-Trip</span>
         </div>
@@ -49,6 +51,7 @@
             class="home-radiobutton1"
             v-model="params.tripType"
             value="multi"
+            @change="handleTripTypeChange"
           />
           <span class="home-text005">Multi-destination</span>
         </div>
@@ -79,6 +82,7 @@
             @blur="toggleListOrgin"
             placeholder="From"
             v-model="city"
+            required
           />
           <ul
             id="myUL"
@@ -111,12 +115,14 @@
             @click="toggleListDest"
             @blur="toggleListDest"
             v-model="destCity"
+            required
           />
           <!-- :placeholder="placeholderTextDest" -->
-          <input type="hidden" 
-          class="home-textinput input"
-          id="selectedAirportId" 
-          v-model="hiddenInputValue"
+          <input
+            type="hidden"
+            class="home-textinput input"
+            id="selectedAirportId"
+            v-model="hiddenInputValue"
           />
           <ul
             id="myUL"
@@ -130,16 +136,16 @@
               v-for="airport in destAirports"
               :key="airport.id"
               :value="airport.id"
-              @click="selectAirport(airport)"
             >
+              <!-- id="liDest{{ airport.id }}" -->
               <span>{{ airport.title }}</span>
             </li>
           </ul>
         </div>
         <!------------------ Date ------>
-        <homeDateForm @sendEmitCurrentMonthYear="CurrentMonthYearFunction" />
+        <homeDateForm @sendEmitCurrentMonthYear="CurrentMonthYearFunction" :tripType="params.tripType"/>
         <!------------- Travellers ------->
-        <!-- <FlySearchTravellers /> -->
+        <FlySearchTravellers />
       </div>
 
       <div class="home-container027">
@@ -154,14 +160,17 @@
 import { ref, watch, onMounted, computed } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
+import Swal from "sweetalert2";
 
 export default {
   setup() {
     const router = useRouter();
+    const selectedTripType = ref("oneway"); // Default trip type is "One-Way"
     const selectedOption = ref("");
+    const tripType = ref("");
     const selectedOptionDest = ref("");
     const hiddenInputValue = ref("");
-    const selectedDestAirportId = ref(""); 
+    const selectedDestAirportId = ref("");
     const params = reactive({
       origin: "",
       destination: "",
@@ -244,15 +253,16 @@ export default {
     //   destCity.value = liDest.value;
     // }
 
-    const placeholderTextDest = computed(() => {
-      // if(showDestAirports.value){
-      //   destCity.value = document.getElementById("liDest").value;
-      // }
-      return destCity.value ? destCity.value : "To";
-    });
+    // const placeholderTextDest = computed(() => {
+    //   // if(showDestAirports.value){
+    //   // destCity.value = document.getElementById("liDest").value;
+    //   // }
+    //   return destCity.value ? destCity.value : "To";
+    // });
 
     // const placeholderTextDest = computed(() => {
     //   if (destCity.value.trim() === '' || !destCity.value) {
+    //     hiddenInputValue.value = airport.id;
     //     return 'TO';
     //   } else {
     //     return destCity.value;
@@ -262,6 +272,21 @@ export default {
 
     //--- search flights by input fields -----
     const searchFlights = async () => {
+      // Check if the required fields are filled
+      if (!city.value) {
+        Swal.fire({
+          icon: "error",
+          text: "city is required fields.",
+        });
+        return;
+      } else if (!destCity.value) {
+        Swal.fire({
+          icon: "error",
+          text: "DestCity is required fields.",
+        });
+        return;
+      }
+
       try {
         const response = await $fetch(
           "https://marketplace.beta.luxota.network/v1/search/flight",
@@ -296,14 +321,13 @@ export default {
       }
     };
 
-
     const selectAirport = (airport) => {
-      selectedDestAirportId.value = airport.id; // Update the selected airport id
-      destCity.value = airport.title; // Update the input field with the selected airport title
+      selectedDestAirportId.value = airport.id;
+      destCity.value = airport.title;
       showDestAirports.value = false; // Hide the dropdown
+      // hiddenInputValue.value = document.getElementById("liDest" + airport.id).value.trim();
       hiddenInputValue.value = airport.id;
-      console.log("hiddenInputValue : ");
-      // return destCity.value;
+      console.log("hiddenInputValue : ", hiddenInputValue);
     };
     const filterList = () => {
       const filterValue = filter.value.toUpperCase();
@@ -341,14 +365,22 @@ export default {
       console.log("currentMonthYearEmit in parent is: ", selectedDate.value);
     };
 
-      //Watcher to update hidden input value when destCity changes
+    //Watcher to update hidden input value when destCity changes
     //   watch(hiddenInputValue, (newValue) => {
     //   hiddenInputValue.value = newValue;
     // });
 
-//     watch(() => airport.value.title, (newTitle) => {
-//   hiddenInputValue.value = newTitle;
-// });
+    //     watch(() => airport.value.title, (newTitle) => {
+    //   hiddenInputValue.value = newTitle;
+    // });
+
+    const handleTripTypeChange = () => {
+  // Emit the selected trip type
+  // emit('selectedTripType', params.tripType);
+  console.log("tripType is" , params.tripType);
+  tripType.value= params.tripType
+};
+
     return {
       params,
       selectedOption,
@@ -377,12 +409,15 @@ export default {
       CurrentMonthYearFunction, // for emit
       // currentMonthYearEmit, // for emit
       selectedDate,
-      placeholderTextDest, // placeholder for destination input
+      // placeholderTextDest, // placeholder for destination input
       handleDestCityInput,
       selectAirport,
       selectedDestAirportId,
-      hiddenInputValue
-    };
+      hiddenInputValue,
+      selectedTripType,
+      handleTripTypeChange,
+      tripType: params.tripType
+            };
   },
 };
 </script>
@@ -468,7 +503,9 @@ export default {
 .dropdown:hover .dropdown-content {
   display: block;
 }
-.home-container004 {
-  /* position: absolute; */
+/*------flex--------*/
+.home-container017{
+display: grid;
+grid-template-columns: 1fr 1fr 3fr 1fr;
 }
 </style>
