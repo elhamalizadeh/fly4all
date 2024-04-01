@@ -109,4 +109,32 @@ export default {
   color: rgb(18, 18, 20);
   display: flex-end;
 }
+
+.options-box {
+  border: 1px solid gray;
+  padding: 10px;
+  margin-top: 5px;
+  background-color: white;
+  z-index: 1000;
+  position: absolute; /* ---- */
+}
+.options-box-item {
+  display: flex;
+  flex-wrap: wrap;
+  /* gap:3rem; */
+  justify-content: space-between;
+}
+.options-box > div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  position: relative;
+  top:0;
+}
+.sub-title {
+  display: block;
+}
+.options-box button {
+  margin: 0 5px;
+}
 </style>

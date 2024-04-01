@@ -74,28 +74,24 @@
             type="text"
             id="selectedOption"
             name="selectedOption"
-            @input="
-              filterList;
-              handleCityInput($event);
-            "
-            @click="toggleListOrgin"
-            @blur="toggleListOrgin"
+            @input="handleCityInput();"
             placeholder="From"
             v-model="city"
             required
           />
           <ul
             id="myUL"
-            v-show="listVisible"
-            v-if="showAirports"
+            v-if="listVisible"
             class="dropdown-content"
           >
             <div id="title">Search by city or airport</div>
             <li
               id="li"
-              v-for="airport in airports"
-              :key="airport.id"
+              v-for="(airport,i) in airports"
+              :key="i"
               :value="airport.id"
+              @click="selectOriginAirport(airport.id,airport.title)"
+              style="cursor:pointer"
             >
               <span>{{ airport.title }}</span>
             </li>
@@ -108,16 +104,11 @@
             type="text"
             id="selectedOptionDest"
             name="selectedOptionDest"
-            @input="
-              filterList;
-              handleDestCityInput($event);
-            "
-            @click="toggleListDest"
-            @blur="toggleListDest"
+            @input="handleDestCityInput();"
+            placeholder="To"
             v-model="destCity"
             required
           />
-          <!-- :placeholder="placeholderTextDest" -->
           <input
             type="hidden"
             class="home-textinput input"
@@ -126,18 +117,17 @@
           />
           <ul
             id="myUL"
-            v-show="listVisibleDest"
-            v-if="showDestAirports"
+            v-if="listVisibleDest"
             class="dropdown-content"
           >
             <div id="title">Search by city or airport</div>
             <li
               id="liDest"
-              v-for="airport in destAirports"
-              :key="airport.id"
+              v-for="(airport,i) in destAirports"
+              :key="i"
               :value="airport.id"
+              @click="selectDestAirport(airport.id,airport.title)"
             >
-              <!-- id="liDest{{ airport.id }}" -->
               <span>{{ airport.title }}</span>
             </li>
           </ul>
@@ -156,14 +146,12 @@
     </div>
   </div>
 </template>
-<script>
+<script setup>
 import { ref, watch, onMounted, computed } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 
-export default {
-  setup() {
     const router = useRouter();
     const selectedTripType = ref("oneway"); // Default trip type is "One-Way"
     const selectedOption = ref("");
@@ -186,7 +174,6 @@ export default {
     const selectedOriginAirport = ref("");
     const airports = ref([]);
     const showAirports = ref(false);
-    // const showFlights = ref(false);
     const airport = city.value.trim();
     const showSelectedAirport = ref(false);
 
@@ -199,18 +186,18 @@ export default {
       "Damascus (DAM): Syrian Arab Republic, Damas",
     ]);
 
-    const handleCityInput = async (event) => {
+    const handleCityInput = async () => {
       if (city.value.trim().length >= 2) {
         const airport = city.value.trim();
-        try {
-          const response = await axios.get(
+        axios.get(
             `https://marketplace.beta.luxota.network/v1/search/airports?q=${airport}&lang=en`
-          );
-          airports.value = response.data.data;
-          showAirports.value = true;
-        } catch (error) {
-          console.error("Error fetching airports:", error);
-        }
+          ).then(res=>{
+            airports.value = res.data.data;
+            listVisible.value = true;
+          })
+          .catch(error => {
+            console.log("error")
+          })
       } else {
         showAirports = false;
         airports = ref([]);
@@ -223,53 +210,25 @@ export default {
     const selectedDestAirport = ref("");
     const destAirports = ref([]);
     const showDestAirports = ref(false);
-    // const showDestFlights = ref(false);
-    const destAirport = destCity.value.trim();
-    const popularFlights = ref([]);
 
-    const handleDestCityInput = async (event) => {
+    const handleDestCityInput = async () => {
       if (destCity.value.trim().length >= 2) {
         const destAirport = destCity.value.trim();
-        try {
-          const response = await axios.get(
+        axios.get(
             `https://marketplace.beta.luxota.network/v1/search/airports?q=${destAirport}&lang=en`
-          );
-          destAirports.value = response.data.data;
-          showDestAirports.value = true;
-        } catch (error) {
-          console.error("Error fetching airports:", error);
-        }
+          ).then(res=>{
+            destAirports.value = res.data.data;
+            listVisibleDest.value = true;
+          })
+          .catch(error => {
+            console.log("error")
+          })
       } else {
-        showDestAirports.value = false;
+        showDestAirports = false;
         destAirports = ref([]);
-        console.log("error");
+        console.log("error dare line 40");
       }
     };
-
-    // //---- Set placeholder text----
-
-    //   const liDest = document.getElementById("liDest");
-    // if (liDest && liDest.value !== "") {
-    //   destCity.value = liDest.value;
-    // }
-
-    // const placeholderTextDest = computed(() => {
-    //   // if(showDestAirports.value){
-    //   // destCity.value = document.getElementById("liDest").value;
-    //   // }
-    //   return destCity.value ? destCity.value : "To";
-    // });
-
-    // const placeholderTextDest = computed(() => {
-    //   if (destCity.value.trim() === '' || !destCity.value) {
-    //     hiddenInputValue.value = airport.id;
-    //     return 'TO';
-    //   } else {
-    //     return destCity.value;
-    //   }
-    // });
-    //----------- end Set placeholder text---------
-
     //--- search flights by input fields -----
     const searchFlights = async () => {
       // Check if the required fields are filled
@@ -309,7 +268,6 @@ export default {
             },
           }
         );
-        // console.log("response is:" , response);
         const sessionId = response.sessionId;
         const status = response.status;
         await router.push({
@@ -321,26 +279,14 @@ export default {
       }
     };
 
-    const selectAirport = (airport) => {
-      selectedDestAirportId.value = airport.id;
-      destCity.value = airport.title;
-      showDestAirports.value = false; // Hide the dropdown
-      // hiddenInputValue.value = document.getElementById("liDest" + airport.id).value.trim();
-      hiddenInputValue.value = airport.id;
-      console.log("hiddenInputValue : ", hiddenInputValue);
-    };
-    const filterList = () => {
-      const filterValue = filter.value.toUpperCase();
-      for (let i = 0; i < names.value.length; i++) {
-        const a = names.value[i];
-        if (a.toUpperCase().indexOf(filterValue) > -1) {
-          names.value[i] = a;
-        } else {
-          names.value[i] = "";
-        }
-      }
-    };
-
+    const selectOriginAirport = (id,title) =>{
+      city.value = title;
+      city.id = id;
+    }
+    const selectDestAirport = (id,title) =>{
+      destCity.value = title;
+      destCity.id = id;
+    }
     const filteredNames = ref([]);
     const updateFilteredNames = () => {
       filteredNames.value = names.value.filter((name) => name !== "");
@@ -351,107 +297,22 @@ export default {
     const listVisible = ref(false);
     const listVisibleDest = ref(false);
 
-    const toggleListOrgin = () => {
-      listVisible.value = !listVisible.value;
-    };
-    const toggleListDest = () => {
-      listVisibleDest.value = !listVisibleDest.value;
-    };
-
     //-----------------------send data from dateForm to this page
     const selectedDate = ref("");
     const CurrentMonthYearFunction = (MonthYear) => {
       selectedDate.value = MonthYear;
-      console.log("currentMonthYearEmit in parent is: ", selectedDate.value);
+      // console.log("currentMonthYearEmit in parent is: ", selectedDate.value);
     };
-
-    //Watcher to update hidden input value when destCity changes
-    //   watch(hiddenInputValue, (newValue) => {
-    //   hiddenInputValue.value = newValue;
-    // });
-
-    //     watch(() => airport.value.title, (newTitle) => {
-    //   hiddenInputValue.value = newTitle;
-    // });
 
     const handleTripTypeChange = () => {
   // Emit the selected trip type
-  // emit('selectedTripType', params.tripType);
-  console.log("tripType is" , params.tripType);
+  // console.log("tripType is" , params.tripType);
   tripType.value= params.tripType
 };
 
-    return {
-      params,
-      selectedOption,
-      selectedOptionDest,
-      city,
-      selectedOriginAirport,
-      airports,
-      showAirports,
-      handleCityInput,
-      destCity,
-      selectedDestAirport,
-      destAirports,
-      showDestAirports,
-      handleDestCityInput,
-      popularFlights,
-      searchFlights,
-      filter,
-      filteredNames,
-      filterList,
-      listVisible,
-      listVisibleDest,
-      // selectOriginAirport,
-      showSelectedAirport,
-      toggleListOrgin,
-      toggleListDest,
-      CurrentMonthYearFunction, // for emit
-      // currentMonthYearEmit, // for emit
-      selectedDate,
-      // placeholderTextDest, // placeholder for destination input
-      handleDestCityInput,
-      selectAirport,
-      selectedDestAirportId,
-      hiddenInputValue,
-      selectedTripType,
-      handleTripTypeChange,
-      tripType: params.tripType
-            };
-  },
-};
 </script>
 
 <style scoped>
-.options-box {
-  border: 1px solid gray;
-  padding: 10px;
-  margin-top: 5px;
-  background-color: white;
-  z-index: 1000;
-  position: absolute; /* ---- */
-}
-.options-box-item {
-  display: flex;
-  flex-wrap: wrap;
-  /* gap:3rem; */
-  justify-content: space-between;
-}
-.options-box > div {
-  display: flex;
-  align-items: center;
-  margin-bottom: 5px;
-  position: absolute; /*-----*/
-}
-.sub-title {
-  display: block;
-}
-.options-box button {
-  margin: 0 5px;
-}
-
-/*-----------------start2---------------*/
-
 #myUL {
   /* Remove default list styling */
   position: absolute;

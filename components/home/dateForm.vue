@@ -58,7 +58,7 @@
         </div>
       </div>
 
-      <h2>{{ tripTypeValue }}</h2>
+      <!-- <h2>{{ tripTypeValue }}</h2> -->
     </div>
     
   </div>
