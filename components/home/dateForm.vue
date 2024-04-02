@@ -103,9 +103,6 @@ import { ref, computed } from "vue";
 
 export default {
   props: ["tripType"],
-  // props:{
-  //   tripType: String, // Define tripType prop to receive the value from the parent component
-  // },
   setup(props, { emit }) {
     // const tripType = props.tripType;
     const currentDate = new Date();

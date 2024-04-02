@@ -66,18 +66,46 @@
         <option value="first">First</option>
       </select>
 
-      <div class="home-container017">
+      <!-- <div class="home-container017"> -->
         <!-- InputCityFialds -->
-       <homeInputCityFialds @citySelected="handleCitySelected" @destCitySelected="handleDestCitySelected" />
-        <!-- Date -->
+        <button class="home-button02 button" id="addBtn" v-if="tripType == 'multi'" @click="addInputFunction">Add trip</button>
+        <!-------->
+        <div class="home-container017">
+        <homeInputCityFialds @citySelected="handleCitySelected" @destCitySelected="handleDestCitySelected" />
         <homeDateForm 
         @sendEmitCurrentMonthYear="CurrentMonthYearFunction" 
         @sendEmitCurrentMonthYearReturn="CurrentMonthYearFunctionReturn"
         :tripType="params.tripType"/>
+
+        <!-----  v-for  --->
+        <div v-for="(item, index) in trips" :key="index" class="trip-container" >
+       <homeInputCityFialds @citySelected="handleCitySelected" 
+       @destCitySelected="handleDestCitySelected"
+       v-model="item.inputCity" 
+       :tripType="params.tripType"
+       v-if="tripType == 'multi'"/>
+
+
+       <homeDateForm 
+        @sendEmitCurrentMonthYear="CurrentMonthYearFunction" 
+        @sendEmitCurrentMonthYearReturn="CurrentMonthYearFunctionReturn"
+        v-model="item.date"
+        :tripType="params.tripType"
+        v-if="tripType == 'multi'"/>
+
+
+       </div>
+        <!-- Date -->
+        <!-- <homeDateForm 
+        @sendEmitCurrentMonthYear="CurrentMonthYearFunction" 
+        @sendEmitCurrentMonthYearReturn="CurrentMonthYearFunctionReturn"
+        :tripType="params.tripType"/> -->
         <!-- Travellers -->
         <homeTravellers />
-      </div>
 
+      
+      <!-- </div> -->
+    </div>
       <div class="home-container027">
         <button @click="searchFlights" class="home-button02 button">
           Destination Now →
@@ -87,7 +115,7 @@
   </div>
 </template>
 <script setup>
-import { ref } from "vue";
+import { ref , onMounted , watch  } from "vue";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 
@@ -141,7 +169,7 @@ const handleDestCitySelected = (selectDestCity) => {
         });
         return;
       }
-
+console.log("selectedDate.value.value is: " , selectedDate.value);
       try {
         const response = await $fetch(
           "https://marketplace.beta.luxota.network/v1/search/flight",
@@ -186,10 +214,25 @@ const handleDestCitySelected = (selectDestCity) => {
       selectedDateReturn.value = MonthYear;
       
     };
-    console.log("selectedDateReturn is here: ", selectedDateReturn.value);
+    // console.log("selectedDateReturn is here: ", selectedDateReturn.value);
     const handleTripTypeChange = () => {
   tripType.value= params.tripType
 };
+
+
+
+const trips = ref([]);
+
+const addInputFunction = () => {
+  if (tripType.value === "multi") {
+    trips.value.push({
+      inputCity:"",
+      date:""
+    });
+  }
+};
+
+
 </script>
 
 <style scoped>
@@ -197,5 +240,16 @@ const handleDestCitySelected = (selectDestCity) => {
 .home-container017{
 display: grid;
 grid-template-columns: 1fr 1fr 3fr 1fr;
+/* grid-template-columns: 1fr 1fr 3fr 1fr; */
+
+/* ----multy---- */
+grid-template-rows: repeat(2,1fr);
+}
+
+
+
+.input-city-fields {
+  margin-bottom: 10px;
+  /* border: #ddd solid 2px; */
 }
 </style>

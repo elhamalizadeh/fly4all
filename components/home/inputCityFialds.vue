@@ -56,6 +56,8 @@
       </li>
     </ul>
   </div>
+
+  <!-- <homeTravellers /> -->
 </template>
 <script setup>
 import { ref, watch, onMounted, computed,defineEmits    } from "vue";

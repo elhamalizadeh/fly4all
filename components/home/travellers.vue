@@ -1,55 +1,55 @@
 <template>
-           <div class="home-container025">
-          <input
-            type="text"
-            placeholder="Travelers "
-            class="home-textinput3 input"
-            v-model="travellers"
-          />
-          <div>
-            <input
-              type="text"
-              placeholder="Travelers"
-              style="height: 50px"
-              v-model="selectedOption"
-              class="home-textinput3 input"
-              @click="showOptions = true"
-            />
+  <div class="home-container025">
+    <input
+      type="text"
+      placeholder="Travelers "
+      class="home-textinput3 input"
+      v-model="travellers"
+    />
+    <div>
+      <input
+        type="text"
+        placeholder="Travelers"
+        style="height: 50px"
+        v-model="selectedOption"
+        class="home-textinput3 input"
+        @click="showOptions = true"
+      />
 
-            <div v-if="showOptions" class="options-box">
-              <div class="options-box-item">
-                <div>Adult</div>
-                <button @click="incrementAdult">+</button>
-                <span>{{ countAdult }}</span>
-                <button @click="decrementAdult">-</button>
-              </div>
-
-              <div class="options-box-item">
-                <div>Children</div>
-                <button @click="incrementChildren">+</button>
-                <span>{{ countChildren }}</span>
-                <button @click="decrementChildren">-</button>
-              </div>
-
-              <div class="options-box-item">
-                <div>Infants</div>
-                <button @click="incrementInfant">+</button>
-                <span>{{ countInfant }}</span>
-                <button @click="decrementInfant">-</button>
-              </div>
-              <button
-                @click="done"
-                style="background-color: #003eb3; width: 90%; color: white"
-              >
-                Done
-              </button>
-            </div>
-          </div>
+      <div v-if="showOptions" class="options-box">
+        <div class="options-box-item">
+          <div>Adult</div>
+          <button @click="incrementAdult">+</button>
+          <span>{{ countAdult }}</span>
+          <button @click="decrementAdult">-</button>
         </div>
+
+        <div class="options-box-item">
+          <div>Children</div>
+          <button @click="incrementChildren">+</button>
+          <span>{{ countChildren }}</span>
+          <button @click="decrementChildren">-</button>
+        </div>
+
+        <div class="options-box-item">
+          <div>Infants</div>
+          <button @click="incrementInfant">+</button>
+          <span>{{ countInfant }}</span>
+          <button @click="decrementInfant">-</button>
+        </div>
+        <button
+          @click="done"
+          style="background-color: #003eb3; width: 90%; color: white"
+        >
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import { ref, watch, onMounted , computed } from "vue";
+import { ref, watch, onMounted, computed } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 
@@ -85,11 +85,9 @@ export default {
       infants: 0,
     });
 
-
-
-    return{
-        params,
-        showOptions,
+    return {
+      params,
+      showOptions,
       countAdult,
       incrementAdult,
       decrementAdult,
@@ -99,10 +97,10 @@ export default {
       decrementInfant,
       countChildren,
       incrementChildren,
-      decrementChildren,  
-    }
+      decrementChildren,
+    };
   },
-}
+};
 </script>
 <style scoped>
 .home-container025 {
@@ -129,7 +127,7 @@ export default {
   align-items: center;
   margin-bottom: 5px;
   position: relative;
-  top:0;
+  top: 0;
 }
 .sub-title {
   display: block;
