@@ -1,6 +1,7 @@
 <template>
   <div class="home-container024">
-    <div class="calendar">   
+    <div class="calendar" :class="{ 'flex-display': tripTypeValue === 'roundWay' }">
+      <!------------ deprature --------->
       <input
         class="home-textinput3 input"
         type="text"
@@ -8,20 +9,9 @@
         @click="toggleCalendar"
         readonly
         :placeholder="placeholderText"
-        required 
-       
+        required
       />
-      <input
-        class="home-textinput3 input"
-        type="text"
-        v-model="selectedDate"
-        @click="toggleCalendar"
-        readonly
-        :placeholder="placeholderTextReturn"
-        required 
-        v-if="tripTypeValue == 'roundWay'"
-      />
-      <div v-if="isCalendarVisible">
+      <div v-if="isCalendarVisible" class="calendar-box">
         <!-- <div v-for="day in daysOfMonth" :key="day" @click="selectDate(day)">{{ day }}</div> -->
         <div class="calendar-box">
           <div class="nav-container">
@@ -57,17 +47,62 @@
           </table>
         </div>
       </div>
-
+  <!------------ return --------->
+  <input
+        class="home-textinput3 input"
+        type="text"
+        v-model="selectedDateReturn"
+        @click="toggleCalendarReturn"
+        readonly
+        :placeholder="placeholderTextReturn"
+        required
+        v-if="tripTypeValue == 'roundWay'"
+      />
+      <div v-if="isCalendarVisibleReturn" class="calendar-boxReturn">
+        <!-- <div v-for="day in daysOfMonth" :key="day" @click="selectDate(day)">{{ day }}</div> -->
+        <div class="calendar-boxReturn">
+          <div class="nav-container">
+            <button @click="previousMonth">Previous</button>
+            <button @click="nextMonth" :disabled="!canGoNext">Next</button>
+            <div class="current-month">
+              <span>{{ currentMonthYear }}</span>
+            </div>
+          </div>
+          <hr />
+          <table>
+            <thead>
+              <tr>
+                <th v-for="dayOfWeek in daysOfWeek" :key="dayOfWeek">
+                  {{ dayOfWeek }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(week, index) in calendar" :key="index">
+                <td v-for="day in week" :key="day.id">
+                  <span
+                    @click="selectDateReturn(day, currentMonthYear)"
+                    @mouseover="hoverBackground"
+                    @mouseleave="resetBackground"
+                    class="hoverable"
+                  >
+                    {{ day }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
       <!-- <h2>{{ tripTypeValue }}</h2> -->
     </div>
-    
   </div>
 </template>
 <script>
 import { ref, computed } from "vue";
 
 export default {
-  props: ['tripType'],
+  props: ["tripType"],
   // props:{
   //   tripType: String, // Define tripType prop to receive the value from the parent component
   // },
@@ -95,7 +130,11 @@ export default {
 
     const selectedDate = ref(""); // Holds the selected date
     const selectedDateToSend = ref("");
+
+    const selectedDateReturn = ref(""); // Holds the selected date
+    const selectedDateReturnToSend = ref("");
     const isCalendarVisible = ref(false); // Flag to toggle calendar visibility
+    const isCalendarVisibleReturn = ref(false);
     const placeholder = "Select a date"; // Placeholder for the input field
     const calendarMonth = ref(new Date().getMonth()); // Current month of the calendar
     const calendarYear = ref(new Date().getFullYear()); // Current year of the calendar
@@ -105,7 +144,7 @@ export default {
     });
 
     const placeholderTextReturn = computed(() => {
-      return selectedDate.value ? selectedDate.value : "Return";
+      return selectedDateReturn.value ? selectedDateReturn.value : "Return";
     });
 
     const getNextMonth = (year, month) => {
@@ -183,6 +222,7 @@ export default {
     const currentMonthYearEmit = `${monthNames[currentMonth]} ${currentYear}`;
 
     emit("sendEmitCurrentMonthYear", selectedDateToSend);
+    emit("sendEmitCurrentMonthYearReturn", selectedDateReturnToSend);
 
     const nextMonth = () => {
       const { year, month } = getNextMonth(currentYear, currentMonth);
@@ -208,23 +248,31 @@ export default {
 
     const toggleCalendar = () => {
       isCalendarVisible.value = !isCalendarVisible.value;
+      isCalendarVisibleReturn.value = false;
     };
 
+    const toggleCalendarReturn = () => {
+      isCalendarVisibleReturn.value = !isCalendarVisibleReturn.value;
+      isCalendarVisible.value = false;
+    };
+
+//---start------
     // Function to handle date selection from the calendar
     function selectDate(day, currentMonthYear) {
       const [month, year] = currentMonthYear.split(" ");
-      
+
       // Create a new Date object with the selected day, month, and year
       const selectedDateObject = new Date(`${year},${month},${day}`);
 
-  // Check if the selected date is before the current date
-  if (selectedDateObject < currentDate) {
-    // Do not allow selection of dates before the current date
-    return;
-  }
+      // Check if the selected date is before the current date
+      if (selectedDateObject < currentDate  || selectedDateObject > new Date(selectedDateReturn.value)) {
+        // Do not allow selection of dates before the current date
+        return;
+      }
 
-  selectedDate.value = `${day} ${currentMonthYear}`;
-  isCalendarVisible.value = false; // Hide the calendar after date selection
+      selectedDate.value = `${day} ${currentMonthYear}`;
+      isCalendarVisible.value = false; // Hide the calendar after date selection
+      isCalendarVisibleReturn.value = false;
 
       // Function to format the date to YYYY-MM-DD
       function formatDate(date) {
@@ -243,7 +291,43 @@ export default {
       // Hide the calendar after date selection
       isCalendarVisible.value = false;
     }
+//-----end----
+//---start------
+    // Function to handle date selection from the calendar
+    function selectDateReturn(day, currentMonthYear) {
+      const [month, year] = currentMonthYear.split(" ");
 
+      // Create a new Date object with the selected day, month, and year
+      const selectedDateObject = new Date(`${year},${month},${day}`);
+
+      // Check if the selected date is before the current date
+      if (selectedDateObject < currentDate || selectedDateObject < new Date(selectedDate.value)) {
+        // Do not allow selection of dates before the current date
+        return;
+      } 
+
+      selectedDateReturn.value = `${day} ${currentMonthYear}`;
+      isCalendarVisibleReturn.value = false;
+
+      // Function to format the date to YYYY-MM-DD
+      function formatDate(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0"); // Adding 1 to month as it's zero-based
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+      }
+
+      // Get the formatted date in YYYY-MM-DD format
+      const formattedDate = formatDate(selectedDateObject);
+
+      // Update selectedDate with the formatted date
+      selectedDateReturnToSend.value = formattedDate;
+
+      // Hide the calendar after date selection
+      isCalendarVisible.value = false;
+      isCalendarVisibleReturn.value = false;
+    }
+//-----end----
     const generateDaysOfMonth = () => {
       const daysInMonth = 30;
       const daysArray = [];
@@ -278,9 +362,13 @@ export default {
       canGoPrevious,
       canGoNext,
       selectedDate,
+      selectedDateReturn,
       isCalendarVisible,
+      isCalendarVisibleReturn,
       toggleCalendar,
+      toggleCalendarReturn,
       selectDate,
+      selectDateReturn,
       daysOfMonth: generateDaysOfMonth(),
       placeholder,
       calendarMonth,
@@ -291,8 +379,9 @@ export default {
       placeholderTextReturn,
       currentMonthYearEmit, // for emit
       selectedDateToSend, //for emit
+      selectedDateReturnToSend, //for emit
       // tripType: props.tripType,
-      tripTypeValue
+      tripTypeValue,
     };
   },
 };
@@ -307,15 +396,26 @@ export default {
   position: absolute;
   padding: 0;
   margin: 0;
- 
+  /* display:flex */
 }
 .home-textinput3 input {
   position: absolute;
+  width:100%;
+
 }
 .calendar-box {
   position: absolute;
   background-color: white;
   top: 2rem;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  height: 50vh;
+  z-index: 100;
+}
+.calendar-boxReturn {
+  position: absolute;
+  background-color: white;
+  top: 2rem;
+  right:-4rem;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
   height: 50vh;
   z-index: 100;
@@ -352,5 +452,13 @@ td {
   text-align: center;
   width: 100%;
   order: 2;
+}
+
+.flex-display {
+  display: flex;
+  gap:0.5rem;
+}
+.flex-display .home-textinput3.input {
+  width: 50%;
 }
 </style>

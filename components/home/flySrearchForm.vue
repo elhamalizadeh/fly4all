@@ -70,9 +70,12 @@
         <!-- InputCityFialds -->
        <homeInputCityFialds @citySelected="handleCitySelected" @destCitySelected="handleDestCitySelected" />
         <!-- Date -->
-        <homeDateForm @sendEmitCurrentMonthYear="CurrentMonthYearFunction" :tripType="params.tripType"/>
+        <homeDateForm 
+        @sendEmitCurrentMonthYear="CurrentMonthYearFunction" 
+        @sendEmitCurrentMonthYearReturn="CurrentMonthYearFunctionReturn"
+        :tripType="params.tripType"/>
         <!-- Travellers -->
-        <FlySearchTravellers />
+        <homeTravellers />
       </div>
 
       <div class="home-container027">
@@ -148,6 +151,7 @@ const handleDestCitySelected = (selectDestCity) => {
               origin: city.value,
               destination: destCity.value,
               departure: selectedDate.value.value,
+              // return: selectedDateReturn.value.value,
               adults: 2,
               children: 1,
               infants: 0,
@@ -176,6 +180,13 @@ const handleDestCitySelected = (selectDestCity) => {
     const CurrentMonthYearFunction = (MonthYear) => {
       selectedDate.value = MonthYear;
     };
+
+    const selectedDateReturn = ref("");
+    const CurrentMonthYearFunctionReturn = (MonthYear) => {
+      selectedDateReturn.value = MonthYear;
+      
+    };
+    console.log("selectedDateReturn is here: ", selectedDateReturn.value);
     const handleTripTypeChange = () => {
   tripType.value= params.tripType
 };
