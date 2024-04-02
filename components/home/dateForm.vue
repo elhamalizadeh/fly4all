@@ -1,6 +1,6 @@
 <template>
   <div class="home-container024">
-    <div class="calendar" :class="{ 'flex-display': tripTypeValue === 'roundWay' }">
+    <div class="calendar" :class="{ 'flex-display': tripTypeValue === 'roundTrip' }">
       <!------------ deprature --------->
       <input
         class="home-textinput3 input"
@@ -56,7 +56,7 @@
         readonly
         :placeholder="placeholderTextReturn"
         required
-        v-if="tripTypeValue == 'roundWay'"
+        v-if="tripTypeValue == 'roundTrip'"
       />
       <div v-if="isCalendarVisibleReturn" class="calendar-boxReturn">
         <!-- <div v-for="day in daysOfMonth" :key="day" @click="selectDate(day)">{{ day }}</div> -->

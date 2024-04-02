@@ -78,7 +78,7 @@ export default {
       origin: "",
       destination: "",
       date: "",
-      tripType: "oneway",
+      tripType: "oneWay",
       cabin: "economy",
       adults: 0,
       children: 0,

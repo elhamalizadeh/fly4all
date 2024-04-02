@@ -28,7 +28,7 @@
             name="radio"
             class="home-radiobutton"
             v-model="params.tripType"
-            value="oneway"
+            value="oneWay"
             @change="handleTripTypeChange"
           />
           <span class="home-text004">One-Way</span>
@@ -39,7 +39,7 @@
             name="radio"
             class="home-radiobutton1"
             v-model="params.tripType"
-            value="roundWay"
+            value="roundTrip"
             @change="handleTripTypeChange"
           />
           <span class="home-text005">Round-Trip</span>
@@ -78,7 +78,7 @@
         :tripType="params.tripType"/>
 
         <!-----  v-for  --->
-        <div v-for="(item, index) in trips" :key="index" class="trip-container" >
+        <div v-for="(item, index) in trips" :key="index" style="display:grid;grid-template-columns: 1fr 1fr 1fr;" >
        <homeInputCityFialds @citySelected="handleCitySelected" 
        @destCitySelected="handleDestCitySelected"
        v-model="item.inputCity" 
@@ -93,7 +93,9 @@
         :tripType="params.tripType"
         v-if="tripType == 'multi'"/>
 
-
+        <div v-if="tripType == 'multi'">
+    <button class="home-button02 button" id="deleteBtn" @click="deleteFunction">Delete</button>
+  </div>
        </div>
         <!-- Date -->
         <!-- <homeDateForm 
@@ -120,13 +122,13 @@ import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 
     const router = useRouter();
-    const selectedTripType = ref("oneway"); // Default trip type is "One-Way"
-    const tripType = ref("");
+    // const selectedTripType = ref("oneway"); // Default trip type is "One-Way"
+    const tripType = ref("oneWay");
     const params = reactive({
       origin: "",
       destination: "",
       date: "",
-      tripType: "oneway",
+      tripType: "",
       cabin: "economy",
       adults: 0,
       children: 0,
@@ -169,7 +171,7 @@ const handleDestCitySelected = (selectDestCity) => {
         });
         return;
       }
-console.log("selectedDate.value.value is: " , selectedDate.value);
+// console.log("selectedDate.value.value is: " , selectedDate.value);
       try {
         const response = await $fetch(
           "https://marketplace.beta.luxota.network/v1/search/flight",
@@ -179,12 +181,12 @@ console.log("selectedDate.value.value is: " , selectedDate.value);
               origin: city.value,
               destination: destCity.value,
               departure: selectedDate.value.value,
-              // return: selectedDateReturn.value.value,
+              return: selectedDateReturn.value.value,
               adults: 2,
               children: 1,
               infants: 0,
               cabin: "economy",
-              tripType: "oneWay",
+              tripType: tripType.value,
               searcherIdentity: "test",
             }),
             headers: {
@@ -222,6 +224,16 @@ console.log("selectedDate.value.value is: " , selectedDate.value);
 
 
 const trips = ref([]);
+//-----------deleteBtn---
+// const tripTypeValue = ref(props.tripType);
+const deleteFunction = () =>{
+  if (tripType.value === "multi") {
+    const deleteBtn = document.getElementById("deleteBtn");
+    deleteBtn.addEventListener("click", () => {
+      alert("delete");
+    });
+  }
+}
 
 const addInputFunction = () => {
   if (tripType.value === "multi") {
@@ -243,13 +255,16 @@ grid-template-columns: 1fr 1fr 3fr 1fr;
 /* grid-template-columns: 1fr 1fr 3fr 1fr; */
 
 /* ----multy---- */
-grid-template-rows: repeat(2,1fr);
+/* grid-template-rows: repeat(1,1fr); */
 }
-
-
-
 .input-city-fields {
   margin-bottom: 10px;
   /* border: #ddd solid 2px; */
+}
+#deleteBtn:hover {
+  cursor: pointer;
+}
+#addBtn:hover{
+  cursor: pointer;
 }
 </style>
