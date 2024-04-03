@@ -1,6 +1,9 @@
 <template>
   <div class="home-container024">
-    <div class="calendar" :class="{ 'flex-display': tripTypeValue === 'roundTrip' }">
+    <div
+      class="calendar"
+      :class="{ 'flex-display': tripTypeValue === 'roundTrip' }"
+    >
       <!------------ deprature --------->
       <input
         class="home-textinput3 input"
@@ -31,15 +34,22 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(week, index) in calendar" :key="index">
-                <td v-for="day in week" :key="day.id">
+              <tr v-for="(week, index) in calendarWithDayOfYear" :key="index">
+                <td
+                v-for="dayObj in week" 
+                :key="dayObj.day"
+                >
                   <span
-                    @click="selectDate(day, currentMonthYear)"
+                    @click="selectDate(dayObj.day, currentMonthYear)"
                     @mouseover="hoverBackground"
                     @mouseleave="resetBackground"
-                    class="hoverable"
-                  >
-                    {{ day }}
+                    :class="{
+                    'red-text': dayObj.dayOfYear < dayOfYear,
+                    'hoverable': dayObj.dayOfYear >= dayOfYear
+                }" 
+                :id="'tdDayOfMonth' + dayObj.day"
+            >
+                {{ dayObj.day }}
                   </span>
                 </td>
               </tr>
@@ -47,8 +57,8 @@
           </table>
         </div>
       </div>
-  <!------------ return --------->
-  <input
+      <!------------ return --------->
+      <input
         class="home-textinput3 input"
         type="text"
         v-model="selectedDateReturn"
@@ -78,7 +88,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(week, index) in calendar" :key="index">
+              <tr v-for="(week, index) in calendar" :key="index"> <!----- calendar in line 467 ----->
                 <td v-for="day in week" :key="day.id">
                   <span
                     @click="selectDateReturn(day, currentMonthYear)"
@@ -99,15 +109,16 @@
   </div>
 </template>
 <script>
-import { ref, computed } from "vue";
+import { ref, computed , onMounted  } from "vue";
 
 export default {
-  props: ["tripType"],
+  // props: ["tripType"],
+  props: ['currentMonthYear', 'currentYear', 'currentMonth',"tripType"],
   setup(props, { emit }) {
     // const tripType = props.tripType;
     const currentDate = new Date();
     let currentYear = currentDate.getFullYear();
-    let currentMonth = currentDate.getMonth();
+    let currentMonth = currentDate.getMonth()+1;
     let currentDay = currentDate.getDay();
     const daysOfWeek = ["S", "M", "T", "W", "T", "F", "S"];
     const monthNames = [
@@ -144,6 +155,10 @@ export default {
       return selectedDateReturn.value ? selectedDateReturn.value : "Return";
     });
 
+
+/*=========
+     ---getNextMonth Function1---
+==========*/
     const getNextMonth = (year, month) => {
       if (month === 11) {
         year++;
@@ -154,6 +169,12 @@ export default {
       return { year, month };
     };
 
+
+
+  
+/*=========
+     ---getPreviousMonth Function2---
+==========*/
     const getPreviousMonth = (year, month) => {
       if (month === 0) {
         year--;
@@ -164,21 +185,36 @@ export default {
       return { year, month };
     };
 
+
+
+/*=========
+     ---getDaysInMonth Function3---
+==========*/
     const getDaysInMonth = (year, month) => {
       return new Date(year, month + 1, 0).getDate();
     };
 
+
+
+
+/*=========
+     ---getFirstDayOfMonth Function4---
+==========*/
     const getFirstDayOfMonth = (year, month) => {
       return new Date(year, month, 1).getDay();
     };
 
+
+
+
+/*=========
+     ---updateCalendar Function5---
+==========*/
     const updateCalendar = (year, month) => {
       const numDaysInMonth = getDaysInMonth(year, month);
       const firstDayOfMonth = getFirstDayOfMonth(year, month);
-
       let days = [];
       let currentWeek = [];
-
       // Fill in the empty cells before the first day of the month
       for (let i = 0; i < firstDayOfMonth; i++) {
         currentWeek.push("");
@@ -195,9 +231,70 @@ export default {
 
       return days;
     };
-
     const calendar = ref([]);
 
+
+
+
+
+
+/*=========
+     --------daysBeforeCurrentDate Function6---
+==========*/
+
+    const daysBeforeCurrentDate = [];
+    const day = ref("");
+    // const currentDate = new Date(); // Get the current date
+const startOfYear = new Date(currentDate.getFullYear(), 0, 0); // Get the start of the current year
+const diff = currentDate - startOfYear; // Calculate the difference between the current date and the start of the year
+const oneDay = 1000 * 60 * 60 * 24; // Calculate the number of milliseconds in a day
+const dayOfYear = Math.floor(diff / oneDay); // Divide the difference by the number of milliseconds in a day to get the day of the year
+// console.log("dayOfYear:" ,dayOfYear); // Output the day of the year
+
+// const daysBeforeCurrentDate = [];
+for (let i = 1; i <= dayOfYear; i++) {
+    const dayToCheck = new Date(currentDate.getFullYear(), 0, i);
+    if (i <= dayOfYear) {
+        daysBeforeCurrentDate.push(i);
+    }
+}
+
+// Inside your setup method or component
+const calendarWithDayOfYear = computed(() => {
+    return calendar.value.map(week => {
+        return week.map(day => {
+            const date = new Date(currentYear, currentMonth, day);
+            const dayOfYear = Math.floor((date - new Date(date.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
+            // console.log("currentMonth is 372:" , currentMonth+1);
+            return { day, dayOfYear };
+        });
+    });
+});
+
+const dayFlags = computed(() => {
+    const flags = {};
+    for (let i = 1; i <= daysBeforeCurrentDate.length; i++) {
+        flags[i] = true; // Set flag to true for days before the current day of the year
+    }
+    // console.log("flags:",flags);
+    return flags;
+});
+
+
+// console.log("dayToCheck.getMonth()+1:",dayToCheck.getMonth()+1);
+// console.log("currentMonth:",currentMonth);
+// console.log("currentDay:",currentDay);
+
+
+
+
+
+
+
+
+/*=========
+     ---canGoPrevious Function7---
+==========*/
     const canGoPrevious = computed(() => {
       const currentYearMonth =
         currentDate.getFullYear() * 12 + currentDate.getMonth(); // Convert current year and month to months
@@ -208,6 +305,13 @@ export default {
       );
     });
 
+
+
+
+
+/*=========
+     ---canGoNext Function8---
+==========*/
     const canGoNext = computed(() => {
       const currentYearMonth =
         currentDate.getFullYear() * 12 + currentDate.getMonth(); // Convert current year and month to months
@@ -215,12 +319,19 @@ export default {
       return targetYearMonth < currentYearMonth + 12; // Enable next button if target month is within 12 months ahead of current month
     });
 
+
+
+    //------
     const currentMonthYear = ref(`${monthNames[currentMonth]} ${currentYear}`);
     const currentMonthYearEmit = `${monthNames[currentMonth]} ${currentYear}`;
-
     emit("sendEmitCurrentMonthYear", selectedDateToSend);
     emit("sendEmitCurrentMonthYearReturn", selectedDateReturnToSend);
+    //-----
 
+
+/*=========
+     ---nextMonth Function9---
+==========*/
     const nextMonth = () => {
       const { year, month } = getNextMonth(currentYear, currentMonth);
       if (year - currentDate.getFullYear() < 1) {
@@ -231,6 +342,13 @@ export default {
       }
     };
 
+
+
+
+
+/*=========
+     ---previousMonth Function10---
+==========*/
     const previousMonth = () => {
       const { year, month } = getPreviousMonth(currentYear, currentMonth);
       const previousYear = currentDate.getFullYear();
@@ -243,31 +361,53 @@ export default {
       }
     };
 
+
+
+
+ /*=========
+     ---toggleCalendar Function11---
+==========*/   
     const toggleCalendar = () => {
       isCalendarVisible.value = !isCalendarVisible.value;
       isCalendarVisibleReturn.value = false;
     };
 
+
+
+
+/*=========
+     ---toggleCalendar Function12---
+==========*/  
     const toggleCalendarReturn = () => {
       isCalendarVisibleReturn.value = !isCalendarVisibleReturn.value;
       isCalendarVisible.value = false;
     };
 
-//---start------
+
+
+
+
+/*=========
+     ---selectDate Function13---
+==========*/  
     // Function to handle date selection from the calendar
     function selectDate(day, currentMonthYear) {
       const [month, year] = currentMonthYear.split(" ");
-
+      // document.querySelector('#tdDayOfMonth' + day).style.backgroundColor = "lightgray";
       // Create a new Date object with the selected day, month, and year
       const selectedDateObject = new Date(`${year},${month},${day}`);
 
       // Check if the selected date is before the current date
-      if (selectedDateObject < currentDate  || selectedDateObject > new Date(selectedDateReturn.value)) {
-        // Do not allow selection of dates before the current date
+      if (
+        selectedDateObject < currentDate ||
+        selectedDateObject > new Date(selectedDateReturn.value)
+      ) {
+        alert(day);
         return;
       }
 
       selectedDate.value = `${day} ${currentMonthYear}`;
+      console.log("selectedDate:" , selectedDate.value);
       isCalendarVisible.value = false; // Hide the calendar after date selection
       isCalendarVisibleReturn.value = false;
 
@@ -288,8 +428,16 @@ export default {
       // Hide the calendar after date selection
       isCalendarVisible.value = false;
     }
-//-----end----
-//---start------
+
+
+
+
+
+
+
+/*=========
+     ---selectDateReturn Function14---
+==========*/
     // Function to handle date selection from the calendar
     function selectDateReturn(day, currentMonthYear) {
       const [month, year] = currentMonthYear.split(" ");
@@ -298,10 +446,13 @@ export default {
       const selectedDateObject = new Date(`${year},${month},${day}`);
 
       // Check if the selected date is before the current date
-      if (selectedDateObject < currentDate || selectedDateObject < new Date(selectedDate.value)) {
+      if (
+        selectedDateObject < currentDate ||
+        selectedDateObject < new Date(selectedDate.value)
+      ) {
         // Do not allow selection of dates before the current date
         return;
-      } 
+      }
 
       selectedDateReturn.value = `${day} ${currentMonthYear}`;
       isCalendarVisibleReturn.value = false;
@@ -324,31 +475,48 @@ export default {
       isCalendarVisible.value = false;
       isCalendarVisibleReturn.value = false;
     }
-//-----end----
-    const generateDaysOfMonth = () => {
-      const daysInMonth = 30;
-      const daysArray = [];
-      for (let i = 1; i <= daysInMonth; i++) {
-        daysArray.push(i);
-      }
-      return daysArray;
-    };
+
+
+
+
+
+
+
+/*=========
+---generateDaysOfMonth Function15---    unused
+==========*/
+    // const generateDaysOfMonth = () => {
+    //   const daysInMonth = 30;
+    //   const daysArray = [];
+    //   for (let i = 1; i <= daysInMonth; i++) {
+    //     daysArray.push(i);
+    //   }
+    //   return daysArray;
+    // };
+
+//==========//
 
     // Initialize calendar for the current month
-    calendar.value = updateCalendar(currentYear, currentMonth);
+    // an array consists of weeks and days of weeks
 
+    calendar.value = updateCalendar(currentYear, currentMonth);
+// console.log("calendar.value: " , calendar.value);
     function hoverBackground(event) {
-      event.target.style.backgroundColor = "lightgray";
+      // event.target.style.backgroundColor = "lightgray";
     }
 
     function resetBackground(event) {
       event.target.style.backgroundColor = "";
     }
 
+/*=========
+     ---tripTypeValue Function16---
+==========*/  
     const tripTypeValue = computed(() => {
       // You can return any value here, but for a computed property, it's common to return a derived value based on props or other reactive variables
       return props.tripType;
     });
+/*==========*/
 
     return {
       daysOfWeek,
@@ -366,7 +534,7 @@ export default {
       toggleCalendarReturn,
       selectDate,
       selectDateReturn,
-      daysOfMonth: generateDaysOfMonth(),
+      // daysOfMonth: generateDaysOfMonth(),
       placeholder,
       calendarMonth,
       calendarYear,
@@ -379,6 +547,14 @@ export default {
       selectedDateReturnToSend, //for emit
       // tripType: props.tripType,
       tripTypeValue,
+      // isBeforeCurrentMonth,
+      // daysBeforeCurrentDate,
+      // result,
+      // day,
+      dayFlags,
+      calendarWithDayOfYear,
+      day, dayOfYear
+      // getClassForDay
     };
   },
 };
@@ -393,13 +569,13 @@ export default {
   position: absolute;
   padding: 0;
   margin: 0;
-  display:flex;
+  display: flex;
   width: auto;
   height: 100px;
 }
 .home-textinput3 input {
   position: absolute;
-  width:100%;
+  width: 100%;
 }
 .calendar-box {
   position: absolute;
@@ -413,7 +589,7 @@ export default {
   position: absolute;
   background-color: white;
   top: 2rem;
-  right:-4rem;
+  right: -4rem;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
   height: 50vh;
   z-index: 100;
@@ -454,9 +630,15 @@ td {
 
 .flex-display {
   display: flex;
-  gap:0.5rem;
+  gap: 0.5rem;
 }
 .flex-display .home-textinput3.input {
   width: 50%;
+}
+#dayOfMonth {
+  /* color:blue */
+}
+.red-text {
+  color: #ABB2B9;
 }
 </style>
