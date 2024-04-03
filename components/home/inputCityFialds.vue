@@ -26,6 +26,7 @@
     </ul>
   </div>
   <div class="home-container019">
+    <span class="close-icon" @click="clearInput">&times;</span>
     <svg viewBox="0 0 1024 1024" class="home-icon14">
       <path
         d="M942 412q6 26-7 48t-39 30q-248 66-412 110l-226 60-68 20-112-192 62-16 84 64 212-56-176-306 82-22 294 274 228-60q26-8 49 6t29 40zM106 810h812v86h-812v-86z"
@@ -202,6 +203,10 @@ const selectDestCity = (id, title) => {
   listVisibleDest.value = false;
 
 };
+
+const clearInput = () => {
+  city.value = ''; // Clear the city input field
+};
 </script>
 
 <style scoped>
@@ -241,7 +246,13 @@ const selectDestCity = (id, title) => {
   /* position: relative; 
    display: inline-block; */
 }
-
+.close-icon{
+  /* background-color:gray; */
+  border-radius: 50px;
+  padding:3px;
+  color:gray;
+  font-size: 20px;
+}
 .dropdown-content {
   display: none;
   position: absolute;

@@ -387,6 +387,27 @@ p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  pa
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
+.home-container006:hover { /* i have added */
+  top: -91px;
+   flex: 0 0 auto;
+   /* left: 190px; */
+   width: 190px;
+   height: 80px;
+   display: flex;
+   position: absolute;
+   align-items: center;
+   border-color: rgba(120, 120, 120, 0.4);
+   border-style: solid;
+   border-width: 0px;
+   border-radius: var(--dl-radius-radius-radius4);
+   background-size: cover;
+   justify-content: center;
+   background-image: url("../../public/images/external/tab1-200h.jpg");
+   border-top-left-radius: 0;
+   border-top-right-radius: 0;
+   border-bottom-left-radius: 0;
+   border-bottom-right-radius: 0;
+ }
 .home-text {
   color: rgb(255, 255, 255);
   font-size: 24px;

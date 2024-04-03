@@ -18,28 +18,34 @@
 
       <div v-if="showOptions" class="options-box">
         <div class="options-box-item">
+          <button @click="incrementAdult" class="travellersBtn">+</button>
+          <div style="display:grid">
           <div>Adult</div>
-          <button @click="incrementAdult">+</button>
-          <span>{{ countAdult }}</span>
-          <button @click="decrementAdult">-</button>
+          <span style="text-align: center;">{{ countAdult }}</span>
+        </div>
+          <button @click="decrementAdult" class="travellersBtn">-</button>
         </div>
 
         <div class="options-box-item">
+          <button @click="incrementChildren" class="travellersBtn">+</button>
+          <div style="display:grid">
           <div>Children</div>
-          <button @click="incrementChildren">+</button>
-          <span>{{ countChildren }}</span>
-          <button @click="decrementChildren">-</button>
+          <span style="text-align: center;">{{ countChildren }}</span>
+        </div>
+          <button @click="decrementChildren" class="travellersBtn">-</button>
         </div>
 
         <div class="options-box-item">
+          <button @click="incrementInfant" class="travellersBtn">+</button>
+          <div style="display:grid">
           <div>Infants</div>
-          <button @click="incrementInfant">+</button>
-          <span>{{ countInfant }}</span>
-          <button @click="decrementInfant">-</button>
+          <span style="text-align: center;">{{ countInfant }}</span>
+        </div>
+          <button @click="decrementInfant" class="travellersBtn">-</button>
         </div>
         <button
           @click="done"
-          style="background-color: #003eb3; width: 90%; color: white"
+          id="doneBtn"
         >
           Done
         </button>
@@ -110,16 +116,21 @@ export default {
 
 .options-box {
   border: 1px solid gray;
-  padding: 15px;
+  width:250px;
+  padding: 40px;
   margin-top: 5px;
   background-color: white;
   z-index: 1000;
   position: absolute; /* ---- */
+  bottom: 0.1rem;
+  border-radius: 15px;
+  display:grid;
+  gap:2rem;
 }
 .options-box-item {
   display: flex;
   flex-wrap: wrap;
-  gap:2rem;
+  /* gap:3rem; */
   justify-content: space-between;
 }
 .options-box > div {
@@ -134,5 +145,23 @@ export default {
 }
 .options-box button {
   margin: 0 5px;
+}
+#doneBtn{
+  background-color: rgb(255, 95, 10);
+   width: 90%; 
+   padding:0.5rem;
+   color: white;
+   border-radius: 10px;
+
+}
+.travellersBtn{
+  background-color: #110140;
+  color:white;
+  border-radius: 50%;
+  padding-top:3px;
+  padding-bottom: 3px;
+  padding-right:10px;
+  padding-left:10px;
+  font-size:1.5rem
 }
 </style>

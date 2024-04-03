@@ -1,6 +1,6 @@
 <template>
   <div class="home-container024">
-    <div class="calendar home-container018" :class="{ 'flex-display': tripTypeValue === 'roundTrip' }">
+    <div class="calendar" :class="{ 'flex-display': tripTypeValue === 'roundTrip' }">
       <!------------ deprature --------->
       <input
         class="home-textinput3 input"
@@ -393,12 +393,13 @@ export default {
   position: absolute;
   padding: 0;
   margin: 0;
-  /* display:flex */
+  display:flex;
+  width: auto;
+  height: 100px;
 }
 .home-textinput3 input {
   position: absolute;
   width:100%;
-
 }
 .calendar-box {
   position: absolute;
