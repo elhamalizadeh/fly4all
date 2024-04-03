@@ -1,7 +1,7 @@
 <template>
   <div class="home-container025">
     <input
-      type="text"
+      type="hidden"
       placeholder="Travelers "
       class="home-textinput3 input"
       v-model="travellers"
@@ -110,7 +110,7 @@ export default {
 
 .options-box {
   border: 1px solid gray;
-  padding: 10px;
+  padding: 15px;
   margin-top: 5px;
   background-color: white;
   z-index: 1000;
@@ -119,7 +119,7 @@ export default {
 .options-box-item {
   display: flex;
   flex-wrap: wrap;
-  /* gap:3rem; */
+  gap:2rem;
   justify-content: space-between;
 }
 .options-box > div {

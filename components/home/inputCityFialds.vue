@@ -1,6 +1,6 @@
 <template>
   <!--------- Source  ------>
-  <div style="margin-right: 15px" class="dropdown">
+  <div style="margin-right: 15px" class="dropdown home-container018">
     <input
       class="home-textinput input"
       type="text"
@@ -25,8 +25,35 @@
       </li>
     </ul>
   </div>
+  <div class="home-container019">
+    <svg viewBox="0 0 1024 1024" class="home-icon14">
+      <path
+        d="M942 412q6 26-7 48t-39 30q-248 66-412 110l-226 60-68 20-112-192 62-16 84 64 212-56-176-306 82-22 294 274 228-60q26-8 49 6t29 40zM106 810h812v86h-812v-86z"
+      ></path>
+    </svg>
+  </div>
+  <!-- <div class="home-container020">
+    <svg viewBox="0 0 1024 1024" class="home-icon16">
+      <path
+        d="M320 384h128v128h-128zM512 384h128v128h-128zM704 384h128v128h-128zM128 768h128v128h-128zM320 768h128v128h-128zM512 768h128v128h-128zM320 576h128v128h-128zM512 576h128v128h-128zM704 576h128v128h-128zM128 576h128v128h-128zM832 0v64h-128v-64h-448v64h-128v-64h-128v1024h960v-1024h-128zM896 960h-832v-704h832v704z"
+      ></path>
+    </svg>
+  </div>
+  <div class="home-container021">
+    <svg viewBox="0 0 1024 1024" class="home-icon18">
+      <path
+        d="M170.667 384h149.333c31.403 0 59.435 16.683 78.976 42.709 13.867-25.771 31.104-49.621 50.816-70.912-34.261-35.115-79.616-57.131-129.792-57.131h-149.333c-23.595 0-42.667 19.115-42.667 42.667s19.072 42.667 42.667 42.667z"
+      ></path>
+      <path
+        d="M498.56 516.736c23.509-70.699 96.256-132.736 155.691-132.736h78.421l-55.168 55.168c-16.683 16.683-16.683 43.648 0 60.331 8.32 8.32 19.243 12.501 30.165 12.501s21.845-4.181 30.165-12.501l158.165-158.165-158.165-158.165c-16.683-16.683-43.648-16.683-60.331 0s-16.683 43.648 0 60.331l55.168 55.168h-78.421c-97.024 0-201.003 83.925-236.672 191.104l-20.139 60.203c-27.349 82.176-88.405 132.693-120.107 132.693h-106.667c-23.595 0-42.667 19.115-42.667 42.667s19.072 42.667 42.667 42.667h106.667c78.379 0 164.821-82.133 201.088-191.104l20.139-60.16z"
+      ></path>
+      <path
+        d="M677.504 567.168c-16.683 16.683-16.683 43.648 0 60.331l55.168 55.168h-99.755c-54.101 0-99.413-38.016-114.816-89.941-10.923 32-26.752 63.957-46.507 93.227 37.803 49.579 95.701 82.048 161.323 82.048h99.755l-55.168 55.168c-16.683 16.683-16.683 43.648 0 60.331 8.32 8.32 19.243 12.501 30.165 12.501s21.845-4.181 30.165-12.501l158.165-158.165-158.165-158.165c-16.683-16.683-43.648-16.683-60.331 0z"
+      ></path>
+    </svg>
+  </div> -->
   <!------------------ destination ----->
-  <div class="dropdown">
+  <div class="dropdown home-container022">
     <input
       class="home-textinput input"
       type="text"
@@ -60,7 +87,7 @@
   <!-- <homeTravellers /> -->
 </template>
 <script setup>
-import { ref, watch, onMounted, computed,defineEmits    } from "vue";
+import { ref, watch, onMounted, computed, defineEmits } from "vue";
 import axios from "axios";
 
 const selectedOption = ref("");
@@ -77,7 +104,6 @@ const params = reactive({
   children: 0,
   infants: 0,
 });
-
 
 const emits = defineEmits(["citySelected", "destCitySelected"]);
 const city = ref("");
@@ -118,7 +144,6 @@ const handleCityInput = async () => {
   }
 };
 
-
 //------------------ destination--------------------
 const destCity = ref("");
 const selectedDestAirport = ref("");
@@ -145,7 +170,7 @@ const handleDestCityInput = async () => {
     destAirports = ref([]);
     console.log("error dare line 40");
   }
-  emits('destCitySelected', destCity.value);
+  emits("destCitySelected", destCity.value);
 };
 const selectDestAirport = (id, title) => {
   destCity.value = title;
@@ -162,20 +187,21 @@ const listVisible = ref(false);
 const listVisibleDest = ref(false);
 
 // Function to emit selected city to parent
-const selectCity = (id,title) => {
+const selectCity = (id, title) => {
   city.value = title;
   city.id = id;
-  emits('citySelected', city.id);
+  emits("citySelected", city.id);
+  listVisible.value = false;
 };
 
 // Function to emit selected destination city to parent
-const selectDestCity = (id,title) => {
+const selectDestCity = (id, title) => {
   destCity.value = title;
   destCity.id = id;
-  emits('destCitySelected', destCity.id);
+  emits("destCitySelected", destCity.id);
+  listVisibleDest.value = false;
+
 };
-
-
 </script>
 
 <style scoped>
@@ -212,13 +238,14 @@ const selectDestCity = (id,title) => {
 
 /*------start3--------*/
 .dropdown {
-  position: relative;
-  display: inline-block;
+  /* position: relative; 
+   display: inline-block; */
 }
 
 .dropdown-content {
   display: none;
   position: absolute;
+  top: 4.5rem;
   background-color: #f9f9f9;
   min-width: 160px;
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
@@ -226,7 +253,7 @@ const selectDestCity = (id,title) => {
   z-index: 1;
 }
 
-.dropdown:hover .dropdown-content {
+.dropdown-content {
   display: block;
 }
 /*------flex--------*/

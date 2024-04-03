@@ -1,6 +1,6 @@
 <template>
   <div class="home-container024">
-    <div class="calendar" :class="{ 'flex-display': tripTypeValue === 'roundTrip' }">
+    <div class="calendar home-container018" :class="{ 'flex-display': tripTypeValue === 'roundTrip' }">
       <!------------ deprature --------->
       <input
         class="home-textinput3 input"
