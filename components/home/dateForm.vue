@@ -590,7 +590,32 @@ const dayFlags = computed(() => {
       // You can return any value here, but for a computed property, it's common to return a derived value based on props or other reactive variables
       return props.tripType;
     });
-/*==========*/
+
+
+
+
+/*=========
+     ---closeCalendarOnClickOutside Function176---
+         // Function to close the calendar when clicking outside
+==========*/  
+
+    const closeCalendarOnClickOutside = (event) => {
+      if (!event.target.closest(".calendar")) {
+        isCalendarVisible.value = false;
+        isCalendarVisibleReturn.value = false;
+      }
+    };
+
+    // Listen for click events when component is mounted
+    onMounted(() => {
+      document.addEventListener("click", closeCalendarOnClickOutside);
+    });
+
+    // Remove event listener when component is unmounted to prevent memory leaks
+    onUnmounted(() => {
+      document.removeEventListener("click", closeCalendarOnClickOutside);
+    });
+
 
     return {
       daysOfWeek,
@@ -629,7 +654,9 @@ const dayFlags = computed(() => {
       // day,
       dayFlags,
       calendarWithDayOfYear,
-      day, dayOfYear
+      day, dayOfYear,
+       isCalendarVisible,
+      isCalendarVisibleReturn
       // getClassForDay
     };
   },
