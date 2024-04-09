@@ -7,5 +7,9 @@ export default defineNuxtConfig({
    '~/assets/css/index.css',
   ],
 
+  modules:[
+    '@pinia/nuxt'
+  ]
+
 
 })

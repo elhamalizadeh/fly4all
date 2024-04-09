@@ -3,7 +3,7 @@
     <HomeHeader />
     <section class="home-container003">
       <homeSlider />
-      <homeFlySrearchForm />
+      <homeFlySrearchForm :recommendeDestination="recommendedDestinationValue" />
     </section>
     <div class="home-container028">
       <div class="home-container029">
@@ -12,9 +12,10 @@
         <span class="home-text008"> </span>
       </div>
     </div>
-    <homeRecomended />
+    <homeRecomended @sendEmitSelectedDestination="SelectedRecommendedDestination"/>
+    <h2>{{ selectedRecommendedDest }}</h2>
     <homePlan />
-    <homeServices />
+    <homeServices/>
     <!---- more here---->
     <div class="home-container100">
       <button type="button" class="home-button14 button">More Here →</button>
@@ -26,3 +27,29 @@
     <HomeFooter />
   </div>
 </template>
+<script>
+
+export default {
+  props: ["recommendeDestination"],
+
+setup(){
+  const receiveDataFromB = (data) => {
+      // Capture the emitted event and store the data
+      this.dataFromB = data;
+    }
+
+    const selectedRecommendedDest = ref("");
+    const SelectedRecommendedDestination = (dest) => {
+      selectedRecommendedDest.value = dest;
+};
+
+
+    return {
+      SelectedRecommendedDestination,
+      selectedRecommendedDest,
+      recommendedDestinationValue : selectedRecommendedDest
+
+    };
+}
+};
+</script>

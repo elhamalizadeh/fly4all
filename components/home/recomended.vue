@@ -9,7 +9,7 @@
     </div>
     <div class="home-container031">
       <div class="d" v-for="flight in popularFlights" :key="flight.id">
-        <a href="#">
+        <!-- <a href="#"> -->
           <div class="home-container050">
             <div class="hover01 column">
               <figure>
@@ -25,7 +25,7 @@
               <div class="home-container034">
                 <div class="home-container035">
                   <div class="home-container036">
-                    <span class="home-text013">{{ flight.origin.city_en }}</span>
+                    <span class="home-text013"> {{flight.destination.city_en}}</span>
                   </div>
                   <div class="home-container037">
                     <div class="home-container038">
@@ -37,13 +37,12 @@
                     </div>
                   </div>
                   <div class="home-container039">
-                    <span class="home-text014">{{
-                      flight.destination.city_en
-                    }}</span>
+                    <span class="home-text014">
+                     {{ flight.origin.city_en }}</span>
                   </div>
                 </div>
                 <div class="home-container040">
-                  <button type="button" class="home-button04 button">
+                  <button type="button" class="home-button04 button" @click="recommended.updateSelectRecommended(flight.origin.city_en,flight.destination.city_en )">
                     <span class="home-text015">Facial services&nbsp;</span>
                     <svg viewBox="0 0 1024 1024" class="home-icon26">
                       <path
@@ -63,7 +62,7 @@
               </div>
             </section>
           </div>
-        </a>
+        <!-- </a> -->
       </div>
     </div> 
   </div>
@@ -72,10 +71,14 @@
 import { ref } from 'vue';
 import axios from "axios";
 
-
 export default {
-  setup() {
+  // import { useCounter } from '../stores/counter',
+
+
+  setup(props, { emit }) {
     const popularFlights = ref([]);
+    const  recommended  = useCounter();
+
     const populatFlights = async () => {
       try {
         const response = await axios.get(
@@ -89,8 +92,10 @@ export default {
     onMounted(() => {
       populatFlights();
     });
+
     return {
       popularFlights,
+      recommended
     };
   },
 

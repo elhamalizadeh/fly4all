@@ -1,6 +1,7 @@
 <template>
   <!--------- Source  ------>
   <div style="margin-right: 15px" class="dropdown home-container018">
+    <!-- <h3>{{ recommended.recomendedOrigin }}</h3> -->
     <input
       class="home-textinput input"
       type="text"
@@ -91,6 +92,7 @@
 import { ref, watch, onMounted, computed, defineEmits } from "vue";
 import axios from "axios";
 
+const  recommended  = useCounter();
 const selectedOption = ref("");
 const selectedOptionDest = ref("");
 const hiddenInputValue = ref("");
@@ -113,15 +115,26 @@ const airports = ref([]);
 const showAirports = ref(false);
 const airport = city.value.trim();
 const showSelectedAirport = ref(false);
+const listVisible = ref(false);
+const listVisibleDest = ref(false);
+
+watch(() => recommended.recomendedOrigin, (newValue) => {
+  if (newValue) {
+    city.value = recommended.recomendedOrigin;
+    // listVisible.value = true;
+  }
+});
+
+watch(() => recommended.recomendedDest, (newValue) => {
+  if (newValue) {
+    destCity.value = recommended.recomendedDest;
+    // listVisible.value = true;
+  }
+});
+
+
 
 const filter = ref("");
-// const names = ref([
-//   "Al Najaf Intl (NJF): Iraq, Al Najaf",
-//   "Mashad (MHD): Iran, Mashhad",
-//   "Baghdad Intl (BGW): Iraq, Baghdad",
-//   "All airports in Tehran:Iran",
-//   "Damascus (DAM): Syrian Arab Republic, Damas",
-// ]);
 
 const handleCityInput = async () => {
   if (city.value.trim().length >= 2) {
@@ -173,10 +186,10 @@ const handleDestCityInput = async () => {
   }
   emits("destCitySelected", destCity.value);
 };
-const selectDestAirport = (id, title) => {
-  destCity.value = title;
-  destCity.id = id;
-};
+// const selectDestAirport = (id, title) => {
+//   destCity.value = title;
+//   destCity.id = id;
+// };
 // const filteredNames = ref([]);
 // const updateFilteredNames = () => {
 //   filteredNames.value = names.value.filter((name) => name !== "");
@@ -184,8 +197,7 @@ const selectDestAirport = (id, title) => {
 
 // updateFilteredNames();
 
-const listVisible = ref(false);
-const listVisibleDest = ref(false);
+
 
 // Function to emit selected city to parent
 const selectCity = (id, title) => {

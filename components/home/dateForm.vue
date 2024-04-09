@@ -164,7 +164,6 @@ export default {
       return selectedDateReturn.value ? selectedDateReturn.value : "Return";
     });
 
-
 /*=========
      ---getNextMonth Function1---
 ==========*/
@@ -337,8 +336,8 @@ const dayFlags = computed(() => {
 
 
 
-    console.log("currentMonthYear 329:",currentMonthYear.value);
-    console.log("currentMonthYearReturn 329:",currentMonthYearReturn.value);
+    // console.log("currentMonthYear 329:",currentMonthYear.value);
+    // console.log("currentMonthYearReturn 329:",currentMonthYearReturn.value);
 
     emit("sendEmitCurrentMonthYear", selectedDateToSend);
     emit("sendEmitCurrentMonthYearReturn", selectedDateReturnToSend);
@@ -617,6 +616,7 @@ const dayFlags = computed(() => {
     });
 
 
+//------------------
     return {
       daysOfWeek,
       calendar,
@@ -646,18 +646,12 @@ const dayFlags = computed(() => {
       currentMonthYearReturnEmit, // for emit
       selectedDateToSend, //for emit
       selectedDateReturnToSend, //for emit
-      // tripType: props.tripType,
       tripTypeValue,
-      // isBeforeCurrentMonth,
-      // daysBeforeCurrentDate,
-      // result,
-      // day,
       dayFlags,
       calendarWithDayOfYear,
       day, dayOfYear,
        isCalendarVisible,
-      isCalendarVisibleReturn
-      // getClassForDay
+      isCalendarVisibleReturn,
     };
   },
 };

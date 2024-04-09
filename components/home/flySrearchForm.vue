@@ -19,7 +19,6 @@
           <span class="home-text003">VISA</span>
         </div></NuxtLink
       >
-
       <!----------------tripType---------------->
       <div class="home-container010">
         <div class="home-container011">
@@ -140,10 +139,13 @@
   </div>
 </template>
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch,defineProps  } from "vue";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
-
+const props = defineProps({
+  recommendedDestinationValue: String // Define the type of recommendedDestinationValue
+});
+    
 const router = useRouter();
 // const selectedTripType = ref("oneway"); // Default trip type is "One-Way"
 const tripType = ref("oneWay");
