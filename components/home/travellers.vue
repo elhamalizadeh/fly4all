@@ -9,7 +9,7 @@
     <div>
       <input
         type="text"
-        placeholder="Travelers"
+        :placeholder="placeholderText"
         style="height: 50px"
         v-model="selectedOption"
         class="home-textinput3 input"
@@ -18,30 +18,30 @@
 
       <div v-if="showOptions" class="options-box">
         <div class="options-box-item">
-          <button @click="incrementAdult" class="travellersBtn">+</button>
+          <button @click="travelersCounter.incrementAdults" class="travellersBtn">+</button>
           <div style="display:grid">
           <div>Adult</div>
-          <span style="text-align: center;">{{ countAdult }}</span>
+          <span style="text-align: center;">{{ travelersCounter.adultsCount }}</span>
         </div>
-          <button @click="decrementAdult" class="travellersBtn">-</button>
+          <button @click="travelersCounter.decrementAdults" class="travellersBtn">-</button>
         </div>
 
         <div class="options-box-item">
-          <button @click="incrementChildren" class="travellersBtn">+</button>
+          <button @click="travelersCounter.incrementChildren" class="travellersBtn">+</button>
           <div style="display:grid">
           <div>Children</div>
-          <span style="text-align: center;">{{ countChildren }}</span>
+          <span style="text-align: center;">{{ travelersCounter.childrenCount }}</span>
         </div>
-          <button @click="decrementChildren" class="travellersBtn">-</button>
+          <button @click="travelersCounter.decrementChildren" class="travellersBtn">-</button>
         </div>
 
         <div class="options-box-item">
-          <button @click="incrementInfant" class="travellersBtn">+</button>
+          <button @click="travelersCounter.incrementInfants" class="travellersBtn">+</button>
           <div style="display:grid">
           <div>Infants</div>
-          <span style="text-align: center;">{{ countInfant }}</span>
+          <span style="text-align: center;">{{ travelersCounter.infantsCount }}</span>
         </div>
-          <button @click="decrementInfant" class="travellersBtn">-</button>
+          <button @click="travelersCounter.decrementInfants" class="travellersBtn">-</button>
         </div>
         <button
           @click="done"
@@ -61,18 +61,8 @@ import { useRouter } from "vue-router";
 
 export default {
   setup() {
-    const {
-      countAdult,
-      incrementAdult,
-      decrementAdult,
-      countChildren,
-      incrementChildren,
-      decrementChildren,
-      countInfant,
-      incrementInfant,
-      decrementInfant,
-    } = useCounter();
 
+    const  travelersCounter  = useCounter();
     const selectedOption = ref("");
     const selectedOptionDest = ref("");
     const showOptions = ref(false);
@@ -91,19 +81,18 @@ export default {
       infants: 0,
     });
 
+
+    const placeholderText = computed(() => {
+      return travelersCounter.adultsCount +" Adulst - " + travelersCounter.childrenCount +" Children - " + travelersCounter.infantsCount +" Infants";
+    });
+
+
     return {
       params,
       showOptions,
-      countAdult,
-      incrementAdult,
-      decrementAdult,
+      travelersCounter,
       done,
-      countInfant,
-      incrementInfant,
-      decrementInfant,
-      countChildren,
-      incrementChildren,
-      decrementChildren,
+      placeholderText
     };
   },
 };

@@ -142,6 +142,9 @@
 import { ref, onMounted, watch,defineProps  } from "vue";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
+
+
+const  travelersCounter  = useCounter();
 const props = defineProps({
   recommendedDestinationValue: String // Define the type of recommendedDestinationValue
 });
@@ -197,7 +200,6 @@ const searchFlights = async () => {
     });
     return;
   }
-  console.log("city is line 200: " , city.value);
   try {
     const response = await $fetch(
       "https://marketplace.beta.luxota.network/v1/search/flight",
@@ -208,9 +210,9 @@ const searchFlights = async () => {
           destination: destCity.value,
           departure: selectedDate.value.value,
           return: selectedDateReturn.value.value,
-          adults: 2,
-          children: 1,
-          infants: 0,
+          adults: travelersCounter.adultsCount,
+          children: travelersCounter.childrenCount,
+          infants: travelersCounter.infantsCount,
           cabin: "economy",
           tripType: tripType.value,
           searcherIdentity: "test",

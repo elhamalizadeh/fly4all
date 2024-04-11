@@ -257,13 +257,7 @@ const clearInput = () => {
   cursor: pointer;
 }
 
-/*------start3--------*/
-.dropdown {
-  /* position: relative; 
-   display: inline-block; */
-}
 .close-icon{
-  /* background-color:gray; */
   border-radius: 50px;
   padding:3px;
   color:gray;
