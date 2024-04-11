@@ -148,6 +148,7 @@ const props = defineProps({
     
 const router = useRouter();
 // const selectedTripType = ref("oneway"); // Default trip type is "One-Way"
+// const  recommended  = useCounter();
 const tripType = ref("oneWay");
 const params = reactive({
   origin: "",
@@ -196,7 +197,7 @@ const searchFlights = async () => {
     });
     return;
   }
-  // console.log("selectedDate.value.value is: " , selectedDate.value);
+  console.log("city is line 200: " , city.value);
   try {
     const response = await $fetch(
       "https://marketplace.beta.luxota.network/v1/search/flight",

@@ -649,7 +649,8 @@ const dayFlags = computed(() => {
       tripTypeValue,
       dayFlags,
       calendarWithDayOfYear,
-      day, dayOfYear,
+      day, 
+      dayOfYear,
        isCalendarVisible,
       isCalendarVisibleReturn,
     };

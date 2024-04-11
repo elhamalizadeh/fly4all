@@ -42,7 +42,7 @@
                   </div>
                 </div>
                 <div class="home-container040">
-                  <button type="button" class="home-button04 button" @click="recommended.updateSelectRecommended(flight.origin.city_en,flight.destination.city_en )">
+                  <button type="button" class="home-button04 button" @click="recommended.updateSelectRecommended(flight.origin.city_en,flight.destination.city_en );recommended.handleCityInput(flight.origin.city_en)">
                     <span class="home-text015">Facial services&nbsp;</span>
                     <svg viewBox="0 0 1024 1024" class="home-icon26">
                       <path

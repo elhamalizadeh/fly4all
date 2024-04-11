@@ -7,7 +7,7 @@
       type="text"
       id="selectedOption"
       name="selectedOption"
-      @input="handleCityInput"
+      @input="handleCityInput(city)"
       placeholder="From"
       v-model="city"
       required
@@ -121,6 +121,7 @@ const listVisibleDest = ref(false);
 watch(() => recommended.recomendedOrigin, (newValue) => {
   if (newValue) {
     city.value = recommended.recomendedOrigin;
+    handleCityInput();
     // listVisible.value = true;
   }
 });
@@ -128,6 +129,7 @@ watch(() => recommended.recomendedOrigin, (newValue) => {
 watch(() => recommended.recomendedDest, (newValue) => {
   if (newValue) {
     destCity.value = recommended.recomendedDest;
+    handleDestCityInput();
     // listVisible.value = true;
   }
 });
@@ -135,8 +137,10 @@ watch(() => recommended.recomendedDest, (newValue) => {
 
 
 const filter = ref("");
+// console.log("city.value out is:",recommended.city);
 
 const handleCityInput = async () => {
+  console.log("city.value is 141:",city.value);
   if (city.value.trim().length >= 2) {
     const airport = city.value.trim();
     axios
@@ -146,7 +150,7 @@ const handleCityInput = async () => {
       .then((res) => {
         airports.value = res.data.data;
         listVisible.value = true;
-        emits("citySelected", city.value);
+        emits("citySelected", city);
       })
       .catch((error) => {
         console.log("error");
@@ -174,7 +178,7 @@ const handleDestCityInput = async () => {
       .then((res) => {
         destAirports.value = res.data.data;
         listVisibleDest.value = true;
-        // emits("destCitySelected", destCity.value);
+        emits("destCitySelected", destCity);
       })
       .catch((error) => {
         console.log("error");
