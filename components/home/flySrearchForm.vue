@@ -150,8 +150,6 @@ const props = defineProps({
 });
     
 const router = useRouter();
-// const selectedTripType = ref("oneway"); // Default trip type is "One-Way"
-// const  recommended  = useCounter();
 const tripType = ref("oneWay");
 const params = reactive({
   origin: "",
@@ -243,7 +241,6 @@ const selectedDateReturn = ref("");
 const CurrentMonthYearFunctionReturn = (MonthYear) => {
   selectedDateReturn.value = MonthYear;
 };
-// console.log("selectedDateReturn is here: ", selectedDateReturn.value);
 const handleTripTypeChange = () => {
   tripType.value = params.tripType;
 };

@@ -92,7 +92,7 @@
 import { ref, watch, onMounted, computed, defineEmits } from "vue";
 import axios from "axios";
 
-const  recommended  = useCounter();
+const  recommended  = useRecommendDest();
 const selectedOption = ref("");
 const selectedOptionDest = ref("");
 const hiddenInputValue = ref("");

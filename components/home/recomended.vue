@@ -72,12 +72,10 @@ import { ref } from 'vue';
 import axios from "axios";
 
 export default {
-  // import { useCounter } from '../stores/counter',
-
 
   setup(props, { emit }) {
     const popularFlights = ref([]);
-    const  recommended  = useCounter();
+    const  recommended  = useRecommendDest();
 
     const populatFlights = async () => {
       try {

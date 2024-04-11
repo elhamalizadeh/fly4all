@@ -1,10 +1,8 @@
 import { defineStore } from "pinia";
 
-export const useCounter = defineStore("recommended", {
+export const useCounter = defineStore("counter", {
   state: () => {
     return {
-      recomendedOrigin: "",
-      recomendedDest: "",
       adultsCount: 1,
       childrenCount: 0,
       infantsCount: 0
@@ -12,16 +10,13 @@ export const useCounter = defineStore("recommended", {
         };
   },
   actions: {
-    updateSelectRecommended(origin, dest) {
-      this.recomendedOrigin = origin;
-      this.recomendedDest = dest;
-    },
-
     incrementAdults(){
         this.adultsCount++
     },
     decrementAdults(){
-        this.adultsCount--
+        if (this.adultsCount > 1) {
+            this.adultsCount--;
+        }
     },
 
 
@@ -29,7 +24,9 @@ export const useCounter = defineStore("recommended", {
         this.childrenCount++
     },
     decrementChildren(){
-        this.childrenCount--
+        if (this.childrenCount > 0) {
+            this.childrenCount--;
+        }
     },
 
 
@@ -37,7 +34,9 @@ export const useCounter = defineStore("recommended", {
         this.infantsCount++
     },
     decrementInfants(){
+        if (this.infantsCount > 0) {
         this.infantsCount--
+        }
     }
 
   },
