@@ -747,12 +747,13 @@ p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  pa
   border-radius: 10px;
 }
 .home-container019 {
-  left: 230px;
-  bottom: 38px;
+  left: 270px;
+  /* bottom: 38px; */
   display: flex;
   position: absolute;
   align-items: flex-start;
-  flex-direction: column;
+  flex-direction: row;
+  /* flex-direction: column; */
   justify-content: center;
 }
 .home-icon14 {
@@ -812,15 +813,16 @@ p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  pa
   border-radius: 10px;
 }
 .home-container023 {
-  top: 0px;
+  /* top: 0px; */
   flex: 0 0 auto;
-  left: 580px;
-  width: 36px;
-  height: 100px;
+  left: 570px;
+  /* width: 36px; */
+  /* height: 100px; */
   display: flex;
   position: absolute;
   align-items: flex-start;
-  flex-direction: column;
+  flex-direction: row;
+  /* flex-direction: column; */
   justify-content: center;
 }
 .home-icon22 {
@@ -3136,7 +3138,7 @@ p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  pa
   .home-container019 {
     left: 225px;
     bottom: 38px;
-    position: absolute;
+    /* position: absolute; */
   }
   .home-container027 {
     width: 209px;

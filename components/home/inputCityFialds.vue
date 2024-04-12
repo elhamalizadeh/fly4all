@@ -1,7 +1,6 @@
 <template>
   <!--------- Source  ------>
-  <div style="margin-right: 15px" class="dropdown home-container018">
-    <!-- <h3>{{ recommended.recomendedOrigin }}</h3> -->
+  <div class="dropdown home-container018">
     <input
       class="home-textinput input"
       type="text"
@@ -27,14 +26,14 @@
     </ul>
   </div>
   <div class="home-container019">
-    <span class="close-icon" @click="clearInput">&times;</span>
+    <span v-if="city" class="close-icon" @click="clearInputCity">&times;</span>
     <svg viewBox="0 0 1024 1024" class="home-icon14">
       <path
         d="M942 412q6 26-7 48t-39 30q-248 66-412 110l-226 60-68 20-112-192 62-16 84 64 212-56-176-306 82-22 294 274 228-60q26-8 49 6t29 40zM106 810h812v86h-812v-86z"
       ></path>
     </svg>
   </div>
-  <!-- <div class="home-container020">
+  <div class="home-container020">
     <svg viewBox="0 0 1024 1024" class="home-icon16">
       <path
         d="M320 384h128v128h-128zM512 384h128v128h-128zM704 384h128v128h-128zM128 768h128v128h-128zM320 768h128v128h-128zM512 768h128v128h-128zM320 576h128v128h-128zM512 576h128v128h-128zM704 576h128v128h-128zM128 576h128v128h-128zM832 0v64h-128v-64h-448v64h-128v-64h-128v1024h960v-1024h-128zM896 960h-832v-704h832v704z"
@@ -53,7 +52,7 @@
         d="M677.504 567.168c-16.683 16.683-16.683 43.648 0 60.331l55.168 55.168h-99.755c-54.101 0-99.413-38.016-114.816-89.941-10.923 32-26.752 63.957-46.507 93.227 37.803 49.579 95.701 82.048 161.323 82.048h99.755l-55.168 55.168c-16.683 16.683-16.683 43.648 0 60.331 8.32 8.32 19.243 12.501 30.165 12.501s21.845-4.181 30.165-12.501l158.165-158.165-158.165-158.165c-16.683-16.683-43.648-16.683-60.331 0z"
       ></path>
     </svg>
-  </div> -->
+  </div>
   <!------------------ destination ----->
   <div class="dropdown home-container022">
     <input
@@ -85,6 +84,16 @@
       </li>
     </ul>
   </div>
+  <div class="home-container023">
+    <span v-if="destCity" class="close-icon" @click="clearInputDestCity"
+      >&times;</span
+    >
+    <svg viewBox="0 0 1024 1024" class="home-icon22">
+      <path
+        d="M598 616q-164-46-412-110l-68-20v-220l62 16 40 100 212 56v-352l82 22 118 384 226 60q26 8 39 31t7 49q-8 26-30 38t-48 6zM106 810h812v86h-812v-86z"
+      ></path>
+    </svg>
+  </div>
 
   <!-- <homeTravellers /> -->
 </template>
@@ -92,7 +101,7 @@
 import { ref, watch, onMounted, computed, defineEmits } from "vue";
 import axios from "axios";
 
-const  recommended  = useRecommendDest();
+const recommended = useRecommendDest();
 const selectedOption = ref("");
 const selectedOptionDest = ref("");
 const hiddenInputValue = ref("");
@@ -118,29 +127,33 @@ const showSelectedAirport = ref(false);
 const listVisible = ref(false);
 const listVisibleDest = ref(false);
 
-watch(() => recommended.recomendedOrigin, (newValue) => {
-  if (newValue) {
-    city.value = recommended.recomendedOrigin;
-    handleCityInput();
-    // listVisible.value = true;
+watch(
+  () => recommended.recomendedOrigin,
+  (newValue) => {
+    if (newValue) {
+      city.value = recommended.recomendedOrigin;
+      handleCityInput();
+      // listVisible.value = true;
+    }
   }
-});
+);
 
-watch(() => recommended.recomendedDest, (newValue) => {
-  if (newValue) {
-    destCity.value = recommended.recomendedDest;
-    handleDestCityInput();
-    // listVisible.value = true;
+watch(
+  () => recommended.recomendedDest,
+  (newValue) => {
+    if (newValue) {
+      destCity.value = recommended.recomendedDest;
+      handleDestCityInput();
+      // listVisible.value = true;
+    }
   }
-});
-
-
+);
 
 const filter = ref("");
 // console.log("city.value out is:",recommended.city);
 
 const handleCityInput = async () => {
-  console.log("city.value is 141:",city.value);
+  console.log("city.value is 141:", city.value);
   if (city.value.trim().length >= 2) {
     const airport = city.value.trim();
     axios
@@ -201,8 +214,6 @@ const handleDestCityInput = async () => {
 
 // updateFilteredNames();
 
-
-
 // Function to emit selected city to parent
 const selectCity = (id, title) => {
   city.value = title;
@@ -217,11 +228,15 @@ const selectDestCity = (id, title) => {
   destCity.id = id;
   emits("destCitySelected", destCity.id);
   listVisibleDest.value = false;
-
 };
 
-const clearInput = () => {
-  city.value = ''; // Clear the city input field
+const clearInputCity = () => {
+  city.value = ""; // Clear the city input field
+  listVisible.value = false;
+};
+const clearInputDestCity = () => {
+  destCity.value = ""; // Clear the city input field
+  listVisibleDest.value = false;
 };
 </script>
 
@@ -257,11 +272,12 @@ const clearInput = () => {
   cursor: pointer;
 }
 
-.close-icon{
+.close-icon {
   border-radius: 50px;
-  padding:3px;
-  color:gray;
-  font-size: 20px;
+  padding: 3px;
+  color: gray;
+  font-size: 25px;
+  cursor: pointer;
 }
 .dropdown-content {
   display: none;
@@ -278,8 +294,8 @@ const clearInput = () => {
   display: block;
 }
 /*------flex--------*/
-.home-container017 {
+/* .home-container017 {
   display: grid;
   grid-template-columns: 1fr 1fr 3fr 1fr;
-}
+} */
 </style>

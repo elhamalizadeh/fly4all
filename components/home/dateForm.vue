@@ -658,13 +658,13 @@ const dayFlags = computed(() => {
 };
 </script>
 <style>
-.home-container024 {
+/* .home-container024 {
   color: rgb(18, 18, 20);
   gap: 1rem;
   position: relative;
-}
+} */
 .calendar {
-  position: absolute;
+  /* position: absolute; */
   padding: 0;
   margin: 0;
   display: flex;
@@ -733,9 +733,6 @@ td {
 }
 .flex-display .home-textinput3.input {
   width: 50%;
-}
-#dayOfMonth {
-  /* color:blue */
 }
 .red-text {
   color: #ABB2B9;
