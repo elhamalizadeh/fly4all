@@ -120,11 +120,6 @@
             </button>
           </div>
         </div>
-        <!-- Date -->
-        <!-- <homeDateForm 
-        @sendEmitCurrentMonthYear="CurrentMonthYearFunction" 
-        @sendEmitCurrentMonthYearReturn="CurrentMonthYearFunctionReturn"
-        :tripType="params.tripType"/> -->
         <!-- Travellers -->
         <homeTravellers />
 

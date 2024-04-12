@@ -10,34 +10,51 @@ export const useCounter = defineStore("counter", {
         };
   },
   actions: {
-    incrementAdults(){
-        this.adultsCount++
-    },
-    decrementAdults(){
-        if (this.adultsCount > 1) {
-            this.adultsCount--;
+    increment(value){
+        switch(value){
+            case 'adults':
+                this.adultsCount++
+            break;
+
+            case 'children':
+                this.childrenCount++
+            break;
+
+            case 'infants':
+                this.infantsCount++
+                break;
+
+            default :
+                break;
+
         }
     },
+    decrement(value){
+        switch(value){
+            case 'adults':
+                if (this.adultsCount > 1) {
+                    this.adultsCount--;
+                }
+            break;
 
+            case 'children':
+                if (this.childrenCount > 0) {
+                    this.childrenCount--;
+                }
+            break;
 
-    incrementChildren(){
-        this.childrenCount++
-    },
-    decrementChildren(){
-        if (this.childrenCount > 0) {
-            this.childrenCount--;
+            case 'infants':
+                if (this.infantsCount > 0) {
+                    this.infantsCount--
+                    }
+                break;
+
+            default :
+                break;
+
         }
-    },
 
-
-    incrementInfants(){
-        this.infantsCount++
-    },
-    decrementInfants(){
-        if (this.infantsCount > 0) {
-        this.infantsCount--
-        }
-    }
+},
 
   },
 });

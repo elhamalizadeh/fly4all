@@ -17,39 +17,39 @@
       />
 
       <div v-if="showOptions" class="options-box">
-        <div class="options-box-item">
-          <button @click="travelersCounter.incrementAdults" class="travellersBtn">+</button>
-          <div style="display:grid">
-          <div>Adult</div>
-          <span style="text-align: center;">{{ travelersCounter.adultsCount }}</span>
-        </div>
-          <button @click="travelersCounter.decrementAdults" class="travellersBtn">-</button>
-        </div>
-
-        <div class="options-box-item">
-          <button @click="travelersCounter.incrementChildren" class="travellersBtn">+</button>
-          <div style="display:grid">
-          <div>Children</div>
-          <span style="text-align: center;">{{ travelersCounter.childrenCount }}</span>
-        </div>
-          <button @click="travelersCounter.decrementChildren" class="travellersBtn">-</button>
-        </div>
-
-        <div class="options-box-item">
-          <button @click="travelersCounter.incrementInfants" class="travellersBtn">+</button>
+          <div class="options-box-item">
+            <button @click="travelersCounter.decrement('adults')" class="travellersBtn">-</button>
+            <div style="display:grid">
+            <div>Adult</div>
+            <span style="text-align: center;">{{ travelersCounter.adultsCount }}</span>
+          </div>
+            <button @click="travelersCounter.increment('adults')" class="travellersBtn">+</button>
+          </div>
+  
+          <div class="options-box-item">
+            <button @click="travelersCounter.decrement('children')" class="travellersBtn">-</button>
+            <div style="display:grid">
+            <div>Children</div>
+            <span style="text-align: center;">{{ travelersCounter.childrenCount }}</span>
+          </div>
+            <button @click="travelersCounter.increment('children')" class="travellersBtn">+</button>
+          </div>
+  
+          <div class="options-box-item">
+          <button @click="travelersCounter.decrement('infants')" class="travellersBtn">-</button>
           <div style="display:grid">
           <div>Infants</div>
           <span style="text-align: center;">{{ travelersCounter.infantsCount }}</span>
         </div>
-          <button @click="travelersCounter.decrementInfants" class="travellersBtn">-</button>
+        <button @click="travelersCounter.increment('infants')" class="travellersBtn">+</button>
         </div>
-        <button
-          @click="done"
-          id="doneBtn"
-        >
-          Done
-        </button>
-      </div>
+          <button
+            @click="done"
+            id="doneBtn"
+          >
+            Done
+          </button>
+        </div>
     </div>
   </div>
 </template>
