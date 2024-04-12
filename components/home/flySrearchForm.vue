@@ -163,36 +163,29 @@ const params = reactive({
   infants: 0,
 });
 
-const city = ref("");
-const destCity = ref("");
-const selectedOriginAirport = ref("");
-const airports = ref([]);
-const showAirports = ref(false);
-const airport = city.value.trim();
-const showSelectedAirport = ref(false);
-
-const filter = ref("");
+const cityId = ref("");
+const destCityId = ref("");
 
 const handleCitySelected = (selectCity) => {
   // Handle the city value emitted from the child component
-  city.value = selectCity;
+  cityId.value = selectCity;
 };
 
 const handleDestCitySelected = (selectDestCity) => {
   // Handle the destination city value emitted from the child component
-  destCity.value = selectDestCity;
+  destCityId.value = selectDestCity;
 };
 
 //--- search flights by input fields -----
 const searchFlights = async () => {
   // Check if the required fields are filled
-  if (!city.value) {
+  if (!cityId.value) {
     Swal.fire({
       icon: "error",
       text: "Origin City is required.",
     });
     return;
-  } else if (!destCity.value) {
+  } else if (!destCityId.value) {
     Swal.fire({
       icon: "error",
       text: "Destination City is required.",
@@ -205,8 +198,8 @@ const searchFlights = async () => {
       {
         method: "POST",
         body: JSON.stringify({
-          origin: city.value,
-          destination: destCity.value,
+          origin: cityId.value,
+          destination: destCityId.value,
           departure: selectedDate.value.value,
           return: selectedDateReturn.value.value,
           adults: travelersCounter.adultsCount,

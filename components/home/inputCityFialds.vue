@@ -6,7 +6,7 @@
       type="text"
       id="selectedOption"
       name="selectedOption"
-      @input="handleCityInput(city)"
+      @input="handleCityInput"
       placeholder="From"
       v-model="city"
       required
@@ -40,7 +40,7 @@
       ></path>
     </svg>
   </div>
-  <div class="home-container021">
+  <div class="home-container021" style="cursor: pointer" @click="changeCity">
     <svg viewBox="0 0 1024 1024" class="home-icon18">
       <path
         d="M170.667 384h149.333c31.403 0 59.435 16.683 78.976 42.709 13.867-25.771 31.104-49.621 50.816-70.912-34.261-35.115-79.616-57.131-129.792-57.131h-149.333c-23.595 0-42.667 19.115-42.667 42.667s19.072 42.667 42.667 42.667z"
@@ -105,7 +105,6 @@ const recommended = useRecommendDest();
 const selectedOption = ref("");
 const selectedOptionDest = ref("");
 const hiddenInputValue = ref("");
-const selectedDestAirportId = ref("");
 const params = reactive({
   origin: "",
   destination: "",
@@ -133,7 +132,6 @@ watch(
     if (newValue) {
       city.value = recommended.recomendedOrigin;
       handleCityInput();
-      // listVisible.value = true;
     }
   }
 );
@@ -144,16 +142,13 @@ watch(
     if (newValue) {
       destCity.value = recommended.recomendedDest;
       handleDestCityInput();
-      // listVisible.value = true;
     }
   }
 );
 
 const filter = ref("");
-// console.log("city.value out is:",recommended.city);
 
 const handleCityInput = async () => {
-  console.log("city.value is 141:", city.value);
   if (city.value.trim().length >= 2) {
     const airport = city.value.trim();
     axios
@@ -163,7 +158,7 @@ const handleCityInput = async () => {
       .then((res) => {
         airports.value = res.data.data;
         listVisible.value = true;
-        emits("citySelected", city);
+        // emits("citySelected", city);
       })
       .catch((error) => {
         console.log("error");
@@ -177,7 +172,7 @@ const handleCityInput = async () => {
 
 //------------------ destination--------------------
 const destCity = ref("");
-const selectedDestAirport = ref("");
+// const selectedDestAirport = ref("");
 const destAirports = ref([]);
 const showDestAirports = ref(false);
 
@@ -191,7 +186,6 @@ const handleDestCityInput = async () => {
       .then((res) => {
         destAirports.value = res.data.data;
         listVisibleDest.value = true;
-        emits("destCitySelected", destCity);
       })
       .catch((error) => {
         console.log("error");
@@ -201,18 +195,7 @@ const handleDestCityInput = async () => {
     destAirports = ref([]);
     console.log("error dare line 40");
   }
-  emits("destCitySelected", destCity.value);
 };
-// const selectDestAirport = (id, title) => {
-//   destCity.value = title;
-//   destCity.id = id;
-// };
-// const filteredNames = ref([]);
-// const updateFilteredNames = () => {
-//   filteredNames.value = names.value.filter((name) => name !== "");
-// };
-
-// updateFilteredNames();
 
 // Function to emit selected city to parent
 const selectCity = (id, title) => {
@@ -237,6 +220,17 @@ const clearInputCity = () => {
 const clearInputDestCity = () => {
   destCity.value = ""; // Clear the city input field
   listVisibleDest.value = false;
+};
+
+const changeCity = () => {
+  const temp = city.value;
+  city.value = destCity.value;
+  destCity.value = temp;
+  const tempId = city.id;
+  city.id = destCity.id;
+  destCity.id = tempId;
+  emits("citySelected", city.id);
+  emits("destCitySelected", destCity.id);
 };
 </script>
 
