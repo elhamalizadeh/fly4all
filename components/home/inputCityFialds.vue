@@ -231,6 +231,12 @@ const changeCity = () => {
   destCity.id = tempId;
   emits("citySelected", city.id);
   emits("destCitySelected", destCity.id);
+
+  if(listVisible){
+    const tempAirport = airports.value;
+    airports.value = destAirports.value;
+    destAirports.value = tempAirport
+  }
 };
 </script>
 
