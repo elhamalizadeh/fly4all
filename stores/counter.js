@@ -13,15 +13,21 @@ export const useCounter = defineStore("counter", {
     increment(value){
         switch(value){
             case 'adults':
+                if (this.adultsCount < 6) {
                 this.adultsCount++
+                }
             break;
 
             case 'children':
+                if (this.childrenCount < 4) {
                 this.childrenCount++
+                }
             break;
 
             case 'infants':
+                if (this.infantsCount < 4) {
                 this.infantsCount++
+                }
                 break;
 
             default :
