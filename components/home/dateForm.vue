@@ -1,8 +1,8 @@
 <template>
   <div class="home-container024">
     <div
-      class="calendar"
-      :class="{ 'flex-display': tripTypeValue === 'roundTrip' }"
+      class="calendar" 
+      :class="{ 'flex-display': tripTypeValue === 'roundTrip'}"
     >
       <!------------ deprature --------->
       <input
@@ -45,7 +45,7 @@
                     @mouseover="hoverBackground"
                     @mouseleave="resetBackground"
                     :class="{
-                    'red-text': dayObj.dayOfYear < dayOfYear,
+                    'gray-text': dayObj.dayOfYear < dayOfYear,
                     'hoverable': dayObj.dayOfYear >= dayOfYear
                 }" 
                 :id="'tdDayOfMonth' + dayObj.day"
@@ -100,7 +100,7 @@
                     @mouseover="hoverBackground"
                     @mouseleave="resetBackground"
                     :class="{
-              'red-text': dayObj.dayOfYear < dayOfYear,
+              'gray-text': dayObj.dayOfYear < dayOfYear,
               'hoverable': dayObj.dayOfYear >= dayOfYear
                     }"
                     :id="'tdDayOfMonthReturn' + dayObj.day"
@@ -658,13 +658,11 @@ const dayFlags = computed(() => {
 };
 </script>
 <style>
-/* .home-container024 {
+.home-container024 {
   color: rgb(18, 18, 20);
   gap: 1rem;
-  position: relative;
-} */
+}
 .calendar {
-  /* position: absolute; */
   padding: 0;
   margin: 0;
   display: flex;
@@ -672,10 +670,20 @@ const dayFlags = computed(() => {
   height: 100px;
   align-items: center;
 }
-.home-textinput3 input {
-  position: absolute;
+
+.flex-display .home-textinput3.input {
   width: 100%;
 }
+.flex-display {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 0.5rem; 
+}
+.home-textinput3 input {
+  width: 70%;
+}
+
+
 .calendar-box {
   position: absolute;
   background-color: white;
@@ -688,7 +696,7 @@ const dayFlags = computed(() => {
   position: absolute;
   background-color: white;
   top: 2rem;
-  right: -4rem;
+  right: 90px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
   height: 50vh;
   z-index: 100;
@@ -727,14 +735,7 @@ td {
   order: 2;
 }
 
-.flex-display {
-  display: flex;
-  gap: 0.5rem;
-}
-.flex-display .home-textinput3.input {
-  width: 50%;
-}
-.red-text {
+.gray-text {
   color: #ABB2B9;
 }
 .red-background {

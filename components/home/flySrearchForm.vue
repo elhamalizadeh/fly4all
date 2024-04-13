@@ -271,15 +271,12 @@ const addInputFunction = () => {
 </script>
 
 <style scoped>
-/*------flex--------*/
-/* .home-container017 {
+.home-container017 {
   display: grid;
-  grid-template-columns: 1fr 1fr 3fr 1fr;
-  background-color: white;
-} */
+  grid-template-columns:1fr 0.5fr 1fr 3fr 1fr;
+}
 .input-city-fields {
   margin-bottom: 10px;
-  /* border: #ddd solid 2px; */
 }
 #deleteBtn:hover {
   cursor: pointer;
