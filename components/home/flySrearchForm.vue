@@ -57,14 +57,6 @@
         <div class="home-container014"></div>
         <div class="home-container015"></div>
         <div class="home-container016"></div>
-        <button
-          class="home-button02 button"
-          id="addBtn"
-          v-if="tripType == 'multi'"
-          @click="addInputFunction"
-        >
-          Add trip
-        </button>
       </div>
       <!-- cabin -->
       <select class="home-select1" v-model="params.cabin">
@@ -73,27 +65,8 @@
         <option value="first">First</option>
       </select>
 
-      <!-- <div class="home-container017"> -->
-      <!-- InputCityFialds -->
-      <!-- <button class="home-button02 button" id="addBtn" v-if="tripType == 'multi'" @click="addInputFunction">Add trip</button> -->
-      <!-------->
-      <!-- <div :style="{ height: containerHeight }" class="home-container017"> -->
-      <div
-        :style="{ height: tripType === 'multi' ? containerHeight : 'auto' }"
-        class="home-container017"
-      >
-        <homeInputCityFialds
-          @citySelected="handleCitySelected"
-          @destCitySelected="handleDestCitySelected"
-        />
-        <homeDateForm
-          @sendEmitCurrentMonthYear="CurrentMonthYearFunction"
-          @sendEmitCurrentMonthYearReturn="CurrentMonthYearFunctionReturn"
-          :tripType="params.tripType"
-        />
-
-        <!-----  v-for  --->
-        <div v-for="(item, index) in trips" :key="index">
+      <div class=" home-container017 multiInputDiv" v-for="(item, index) in trips" :key="index">
+                <!-----  v-for  --->
           <homeInputCityFialds
             @citySelected="handleCitySelected"
             @destCitySelected="handleDestCitySelected"
@@ -119,7 +92,23 @@
               Delete
             </button>
           </div>
-        </div>
+      </div>
+
+        <div
+        class="home-container017"
+      >
+      <!-- :style="{ height: tripType === 'multi' ? containerHeight : 'auto' }" -->
+
+        <homeInputCityFialds
+          @citySelected="handleCitySelected"
+          @destCitySelected="handleDestCitySelected"
+        />
+        <homeDateForm
+          @sendEmitCurrentMonthYear="CurrentMonthYearFunction"
+          @sendEmitCurrentMonthYearReturn="CurrentMonthYearFunctionReturn"
+          :tripType="params.tripType"
+        />
+
         <!-- Travellers -->
         <homeTravellers />
         <div class="home-container026">
@@ -131,7 +120,17 @@
                 </div>
         <!-- </div> -->
       </div><!-------- end home-container017-->
+
+      <button
+          class="home-button02 button"
+          id="addBtn"
+          v-if="tripType == 'multi'"
+          @click="addInputFunction"
+        >
+          Add trip
+        </button>
       <div class="home-container027">
+        
         <button @click="searchFlights" class="home-button02 button">
           Destination Now →
         </button>
@@ -240,13 +239,13 @@ const handleTripTypeChange = () => {
 };
 
 const trips = ref([]);
-const containerHeight = ref("18vh");
+// const containerHeight = ref("18vh");
 
 //-----------deleteBtn---
 // const tripTypeValue = ref(props.tripType);
 const deleteFunction = (index) => {
   trips.value.splice(index, 1);
-  containerHeight.value = `calc(${containerHeight.value} - 18vh)`;
+  // containerHeight.value = `calc(${containerHeight.value} - 18vh)`;
 };
 // if (tripType.value === "multi") {
 //   trips.value.pop({
@@ -265,7 +264,7 @@ const addInputFunction = () => {
       inputCity: "",
       date: "",
     });
-    containerHeight.value = `calc(30vh + ${20 * (trips.value.length - 1)}vh)`;
+    // containerHeight.value = `calc(30vh + ${20 * (trips.value.length - 1)}vh)`;
   }
 };
 </script>
@@ -274,6 +273,8 @@ const addInputFunction = () => {
 .home-container017 {
   display: grid;
   grid-template-columns:1fr 0.5fr 1fr 3fr 1fr;
+  background-color: #ffffff;
+  border-radius: 20px;
 }
 .input-city-fields {
   margin-bottom: 10px;
@@ -283,5 +284,10 @@ const addInputFunction = () => {
 }
 #addBtn:hover {
   cursor: pointer;
+}
+.multiInputDiv{
+  display:grid;
+  /* grid-template-columns: 1fr 0.5fr 1fr 1fr 1fr; */
+  /* grid-template-rows:1fr 1fr */
 }
 </style>
