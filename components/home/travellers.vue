@@ -86,6 +86,24 @@ export default {
       return travelersCounter.adultsCount +" Adulst - " + travelersCounter.childrenCount +" Children - " + travelersCounter.infantsCount +" Infants";
     });
 
+    ///---------------------------
+    const closeBoxOnClickOutside = (event) => {
+      if (!event.target.closest(".home-container025")) {
+        showOptions.value = false;
+      }
+    };
+
+    // Listen for click events when component is mounted
+    onMounted(() => {
+      document.addEventListener("click", closeBoxOnClickOutside);
+    });
+
+    // Remove event listener when component is unmounted to prevent memory leaks
+    onUnmounted(() => {
+      document.removeEventListener("click", closeBoxOnClickOutside);
+    });
+
+
 
     return {
       params,

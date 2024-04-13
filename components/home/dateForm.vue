@@ -651,8 +651,6 @@ const dayFlags = computed(() => {
       calendarWithDayOfYear,
       day, 
       dayOfYear,
-       isCalendarVisible,
-      isCalendarVisibleReturn,
     };
   },
 };
