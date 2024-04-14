@@ -49,7 +49,7 @@
             name="radio"
             class="home-radiobutton1"
             v-model="params.tripType"
-            value="multi"
+            value="multiTrip"
             @change="handleTripTypeChange"
           />
           <span class="home-text005">Multi-destination</span>
@@ -70,10 +70,10 @@
                 <template v-if="index === 0 || !trips[index - 1].inputCity">
           <homeInputCityFialds
             @citySelected="handleMultiCitySelected($event, index)"
-            @destCitySelected="handleDestCitySelected"
+            @destCitySelected="handleMultiDestCitySelected($event, index)"
             v-model="item.inputCity"
             :tripType="params.tripType"
-            v-if="tripType == 'multi'"
+            v-if="tripType == 'multiTrip'"
           />
 
           <homeDateForm
@@ -81,10 +81,10 @@
             @sendEmitCurrentMonthYearReturn="CurrentMonthYearFunctionReturn"
             v-model="item.date"
             :tripType="params.tripType"
-            v-if="tripType == 'multi'"
+            v-if="tripType == 'multiTrip'"
           />
 
-          <div v-if="tripType == 'multi'">
+          <div v-if="tripType == 'multiTrip'">
             <button
               class="home-button02 button"
               id="deleteBtn"
@@ -126,7 +126,7 @@
       <button
           class="home-button02 button"
           id="addBtn"
-          v-if="tripType == 'multi'"
+          v-if="tripType == 'multiTrip'"
           @click="addInputFunction"
         >
           Add trip
@@ -136,7 +136,7 @@
         <!-- <button @click="searchFlights" class="home-button02 button">
           Destination Now →
         </button> -->
-        <button v-if="tripType === 'multi'" @click="searchMultiFlights(index)" class="home-button02 button">
+        <button v-if="tripType === 'multiTrip'" @click="searchMultiFlights(index)" class="home-button02 button">
     Destination Now →
 </button>
 <button v-else @click="searchFlights" class="home-button02 button">
@@ -173,13 +173,18 @@ const params = reactive({
 
 // const cityId = ref("");
 const cityId = ref([]);
-const destCityId = ref("");
-const cityIdByIndex = ref([])
+const destCityId = ref([]);
+const cityIdByIndex = ref([]);
+const destCityIdByIndex = ref([])
 
 const handleCitySelected = (selectCity) => {
     cityId.value = selectCity;
 };
 
+//------------------------handleDestCitySelected ------
+const handleDestCitySelected = (selectDestCity) => {
+  destCityId.value = selectDestCity;
+};
 
 //------------------------handleMultiCitySelected ------********
 const handleMultiCitySelected = (selectCity, index) => {
@@ -195,13 +200,20 @@ const handleMultiCitySelected = (selectCity, index) => {
     
 };
 
+//------------------------handleMultiDestCitySelected ------********
+const handleMultiDestCitySelected = (selectDestCity, index) => {
 
-
-//------------------------handleDestCitySelected ------
-const handleDestCitySelected = (selectDestCity) => {
-  // Handle the destination city value emitted from the child component
-  destCityId.value = selectDestCity;
+if (!destCityId[index]) {
+  destCityId[index] = {}; // Initialize object if not present
+  }
+  destCityId[index] = selectDestCity;
+  // console.log("index is:",index);
+  // console.log("selectCity is 183:",selectCity)
+  // console.log("cityId[index].value:",cityId[index]);
+  destCityIdByIndex.value = destCityId[index];
+  
 };
+
 
 //-------------------------- search flights by input fields -----
 const searchFlights = async () => {
@@ -256,11 +268,8 @@ const searchFlights = async () => {
 //------------------------searchMultiFlights ------*********
 const searchMultiFlights = async (index) => {
   const data = reactive({});
-  // data['legs[0][origin]'] = cityId[index];
-  data['legs[0][dest]'] = destCityId.value;
-  console.log(cityIdByIndex.value +"destCityId in 245:"+ data['legs[0][dest]']);
-  //----------------
-  console.log("cityId is 257:",destCityId.value);
+  data['legs[0][origin]'] = cityIdByIndex.value;
+  data['legs[0][destination]'] = destCityIdByIndex.value;
 
   if (!cityIdByIndex.value) {
     Swal.fire({
@@ -269,7 +278,7 @@ const searchMultiFlights = async (index) => {
     });
     return;
   } 
-  else if (!destCityId.value) {
+  else if (!destCityIdByIndex.value) {
     Swal.fire({
       icon: "error",
       text: "Destination City is required.",
@@ -282,19 +291,20 @@ const searchMultiFlights = async (index) => {
       {
         method: "POST",
         body: JSON.stringify({
-          origin: cityIdByIndex.value,
-          destination: destCityId.value,
-          departure: selectedDate.value.value,
-          return: selectedDateReturn.value.value,
+          "legs[0][origin]": data['legs[0][origin]'],
+          "legs[0][destination]": data['legs[0][destination]'],
+          "legs[0][departure]": selectedDate.value.value,
           adults: travelersCounter.adultsCount,
           children: travelersCounter.childrenCount,
           infants: travelersCounter.infantsCount,
           cabin: "economy",
-          tripType: tripType.value,
+          tripType: 'multiDestination',
           searcherIdentity: "test",
         }),
         headers: {
           "Content-Type": "application/json",
+          "Authorization":'Bearer 11aup4zzwj2nol1zguv34dxt7661a75910dbd852f2574c'
+
         },
       }
     );
@@ -343,7 +353,7 @@ const deleteFunction = (index) => {
 // }
 
 const addInputFunction = () => {
-  if (tripType.value === "multi") {
+  if (tripType.value === "multiTrip") {
     trips.value.push({
       inputCity: "",
       date: "",
