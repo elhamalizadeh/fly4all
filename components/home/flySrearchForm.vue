@@ -67,8 +67,9 @@
 
       <div class=" home-container017 multiInputDiv" v-for="(item, index) in trips" :key="index">
                 <!-----  v-for  --->
+                <template v-if="index === 0 || !trips[index - 1].inputCity">
           <homeInputCityFialds
-            @citySelected="handleCitySelected"
+            @citySelected="handleMultiCitySelected($event, index)"
             @destCitySelected="handleDestCitySelected"
             v-model="item.inputCity"
             :tripType="params.tripType"
@@ -92,6 +93,7 @@
               Delete
             </button>
           </div>
+        </template>
       </div>
 
         <div
@@ -131,17 +133,24 @@
         </button>
       <div class="home-container027">
         
-        <button @click="searchFlights" class="home-button02 button">
+        <!-- <button @click="searchFlights" class="home-button02 button">
           Destination Now →
-        </button>
+        </button> -->
+        <button v-if="tripType === 'multi'" @click="searchMultiFlights(index)" class="home-button02 button">
+    Destination Now →
+</button>
+<button v-else @click="searchFlights" class="home-button02 button">
+    Destination Now →
+</button>
       </div>
     </div>
   </div>
 </template>
 <script setup>
-import { ref, onMounted, watch,defineProps  } from "vue";
+import { ref, onMounted, watch,defineProps, reactive   } from "vue";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
+
 
 
 const  travelersCounter  = useCounter();
@@ -162,20 +171,39 @@ const params = reactive({
   infants: 0,
 });
 
-const cityId = ref("");
+// const cityId = ref("");
+const cityId = ref([]);
 const destCityId = ref("");
+const cityIdByIndex = ref([])
 
 const handleCitySelected = (selectCity) => {
-  // Handle the city value emitted from the child component
-  cityId.value = selectCity;
+    cityId.value = selectCity;
 };
 
+
+//------------------------handleMultiCitySelected ------********
+const handleMultiCitySelected = (selectCity, index) => {
+
+  if (!cityId[index]) {
+        cityId[index] = {}; // Initialize object if not present
+    }
+    cityId[index] = selectCity;
+    console.log("index is:",index);
+    console.log("selectCity is 183:",selectCity)
+    console.log("cityId[index].value:",cityId[index]);
+    cityIdByIndex.value = cityId[index];
+    
+};
+
+
+
+//------------------------handleDestCitySelected ------
 const handleDestCitySelected = (selectDestCity) => {
   // Handle the destination city value emitted from the child component
   destCityId.value = selectDestCity;
 };
 
-//--- search flights by input fields -----
+//-------------------------- search flights by input fields -----
 const searchFlights = async () => {
   // Check if the required fields are filled
   if (!cityId.value) {
@@ -224,6 +252,62 @@ const searchFlights = async () => {
   }
 };
 
+
+//------------------------searchMultiFlights ------*********
+const searchMultiFlights = async (index) => {
+  const data = reactive({});
+  // data['legs[0][origin]'] = cityId[index];
+  data['legs[0][dest]'] = destCityId.value;
+  console.log(cityIdByIndex.value +"destCityId in 245:"+ data['legs[0][dest]']);
+  //----------------
+  console.log("cityId is 257:",destCityId.value);
+
+  if (!cityIdByIndex.value) {
+    Swal.fire({
+      icon: "error",
+      text: "Origin City is required.",
+    });
+    return;
+  } 
+  else if (!destCityId.value) {
+    Swal.fire({
+      icon: "error",
+      text: "Destination City is required.",
+    });
+    return;
+  }
+  try {
+    const response = await $fetch(
+      "https://marketplace.beta.luxota.network/v2/search/flight",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          origin: cityIdByIndex.value,
+          destination: destCityId.value,
+          departure: selectedDate.value.value,
+          return: selectedDateReturn.value.value,
+          adults: travelersCounter.adultsCount,
+          children: travelersCounter.childrenCount,
+          infants: travelersCounter.infantsCount,
+          cabin: "economy",
+          tripType: tripType.value,
+          searcherIdentity: "test",
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const sessionId = response.sessionId;
+    const status = response.status;
+    await router.push({
+      name: "fly-search",
+      query: { status, sessionId, lang: "EN" },
+    });
+  } catch {
+    console.error("Error searching flights:", error);
+  }
+};
 //-----------------------send data from dateForm to this page
 const selectedDate = ref("");
 const CurrentMonthYearFunction = (MonthYear) => {

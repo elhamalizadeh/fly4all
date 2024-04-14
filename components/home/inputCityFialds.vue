@@ -205,7 +205,8 @@ const handleDestCityInput = async () => {
 const selectCity = (id, title) => {
   city.value = title;
   city.id = id;
-  emits("citySelected", city.id);
+  emits("citySelected",city.id);
+  // emits('citySelected', { index: 100, cityId: city.id });
   listVisible.value = false;
 };
 
