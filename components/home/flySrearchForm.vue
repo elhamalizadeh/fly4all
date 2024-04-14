@@ -74,6 +74,7 @@
             v-model="item.inputCity"
             :tripType="params.tripType"
             v-if="tripType == 'multiTrip'"
+            id="inputCityFields"
           />
 
           <homeDateForm
@@ -131,12 +132,8 @@
         >
           Add trip
         </button>
-      <div class="home-container027">
-        
-        <!-- <button @click="searchFlights" class="home-button02 button">
-          Destination Now →
-        </button> -->
-        <button v-if="tripType === 'multiTrip'" @click="searchMultiFlights(index)" class="home-button02 button">
+      <div class="home-container027">  
+        <button v-if="tripType === 'multiTrip'" @click="searchMultiFlights()" class="home-button02 button">
     Destination Now →
 </button>
 <button v-else @click="searchFlights" class="home-button02 button">
@@ -152,7 +149,8 @@ import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 
 
-
+const inputCityFieldsElement = document.getElementById('inputCityFields');
+console.log("inputCityFieldsElement:", inputCityFieldsElement);
 const  travelersCounter  = useCounter();
 const props = defineProps({
   recommendedDestinationValue: String // Define the type of recommendedDestinationValue
@@ -266,7 +264,8 @@ const searchFlights = async () => {
 
 
 //------------------------searchMultiFlights ------*********
-const searchMultiFlights = async (index) => {
+const searchMultiFlights = async () => {
+
   const data = reactive({});
   data['legs[0][origin]'] = cityIdByIndex.value;
   data['legs[0][destination]'] = destCityIdByIndex.value;
@@ -286,28 +285,27 @@ const searchMultiFlights = async (index) => {
     return;
   }
   try {
-    const response = await $fetch(
-      "https://marketplace.beta.luxota.network/v2/search/flight",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          "legs[0][origin]": data['legs[0][origin]'],
-          "legs[0][destination]": data['legs[0][destination]'],
-          "legs[0][departure]": selectedDate.value.value,
-          adults: travelersCounter.adultsCount,
-          children: travelersCounter.childrenCount,
-          infants: travelersCounter.infantsCount,
-          cabin: "economy",
-          tripType: 'multiDestination',
-          searcherIdentity: "test",
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization":'Bearer 11aup4zzwj2nol1zguv34dxt7661a75910dbd852f2574c'
+    const url = new URL("https://marketplace.beta.luxota.network/v2/search/flight");
+//-----urlSearchParams------
+const params = new URLSearchParams();
+params.append("legs[0][origin]", data['legs[index][origin]']);
+params.append("legs[0][destination]", data['legs[index][destination]']);
+params.append("legs[0][departure]", selectedDate.value.value);
+params.append("adults", travelersCounter.adultsCount);
+params.append("children", travelersCounter.childrenCount);
+params.append("infants", travelersCounter.infantsCount);
+params.append("cabin", "economy");
+params.append("tripType", "multiDestination");
+params.append("searcherIdentity", "test");
 
-        },
-      }
-    );
+const response = await fetch(url, {
+  method: "POST",
+  body: params,
+  headers: {
+    "Content-Type": "application/x-www-form-urlencoded",
+    "Authorization": "Bearer 11aup4zzwj2nol1zguv34dxt7661a75910dbd852f2574c"
+  }
+});
     const sessionId = response.sessionId;
     const status = response.status;
     await router.push({
