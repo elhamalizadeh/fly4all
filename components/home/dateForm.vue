@@ -15,6 +15,14 @@
         :name="`legs[${index}][departure]`"
         required
       />
+      <input
+        class="home-textinput3 input"
+        type="hidden"
+        v-model="selectedDateToSend"
+        readonly
+        :placeholder="placeholderText"
+        :name="`legs[${index}][departure]`" 
+      />
       <div v-if="isCalendarVisible" class="calendar-box">
         <!-- <div v-for="day in daysOfMonth" :key="day" @click="selectDate(day)">{{ day }}</div> -->
         <div class="calendar-box">
@@ -429,7 +437,7 @@ const dayFlags = computed(() => {
       }
 
       selectedDate.value = `${day} ${currentMonthYear}`;
-      console.log("selectedDate:" , selectedDate.value);
+      console.log("selectedDate 432:" , selectedDate.value);
       isCalendarVisible.value = false; // Hide the calendar after date selection
       // isCalendarVisibleReturn.value = false;
 

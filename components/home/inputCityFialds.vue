@@ -91,7 +91,6 @@
       :name="`legs[${index}][destination]`"
       id="selectedDestAirportId"
     v-model="selectedDestCityId"
-
     />
     <ul id="myUL" v-if="listVisibleDest" class="dropdown-content">
       <div id="title">Search by city or airport</div>
