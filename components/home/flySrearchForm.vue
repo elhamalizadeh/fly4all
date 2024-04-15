@@ -22,9 +22,9 @@
       <!----------------tripType---------------->
       <div class="home-container010">
         <div class="home-container011">
+          <!-- name="radio" -->
           <input
             type="radio"
-            name="radio"
             class="home-radiobutton"
             v-model="params.tripType"
             value="oneWay"
@@ -33,9 +33,9 @@
           <span class="home-text004">One-Way</span>
         </div>
         <div class="home-container012">
+          <!-- name="radio" -->
           <input
             type="radio"
-            name="radio"
             class="home-radiobutton1"
             v-model="params.tripType"
             value="roundTrip"
@@ -44,12 +44,12 @@
           <span class="home-text005">Round-Trip</span>
         </div>
         <div>
+          <!-- name="radio" -->
           <input
             type="radio"
-            name="radio"
             class="home-radiobutton1"
             v-model="params.tripType"
-            value="multiTrip"
+            value="multiDestination"
             @change="handleTripTypeChange"
           />
           <span class="home-text005">Multi-destination</span>
@@ -77,19 +77,21 @@
             :index="index + 1"
             v-model="item.inputCity"
             :tripType="params.tripType"
-            v-if="tripType == 'multiTrip'"
+            v-if="tripType == 'multiDestination'"
             id="inputCityFields"
+            :required=false
           />
 
           <homeDateForm
             @sendEmitCurrentMonthYear="CurrentMonthYearFunction"
             @sendEmitCurrentMonthYearReturn="CurrentMonthYearFunctionReturn"
             v-model="item.date"
+            :index="index + 1"
             :tripType="params.tripType"
-            v-if="tripType == 'multiTrip'"
+            v-if="tripType == 'multiDestination'"
           />
 
-          <div v-if="tripType == 'multiTrip'">
+          <div v-if="tripType == 'multiDestination'">
             <button
               class="home-button02 button"
               id="deleteBtn"
@@ -108,11 +110,13 @@
           @citySelected="handleCitySelected"
           @destCitySelected="handleDestCitySelected"
           :index="0"
+          :required=true
         />
         <homeDateForm
           @sendEmitCurrentMonthYear="CurrentMonthYearFunction"
           @sendEmitCurrentMonthYearReturn="CurrentMonthYearFunctionReturn"
           :tripType="params.tripType"
+          :index="0"
         />
 
         <!-- Travellers -->
@@ -131,14 +135,14 @@
       <button
         class="home-button02 button"
         id="addBtn"
-        v-if="tripType == 'multiTrip'"
+        v-if="tripType == 'multiDestination'"
         @click="addInputFunction"
       >
         Add trip
       </button>
       <div class="home-container027">
         <button
-          v-if="tripType === 'multiTrip'"
+          v-if="tripType === 'multiDestination'"
           @click="searchMultiFlights()"
           class="home-button02 button"
         >
@@ -252,7 +256,7 @@ const searchFlights = async () => {
     params.append("children", travelersCounter.childrenCount);
     params.append("infants", travelersCounter.infantsCount);
     params.append("cabin", "economy");
-    params.append("tripType", "multiDestination");
+    params.append("tripType", tripType.value);
     params.append("searcherIdentity", "test");
 
     const response = await fetch(url, {
@@ -309,6 +313,25 @@ const searchMultiFlights = async () => {
     dataInputs[name] = input.value;
   });
 
+  // if (Object.keys(dataInputs).length === 0 && dataInputs.constructor === Object) {
+  //   alert("Empty data inputs");
+  //   return;
+  // }
+
+
+  // Check if dataInputs.legs[0][origin] is empty
+  // if (Object.keys(dataInputs).length === 0 && dataInputs.constructor === Object) {
+  //   alert("Empty data inputs");
+  //   return;
+  // }
+
+  // // Check if dataInputs.legs[0][destination] is empty
+  // if (!dataInputs.legs || !dataInputs.legs[0] || !dataInputs.legs[0].origin || dataInputs.legs[0].origin === '') {
+  //   alert("origin is required.");
+  //   return;
+  // }
+
+
   console.log("dataInputs", dataInputs);
   const data = reactive({});
 
@@ -344,7 +367,7 @@ const searchMultiFlights = async () => {
     params.append("children", travelersCounter.childrenCount);
     params.append("infants", travelersCounter.infantsCount);
     params.append("cabin", "economy");
-    params.append("tripType", "multiDestination");
+    params.append("tripType", tripType.value);
     params.append("searcherIdentity", "test");
 
     const response = await fetch(url, {
@@ -390,7 +413,7 @@ const deleteFunction = (index) => {
 };
 
 const addInputFunction = () => {
-  if (tripType.value === "multiTrip") {
+  if (tripType.value === "multiDestination") {
     trips.value.push({
       inputCity: "",
       date: "",

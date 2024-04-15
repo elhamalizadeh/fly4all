@@ -6,11 +6,19 @@
       class="home-textinput input"
       type="text"
       id="selectedOption"
-      :name="`legs[${index}][origin]`"
       @input="handleCityInput"
       :placeholder=index
       v-model="city"
-      required
+      :required = required
+    />
+    <input 
+    type="hidden"
+      placeholder="From"
+      class="home-textinput input"
+      :name="`legs[${index}][origin]`"
+      id="selectedAirportId"
+    v-model="selectedCityId"
+
     />
     <!-- data-value -->
     <ul id="myUL" v-if="listVisible" class="dropdown-content">
@@ -26,8 +34,6 @@
         <span>{{ airport.title }}</span>
       </li>
     </ul>
-
-    <h2>{{index}}</h2>
   </div>
   <div class="home-container019">
     <span v-if="city" class="close-icon" @click="clearInputCity">&times;</span>
@@ -70,13 +76,22 @@
       @input="handleDestCityInput"
       placeholder="To"
       v-model="destCity"
-      required
+      :required = required
     />
-    <input
+    <!-- <input
       type="hidden"
       class="home-textinput input"
       id="selectedAirportId"
       v-model="hiddenInputValue"
+    /> -->
+    <input 
+    type="hidden"
+      placeholder="To"
+      class="home-textinput input"
+      :name="`legs[${index}][destination]`"
+      id="selectedDestAirportId"
+    v-model="selectedDestCityId"
+
     />
     <ul id="myUL" v-if="listVisibleDest" class="dropdown-content">
       <div id="title">Search by city or airport</div>
@@ -113,6 +128,8 @@ const recommended = useRecommendDest();
 const selectedOption = ref("");
 const selectedOptionDest = ref("");
 const hiddenInputValue = ref("");
+const selectedCityId = ref("");
+const selectedDestCityId = ref("");
 const params = reactive({
   origin: "",
   destination: "",
@@ -125,7 +142,8 @@ const params = reactive({
 });
 
 const props = defineProps({
-  index:Number
+  index:Number,
+  required:Boolean
 });
 const emits = defineEmits(["citySelected", "destCitySelected"]);
 const city = ref("");
@@ -212,6 +230,7 @@ const handleDestCityInput = async () => {
 const selectCity = (id, title) => {
   city.value = title;
   city.id = id;
+  selectedCityId.value = id;
   emits("citySelected",city.id);
   // emits('citySelected', { index: 100, cityId: city.id });
   listVisible.value = false;
@@ -221,6 +240,7 @@ const selectCity = (id, title) => {
 const selectDestCity = (id, title) => {
   destCity.value = title;
   destCity.id = id;
+  selectedDestCityId.value = id;
   emits("destCitySelected", destCity.id);
   listVisibleDest.value = false;
 };

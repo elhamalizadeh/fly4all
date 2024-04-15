@@ -12,6 +12,7 @@
         @click="toggleCalendar"
         readonly
         :placeholder="placeholderText"
+        :name="`legs[${index}][departure]`"
         required
       />
       <div v-if="isCalendarVisible" class="calendar-box">
@@ -122,7 +123,7 @@ import { ref, computed , onMounted  } from "vue";
 
 export default {
   // props: ["tripType"],
-  props: ['currentMonthYear','currentMonthYearReturn', 'currentYear', 'currentMonth',"tripType"],
+  props: ['currentMonthYear','currentMonthYearReturn', 'currentYear', 'currentMonth',"tripType" ,"index"],
   setup(props, { emit }) {
     // const tripType = props.tripType;
     const currentDate = new Date();
