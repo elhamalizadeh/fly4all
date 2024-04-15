@@ -1,16 +1,18 @@
 <template>
   <!--------- Source  ------>
   <div class="dropdown home-container018">
+    
     <input
       class="home-textinput input"
       type="text"
       id="selectedOption"
-      name="selectedOption"
+      :name="`legs[${index}][origin]`"
       @input="handleCityInput"
-      placeholder="From"
+      :placeholder=index
       v-model="city"
       required
     />
+    <!-- data-value -->
     <ul id="myUL" v-if="listVisible" class="dropdown-content">
       <div id="title">Search by city or airport</div>
       <li
@@ -24,6 +26,8 @@
         <span>{{ airport.title }}</span>
       </li>
     </ul>
+
+    <h2>{{index}}</h2>
   </div>
   <div class="home-container019">
     <span v-if="city" class="close-icon" @click="clearInputCity">&times;</span>
@@ -62,7 +66,7 @@
       class="home-textinput input"
       type="text"
       id="selectedOptionDest"
-      name="selectedOptionDest"
+      :name="`legs[${index}][destination]`"
       @input="handleDestCityInput"
       placeholder="To"
       v-model="destCity"
@@ -102,7 +106,7 @@
   <!-- <homeTravellers /> -->
 </template>
 <script setup>
-import { ref, watch, onMounted, computed, defineEmits } from "vue";
+import { ref, watch, onMounted, computed, defineEmits,defineProps } from "vue";
 import axios from "axios";
 
 const recommended = useRecommendDest();
@@ -120,6 +124,9 @@ const params = reactive({
   infants: 0,
 });
 
+const props = defineProps({
+  index:Number
+});
 const emits = defineEmits(["citySelected", "destCitySelected"]);
 const city = ref("");
 const selectedOriginAirport = ref("");
