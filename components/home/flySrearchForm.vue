@@ -22,7 +22,6 @@
       <!----------------tripType---------------->
       <div class="home-container010">
         <div class="home-container011">
-          <!-- name="radio" -->
           <input
             type="radio"
             class="home-radiobutton"
@@ -33,7 +32,6 @@
           <span class="home-text004">One-Way</span>
         </div>
         <div class="home-container012">
-          <!-- name="radio" -->
           <input
             type="radio"
             class="home-radiobutton1"
@@ -44,7 +42,6 @@
           <span class="home-text005">Round-Trip</span>
         </div>
         <div>
-          <!-- name="radio" -->
           <input
             type="radio"
             class="home-radiobutton1"
@@ -64,12 +61,12 @@
         <option value="business">Business</option>
         <option value="first">First</option>
       </select>
-   <!-----  v-for  --->
+      <!-----  v-for for inputCityFields --->
       <div
         class="home-container017 multiInputDiv"
         v-for="(item, index) in trips"
         :key="index"
-      >  
+      >
         <template v-if="index === 0 || !trips[index - 1].inputCity">
           <homeInputCityFialds
             @citySelected="handleMultiCitySelected($event, index)"
@@ -79,7 +76,7 @@
             :tripType="params.tripType"
             v-if="tripType == 'multiDestination'"
             id="inputCityFields"
-            :required=false
+            :required="false"
           />
 
           <homeDateForm
@@ -102,15 +99,14 @@
           </div>
         </template>
       </div>
-        <!-----  end v-for  --->
+      <!-----  end v-for  --->
       <!-------- first inputFields ----->
-      <div class="home-container017"  v-if="tripType == 'multiDestination'">
-
+      <div class="home-container017" v-if="tripType == 'multiDestination'">
         <homeInputCityFialds
           @citySelected="handleCitySelected"
           @destCitySelected="handleDestCitySelected"
           :index="1"
-          :required=true
+          :required="true"
         />
         <homeDateForm
           @sendEmitCurrentMonthYear="CurrentMonthYearFunction"
@@ -119,15 +115,13 @@
           :index="1"
         />
       </div>
- <!----------  end inputFields  ------------>
+      <!----------  end inputFields  ------------>
       <div class="home-container017">
-        <!-- :style="{ height: tripType === 'multi' ? containerHeight : 'auto' }" -->
-
         <homeInputCityFialds
           @citySelected="handleCitySelected"
           @destCitySelected="handleDestCitySelected"
           :index="0"
-          :required=true
+          :required="true"
         />
         <homeDateForm
           @sendEmitCurrentMonthYear="CurrentMonthYearFunction"
@@ -145,10 +139,8 @@
             ></path>
           </svg>
         </div>
-        <!-- </div> -->
       </div>
       <!-------- end home-container017-->
-
       <button
         class="home-button02 button"
         id="addBtn"
@@ -158,14 +150,7 @@
         Add trip
       </button>
       <div class="home-container027">
-        <button
-          v-if="tripType === 'multiDestination'"
-          @click="searchMultiFlights()"
-          class="home-button02 button"
-        >
-          Destination Now →
-        </button>
-        <button v-else @click="searchFlights" class="home-button02 button">
+        <button @click="searchMultiFlights()" class="home-button02 button">
           Destination Now →
         </button>
       </div>
@@ -205,7 +190,6 @@ const params = reactive({
   infants: 0,
 });
 
-// const cityId = ref("");
 const cityId = ref([]);
 const destCityId = ref([]);
 const cityIdByIndex = ref([]);
@@ -235,85 +219,10 @@ const handleMultiCitySelected = (selectCity, index) => {
 //------------------------handleMultiDestCitySelected ------********
 const handleMultiDestCitySelected = (selectDestCity, index) => {
   if (!destCityId[index]) {
-    destCityId[index] = {}; // Initialize object if not present
+    destCityId[index] = {}; 
   }
   destCityId[index] = selectDestCity;
-  // console.log("index is:",index);
-  // console.log("selectCity is 183:",selectCity)
-  // console.log("cityId[index].value:",cityId[index]);
   destCityIdByIndex.value = destCityId[index];
-};
-
-//-------------------------- search flights by input fields -----
-const searchFlights = async () => {
-  // Check if the required fields are filled
-  if (!cityId.value) {
-    Swal.fire({
-      icon: "error",
-      text: "Origin City is required.",
-    });
-    return;
-  } else if (!destCityId.value) {
-    Swal.fire({
-      icon: "error",
-      text: "Destination City is required.",
-    });
-    return;
-  }
-  try {
-    const url = new URL(
-      "https://marketplace.beta.luxota.network/v2/search/flight"
-    );
-    //-----urlSearchParams------
-    const params = new URLSearchParams();
-    params.append("legs[0][origin]", cityId.value);
-    params.append("legs[0][destination]", destCityId.value);
-    params.append("legs[0][departure]", selectedDate.value.value);
-    params.append("adults", travelersCounter.adultsCount);
-    params.append("children", travelersCounter.childrenCount);
-    params.append("infants", travelersCounter.infantsCount);
-    params.append("cabin", "economy");
-    params.append("tripType", tripType.value);
-    params.append("searcherIdentity", "test");
-
-    const response = await fetch(url, {
-      method: "POST",
-      body: params,
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        Authorization: "Bearer 11aup4zzwj2nol1zguv34dxt7661a75910dbd852f2574c",
-      },
-    });
-    // const response = await $fetch(
-    //   "https://marketplace.beta.luxota.network/v1/search/flight",
-    //   {
-    //     method: "POST",
-    //     body: JSON.stringify({
-    //       origin: cityId.value,
-    //       destination: destCityId.value,
-    //       departure: selectedDate.value.value,
-    //       return: selectedDateReturn.value.value,
-    //       adults: travelersCounter.adultsCount,
-    //       children: travelersCounter.childrenCount,
-    //       infants: travelersCounter.infantsCount,
-    //       cabin: "economy",
-    //       tripType: tripType.value,
-    //       searcherIdentity: "test",
-    //     }),
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   }
-    // );
-    const sessionId = response.sessionId;
-    const status = response.status;
-    await router.push({
-      name: "fly-search",
-      query: { status, sessionId, lang: "EN" },
-    });
-  } catch {
-    console.error("Error searching flights:", error);
-  }
 };
 
 //------------------------searchMultiFlights ------*********
@@ -329,23 +238,8 @@ const searchMultiFlights = async () => {
     dataInputs[name] = input.value;
   });
 
-
   console.log("dataInputs", dataInputs);
   const data = reactive({});
-
-  if (!cityIdByIndex.value) {
-    Swal.fire({
-      icon: "error",
-      text: "Origin City is required.",
-    });
-    return;
-  } else if (!destCityIdByIndex.value) {
-    Swal.fire({
-      icon: "error",
-      text: "Destination City is required.",
-    });
-    return;
-  }
 
   try {
     const url = new URL(
@@ -355,19 +249,30 @@ const searchMultiFlights = async () => {
     const params = new URLSearchParams();
     for (const key in dataInputs) {
       if (dataInputs[key]) {
-        // console.log("dataInputs[key] 359:" , dataInputs[key]);
-      const value = dataInputs[key];
-      params.append(key, value);
-      }else{
-        console.log("dataInputs[key] 359:" , key);
+        const value = dataInputs[key];
+        params.append(key, value);
+      } else {
+        console.log("dataInputs[key] 359:", key);
         Swal.fire({
-      icon: "error",
-      text: "Fields are required.",
-    });
-    return;
+          icon: "error",
+          text: "Fields are required.",
+        });
+        return;
       }
     }
-    // params.append(`data[legs[index][origin]]`, data['legs[index][origin]']);
+
+    if(!selectedDateReturn.value.value){
+      Swal.fire({
+          icon: "error",
+          text: "Fields are required.",
+        });
+        return;
+    }
+    if (tripType.value === "roundTrip") {
+      params.append("legs[1][origin]", destCityId.value);
+      params.append("legs[1][destination]", cityId.value);
+      params.append("legs[1][departure]", selectedDateReturn.value.value);
+    }
 
     params.append("adults", travelersCounter.adultsCount);
     params.append("children", travelersCounter.childrenCount);
@@ -409,13 +314,10 @@ const handleTripTypeChange = () => {
 };
 
 const trips = ref([]);
-// const containerHeight = ref("18vh");
 
 //-----------deleteBtn---
-// const tripTypeValue = ref(props.tripType);
 const deleteFunction = (index) => {
   trips.value.splice(index, 1);
-  // containerHeight.value = `calc(${containerHeight.value} - 18vh)`;
 };
 
 const addInputFunction = () => {
@@ -424,7 +326,6 @@ const addInputFunction = () => {
       inputCity: "",
       date: "",
     });
-    // containerHeight.value = `calc(30vh + ${20 * (trips.value.length - 1)}vh)`;
   }
 };
 </script>
@@ -447,7 +348,5 @@ const addInputFunction = () => {
 }
 .multiInputDiv {
   display: grid;
-  /* grid-template-columns: 1fr 0.5fr 1fr 1fr 1fr; */
-  /* grid-template-rows:1fr 1fr */
 }
 </style>
