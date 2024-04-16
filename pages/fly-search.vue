@@ -5,7 +5,7 @@
       <div class="home-container038">
         <div class="home-container039">
           <div class="home-container040">
-            <flySearchForm />
+            <FlySearchForm />
           </div>
         </div>
       </div>
@@ -28,9 +28,12 @@
           <!---------------------flightResult----------------------->
           <!-- <FlySearchResultSearch  :flightResult="flightResult"/> -->
           <div class="fly-search-container114"></div>
-          <div
-            v-for="flight in flightResult"
-            :key="flight.flightBufferReferenceId"
+          <!-- <span v-if="Object.keys(itemsData).length != 0">flightResult :{{ itemsData }}</span> -->
+          <span>flightResult :{{ itemsData }}</span>
+
+          <!-- <div
+            v-for="flight in itemsData"
+            :key="flight"
           >
             <div class="fly-search-container115" style="margin-top: 3rem">
               <div class="fly-search-container116">
@@ -52,11 +55,11 @@
               </div>
               <div class="fly-search-container118">
                 <span class="fly-search-text073">
-                  {{ flight.serviceInfo.legs[0].info.departure.time }}</span
+                  {{ flight.legs[0].departure.time }}</span
                 >
                 <span class="home-text074"
-                  >{{ flight.serviceInfo.legs[0].info.departure.airport.abb }} |
-                  {{ flight.serviceInfo.legs[0].info.departure.date_time }}
+                  >{{ flight.legs[0].departure.airport.abb }} |
+                  {{ flight.legs[0].departure.date_time }}
                 </span>
               </div>
               <div class="fly-search-container119">
@@ -68,7 +71,7 @@
               </div>
               <div class="fly-search-container120">
                 <span class="home-text075">{{
-                  flight.serviceInfo.legs[0].info.duration
+                  flight.legs[0].duration
                 }}</span>
                 <span class="home-text076">---------------</span>
                 <span class="home-text077">non stop</span>
@@ -84,11 +87,11 @@
               </div>
               <div class="fly-search-container123">
                 <span class="home-text078">
-                  {{ flight.serviceInfo.legs[0].info.arrival.time }}</span
+                  {{ flight.legs[0].arrival.time }}</span
                 >
                 <span class="home-text079"
-                  >{{ flight.serviceInfo.legs[0].info.arrival.airport.abb }} |
-                  {{ flight.serviceInfo.legs[0].info.arrival.date_time }}
+                  >{{ flight.legs[0].arrival.airport.abb }} |
+                  {{ flight.legs[0].arrival.date_time }}
                 </span>
               </div>
               <div class="fly-search-container124"></div>
@@ -121,19 +124,16 @@
               </div>
               <div class="home-inf01">
                 <div class="home-ch01">
-                  <!-- <span class="home-ch01-text">
-                    {{flight.serviceInfo.legs[0].info.departure.date_time}}
-                    </span> -->
                 </div>
                 <div class="home-ch02">
                   <span class="home-ch02-text"
-                    >{{ flight.serviceInfo.legs[0].info.departure.city }} -
-                    {{ flight.serviceInfo.legs[0].info.arrival.city }}</span
+                    >{{ flight.legs[0].departure.city }} -
+                    {{ flight.legs[0].arrival.city }}</span
                   >
                 </div>
                 <div class="home-ch03">
                   <span class="home-ch03-text">{{
-                    flight.serviceInfo.legs[0].info.duration
+                    flight.legs[0].duration
                   }}</span>
                 </div>
                 <div class="home-ch04">
@@ -257,7 +257,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-------------------------------------------->
           <!-------------------------------------------->
         </div>
@@ -267,36 +267,35 @@
     </div>
   </div>
 </template>
-<script>
+<script setup>
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
 
-export default {
-  name: "fly-search",
-  setup() {
     const route = useRoute();
     const flightResult = ref([]);
+    const resultData = ref(null);
+    const itemsData = ref({});
 
-    const searchResults = async () => {
-      try {
+    const searchResults = () => {
         const sessionId = route.query.sessionId;
-        const response = await axios.get(
-          "https://marketplace.beta.luxota.network/v1/search/results",
+        $fetch(
+          "https://marketplace.beta.luxota.network/v1/search/info",
           {
+            method: "GET",
             params: {
               sessionId: sessionId,
-              page: 1,
               currency: 158,
               lang: "en",
             },
           }
-        );
-        console.log("flight result", response.data.data);
-        flightResult.value = response.data.data;
-      } catch (error) {
-        console.error("Error searching flights:", error);
-      }
+        ).then(response =>{
+          console.log("response", response);
+          itemsData.value = response;
+          // console.log("itemsData2", itemsData);
+        }).catch(error => {
+        console.error("Error fetching flight results:", error);
+    });
     };
     onMounted(() => {
       if (route.query.sessionId) {
@@ -305,9 +304,6 @@ export default {
       }
     });
 
-    return { searchResults, flightResult };
-  },
-};
 </script>
 <style scoped>
 @import url("../assets/css/fly-search.css");

@@ -1,24 +1,7 @@
 <template>
   <div class="home-container004">
     <div class="home-container005">
-      <div class="home-container006">
-        <span class="home-text">FLIGHT</span>
-      </div>
-      <NuxtLink to="./fly4all-hotel" class="home-link1">
-        <div class="home-container007">
-          <span class="home-text001">HOTEL</span>
-        </div>
-      </NuxtLink>
-      <NuxtLink to="./fly4all-package" class="home-link1">
-        <div class="home-container008">
-          <span class="home-text002">Package</span>
-        </div>
-      </NuxtLink>
-      <NuxtLink to="./fly4all-visa" class="home-link1">
-        <div class="home-container009">
-          <span class="home-text003">VISA</span>
-        </div></NuxtLink
-      >
+    <HomeBanner />
       <!----------------tripType---------------->
       <div class="home-container010">
         <div class="home-container011">
@@ -260,7 +243,7 @@ const searchMultiFlights = async () => {
         return;
       }
     }
-
+    if (tripType.value === "roundTrip") {
     if(!selectedDateReturn.value.value){
       Swal.fire({
           icon: "error",
@@ -268,6 +251,7 @@ const searchMultiFlights = async () => {
         });
         return;
     }
+  }
     if (tripType.value === "roundTrip") {
       params.append("legs[1][origin]", destCityId.value);
       params.append("legs[1][destination]", cityId.value);
@@ -281,7 +265,7 @@ const searchMultiFlights = async () => {
     params.append("tripType", tripType.value);
     params.append("searcherIdentity", "test");
 
-    const response = await fetch(url, {
+    const response = await $fetch(url, {
       method: "POST",
       body: params,
       headers: {
@@ -291,6 +275,7 @@ const searchMultiFlights = async () => {
     });
     const sessionId = response.sessionId;
     const status = response.status;
+    // console.log("response 295" , response);
     await router.push({
       name: "fly-search",
       query: { status, sessionId, lang: "EN" },
