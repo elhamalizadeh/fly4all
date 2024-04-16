@@ -74,7 +74,7 @@
           <homeInputCityFialds
             @citySelected="handleMultiCitySelected($event, index)"
             @destCitySelected="handleMultiDestCitySelected($event, index)"
-            :index="index + 1"
+            :index="index + 2"
             v-model="item.inputCity"
             :tripType="params.tripType"
             v-if="tripType == 'multiDestination'"
@@ -86,7 +86,7 @@
             @sendEmitCurrentMonthYear="CurrentMonthYearFunction"
             @sendEmitCurrentMonthYearReturn="CurrentMonthYearFunctionReturn"
             v-model="item.date"
-            :index="index + 1"
+            :index="index + 2"
             :tripType="params.tripType"
             v-if="tripType == 'multiDestination'"
           />
@@ -102,7 +102,24 @@
           </div>
         </template>
       </div>
-   <!-----  end v-for  --->
+        <!-----  end v-for  --->
+      <!-------- first inputFields ----->
+      <div class="home-container017"  v-if="tripType == 'multiDestination'">
+
+        <homeInputCityFialds
+          @citySelected="handleCitySelected"
+          @destCitySelected="handleDestCitySelected"
+          :index="1"
+          :required=true
+        />
+        <homeDateForm
+          @sendEmitCurrentMonthYear="CurrentMonthYearFunction"
+          @sendEmitCurrentMonthYearReturn="CurrentMonthYearFunctionReturn"
+          :tripType="params.tripType"
+          :index="1"
+        />
+      </div>
+ <!----------  end inputFields  ------------>
       <div class="home-container017">
         <!-- :style="{ height: tripType === 'multi' ? containerHeight : 'auto' }" -->
 
@@ -302,34 +319,15 @@ const searchFlights = async () => {
 //------------------------searchMultiFlights ------*********
 const searchMultiFlights = async () => {
   let dataInputs = {};
-  console.log("self:", self);
+  // console.log("self:", self);
 
   const inputs = self.vnode.el.querySelectorAll("[name]");
-  // const inputs = this.$el.querySelectorAll('[name]');
   console.log("inputs", inputs);
 
   inputs.forEach((input) => {
     const name = input.name;
     dataInputs[name] = input.value;
   });
-
-  // if (Object.keys(dataInputs).length === 0 && dataInputs.constructor === Object) {
-  //   alert("Empty data inputs");
-  //   return;
-  // }
-
-
-  // Check if dataInputs.legs[0][origin] is empty
-  // if (Object.keys(dataInputs).length === 0 && dataInputs.constructor === Object) {
-  //   alert("Empty data inputs");
-  //   return;
-  // }
-
-  // // Check if dataInputs.legs[0][destination] is empty
-  // if (!dataInputs.legs || !dataInputs.legs[0] || !dataInputs.legs[0].origin || dataInputs.legs[0].origin === '') {
-  //   alert("origin is required.");
-  //   return;
-  // }
 
 
   console.log("dataInputs", dataInputs);
@@ -356,10 +354,18 @@ const searchMultiFlights = async () => {
     //-----urlSearchParams------
     const params = new URLSearchParams();
     for (const key in dataInputs) {
-      // if (dataInputs.hasOwnProperty(key)) {
+      if (dataInputs[key]) {
+        // console.log("dataInputs[key] 359:" , dataInputs[key]);
       const value = dataInputs[key];
       params.append(key, value);
-      // }
+      }else{
+        console.log("dataInputs[key] 359:" , key);
+        Swal.fire({
+      icon: "error",
+      text: "Fields are required.",
+    });
+    return;
+      }
     }
     // params.append(`data[legs[index][origin]]`, data['legs[index][origin]']);
 
