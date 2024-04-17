@@ -134,6 +134,7 @@ export default {
   props: ['currentMonthYear','currentMonthYearReturn', 'currentYear', 'currentMonth',"tripType" ,"index"],
   setup(props, { emit }) {
     // const tripType = props.tripType;
+    const  flightFields  = useFlight();
     const currentDate = new Date();
     let currentYear = currentDate.getFullYear();
     let currentMonth = currentDate.getMonth();
@@ -166,12 +167,15 @@ export default {
     const calendarYear = ref(new Date().getFullYear()); // Current year of the calendar
 
     const placeholderText = computed(() => {
-      return selectedDate.value ? selectedDate.value : "Deprature";
+      // return selectedDate.value ? selectedDate.value : "Deprature";
+      return flightFields.selectedDateFromStore ? flightFields.selectedDateFromStore : "Deprature";
     });
 
     const placeholderTextReturn = computed(() => {
-      return selectedDateReturn.value ? selectedDateReturn.value : "Return";
-    });
+      // return selectedDateReturn.value ? selectedDateReturn.value : "Return";
+      return flightFields.selectedReturnDateFromStore ? flightFields.selectedReturnDateFromStore : "Return";
+        });
+
 
 /*=========
      ---getNextMonth Function1---
@@ -437,6 +441,8 @@ const dayFlags = computed(() => {
       }
 
       selectedDate.value = `${day} ${currentMonthYear}`;
+      flightFields.updateSelectedDate(`${day} ${currentMonthYear}`);
+
       console.log("selectedDate 432:" , selectedDate.value);
       isCalendarVisible.value = false; // Hide the calendar after date selection
       // isCalendarVisibleReturn.value = false;
@@ -492,6 +498,8 @@ const dayFlags = computed(() => {
       }
 
       selectedDateReturn.value = `${day} ${currentMonthYearReturn}`;
+      flightFields.updateSelectedReturnDate(`${day} ${currentMonthYearReturn}`);
+
       // isCalendarVisible.value = false; // Hide the calendar after date selection
       isCalendarVisibleReturn.value = false;
 

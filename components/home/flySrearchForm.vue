@@ -11,6 +11,8 @@
             v-model="params.tripType"
             value="oneWay"
             @change="handleTripTypeChange"
+            :checked="flightFields.tripType === 'oneWay'"
+
           />
           <span class="home-text004">One-Way</span>
         </div>
@@ -21,6 +23,8 @@
             v-model="params.tripType"
             value="roundTrip"
             @change="handleTripTypeChange"
+            :checked="flightFields.tripType === 'roundTrip'"
+
           />
           <span class="home-text005">Round-Trip</span>
         </div>
@@ -31,6 +35,8 @@
             v-model="params.tripType"
             value="multiDestination"
             @change="handleTripTypeChange"
+            :checked="flightFields.tripType === 'multiDestination'"
+
           />
           <span class="home-text005">Multi-destination</span>
         </div>
@@ -57,7 +63,7 @@
             :index="index + 2"
             v-model="item.inputCity"
             :tripType="params.tripType"
-            v-if="tripType == 'multiDestination'"
+            v-if="params.tripType == 'multiDestination'"
             id="inputCityFields"
             :required="false"
           />
@@ -68,10 +74,10 @@
             v-model="item.date"
             :index="index + 2"
             :tripType="params.tripType"
-            v-if="tripType == 'multiDestination'"
+            v-if="params.tripType == 'multiDestination'"
           />
 
-          <div v-if="tripType == 'multiDestination'">
+          <div v-if="params.tripType == 'multiDestination'">
             <button
               class="home-button02 button"
               id="deleteBtn"
@@ -84,7 +90,7 @@
       </div>
       <!-----  end v-for  --->
       <!-------- first inputFields ----->
-      <div class="home-container017" v-if="tripType == 'multiDestination'">
+      <div class="home-container017" v-if="params.tripType == 'multiDestination'">
         <homeInputCityFialds
           @citySelected="handleCitySelected"
           @destCitySelected="handleDestCitySelected"
@@ -105,6 +111,7 @@
           @destCitySelected="handleDestCitySelected"
           :index="0"
           :required="true"
+          :originFromProps = "originFromProps"
         />
         <homeDateForm
           @sendEmitCurrentMonthYear="CurrentMonthYearFunction"
@@ -127,7 +134,7 @@
       <button
         class="home-button02 button"
         id="addBtn"
-        v-if="tripType == 'multiDestination'"
+        v-if="params.tripType == 'multiDestination'"
         @click="addInputFunction"
       >
         Add trip
@@ -154,25 +161,46 @@ import Swal from "sweetalert2";
 
 const self = getCurrentInstance();
 // console.log("self:" , self);
+const  flightFields  = useFlight();
 
 const travelersCounter = useCounter();
 const props = defineProps({
-  recommendedDestinationValue: String, // Define the type of recommendedDestinationValue
+  recommendedDestinationValue: String,
+  itemsData: Object,
+  returnValue : Boolean
 });
 
+
+const tripTypeProps = ref('');
+    const originFromProps = ref('');
+
+watch(() => props.itemsData, (newValue) => {
+      if (props.returnValue && newValue) {
+        tripTypeProps.value = newValue.tripType;
+        originFromProps.value = newValue.leg[0].origin.city.title;
+
+      }
+    });
+    console.log("originFromProps 167" , originFromProps.value);
+
+
 const router = useRouter();
-const tripType = ref("oneWay");
+const tripType = ref("");
 const params = reactive({
   origin: "",
   destination: "",
   date: "",
-  tripType: "",
+  tripType: flightFields.tripType,
   cabin: "economy",
   adults: 0,
   children: 0,
   infants: 0,
 });
 
+onMounted(() => {
+  // Initialize tripType from the store
+  params.tripType = flightFields.typeTrip;
+});
 const cityId = ref([]);
 const destCityId = ref([]);
 const cityIdByIndex = ref([]);
@@ -252,7 +280,7 @@ const searchMultiFlights = async () => {
         return;
     }
   }
-    if (tripType.value === "roundTrip") {
+    if (flightFields.tripType === "roundTrip") {
       params.append("legs[1][origin]", destCityId.value);
       params.append("legs[1][destination]", cityId.value);
       params.append("legs[1][departure]", selectedDateReturn.value.value);
@@ -262,7 +290,7 @@ const searchMultiFlights = async () => {
     params.append("children", travelersCounter.childrenCount);
     params.append("infants", travelersCounter.infantsCount);
     params.append("cabin", "economy");
-    params.append("tripType", tripType.value);
+    params.append("tripType", flightFields.tripType);
     params.append("searcherIdentity", "test");
 
     const response = await $fetch(url, {
@@ -295,7 +323,8 @@ const CurrentMonthYearFunctionReturn = (MonthYear) => {
   selectedDateReturn.value = MonthYear;
 };
 const handleTripTypeChange = () => {
-  tripType.value = params.tripType;
+  // tripType.value = params.tripType;
+  flightFields.updateTypeTrip(params.tripType);
 };
 
 const trips = ref([]);
@@ -306,7 +335,7 @@ const deleteFunction = (index) => {
 };
 
 const addInputFunction = () => {
-  if (tripType.value === "multiDestination") {
+  if (params.tripType === "multiDestination") {
     trips.value.push({
       inputCity: "",
       date: "",

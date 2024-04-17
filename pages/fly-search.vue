@@ -5,11 +5,12 @@
       <div class="home-container038">
         <div class="home-container039">
           <div class="home-container040">
-            <FlySearchForm />
+            <!-- <FlySearchForm :itemsData="itemsData"/> -->
+            <HomeFlySrearchForm  :itemsData="itemsData" :returnValue = true />
           </div>
         </div>
       </div>
-      <div class="fly-search-container060">
+      <!-- <div class="fly-search-container060">
         <flySearchSidebar />
         <div class="fly-search-container095">
           <flySearchBannerCosts />
@@ -23,13 +24,11 @@
                 ></path>
               </svg>
             </div>
-          </div>
+          </div>-->
 
           <!---------------------flightResult----------------------->
           <!-- <FlySearchResultSearch  :flightResult="flightResult"/> -->
-          <div class="fly-search-container114"></div>
-          <!-- <span v-if="Object.keys(itemsData).length != 0">flightResult :{{ itemsData }}</span> -->
-          <span>flightResult :{{ itemsData }}</span>
+          <!-- <div class="fly-search-container114"></div> -->
 
           <!-- <div
             v-for="flight in itemsData"
@@ -260,10 +259,10 @@
           </div> -->
           <!-------------------------------------------->
           <!-------------------------------------------->
-        </div>
-      </div>
+        <!----</div>
+      </div> 
       <div class="home-margin-info"></div>
-      <flySearchFooter />
+      <flySearchFooter />-->
     </div>
   </div>
 </template>

@@ -7,13 +7,13 @@
       type="text"
       id="selectedOption"
       @input="handleCityInput"
-      :placeholder=index
+      :placeholder="cityPlaceholderText"
       v-model="city"
       :required = required
     />
     <input 
     type="hidden"
-      placeholder="From"
+    :placeholder="cityPlaceholderText"
       class="home-textinput input"
       :name="`legs[${index}][origin]`"
       id="selectedAirportId"
@@ -74,7 +74,7 @@
       id="selectedOptionDest"
       :name="`legs[${index}][destination]`"
       @input="handleDestCityInput"
-      placeholder="To"
+      :placeholder = "destCityPlaceholderText"
       v-model="destCity"
       :required = required
     />
@@ -142,10 +142,23 @@ const params = reactive({
 
 const props = defineProps({
   index:Number,
-  required:Boolean
+  required:Boolean,
+  // originFromProps:Number
+  // destCityDefaultFlySearch : String
 });
+
 const emits = defineEmits(["citySelected", "destCitySelected"]);
 const city = ref("");
+//---------------------------------------
+// const originFromPropsInput = ref('');
+// if(props.originFromProps){
+//   originFromPropsInput.value = props.originFromProps;
+// }
+// city.value =originFromPropsInput;
+// console.log("originFromPropsInput:",originFromPropsInput);
+
+
+//---------------------------------------
 const selectedOriginAirport = ref("");
 const airports = ref([]);
 const showAirports = ref(false);
@@ -153,6 +166,7 @@ const airport = city.value.trim();
 const showSelectedAirport = ref(false);
 const listVisible = ref(false);
 const listVisibleDest = ref(false);
+const  flightFields  = useFlight();
 
 watch(
   () => recommended.recomendedOrigin,
@@ -174,6 +188,16 @@ watch(
   }
 );
 
+//----------
+const cityPlaceholderText = computed(() => {
+      return flightFields.selectedCityId;
+    });
+
+const destCityPlaceholderText = computed(() => {
+      return flightFields.selectedDestCityId;
+    });
+
+    //--------
 const filter = ref("");
 
 const handleCityInput = async () => {
@@ -199,7 +223,8 @@ const handleCityInput = async () => {
 };
 
 //------------------ destination--------------------
-const destCity = ref("");
+
+  const destCity = ref("");
 // const selectedDestAirport = ref("");
 const destAirports = ref([]);
 const showDestAirports = ref(false);
@@ -230,6 +255,7 @@ const selectCity = (id, title) => {
   city.value = title;
   city.id = id;
   selectedCityId.value = id;
+  flightFields.updateCity(title , id , title)
   emits("citySelected",city.id);
   // emits('citySelected', { index: 100, cityId: city.id });
   listVisible.value = false;
@@ -240,6 +266,7 @@ const selectDestCity = (id, title) => {
   destCity.value = title;
   destCity.id = id;
   selectedDestCityId.value = id;
+  flightFields.updateDestCity(title , id , title)
   emits("destCitySelected", destCity.id);
   listVisibleDest.value = false;
 };
