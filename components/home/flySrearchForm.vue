@@ -3,6 +3,7 @@
     <div class="home-container005">
     <HomeBanner />
       <!----------------tripType---------------->
+  
       <div class="home-container010">
         <div class="home-container011">
           <input
@@ -166,22 +167,19 @@ const  flightFields  = useFlight();
 const travelersCounter = useCounter();
 const props = defineProps({
   recommendedDestinationValue: String,
-  itemsData: Object,
-  returnValue : Boolean
 });
 
 
 const tripTypeProps = ref('');
     const originFromProps = ref('');
 
-watch(() => props.itemsData, (newValue) => {
-      if (props.returnValue && newValue) {
-        tripTypeProps.value = newValue.tripType;
-        originFromProps.value = newValue.leg[0].origin.city.title;
-
-      }
-    });
-    console.log("originFromProps 167" , originFromProps.value);
+// watch(() => props.itemsData, (newValue) => {
+//       if (props.returnValue && newValue) {
+//         tripTypeProps.value = newValue.tripType;
+//         originFromProps.value = newValue.leg[0].origin.city.id;
+//         // console.log("originFromProps 184 is:" , originFromProps.value);
+//       }
+//     });
 
 
 const router = useRouter();
@@ -190,7 +188,7 @@ const params = reactive({
   origin: "",
   destination: "",
   date: "",
-  tripType: flightFields.tripType,
+  tripType: "oneWay",
   cabin: "economy",
   adults: 0,
   children: 0,
@@ -242,7 +240,7 @@ const searchMultiFlights = async () => {
   // console.log("self:", self);
 
   const inputs = self.vnode.el.querySelectorAll("[name]");
-  console.log("inputs", inputs);
+  console.log("inputs in 245:", inputs);
 
   inputs.forEach((input) => {
     const name = input.name;
@@ -281,6 +279,7 @@ const searchMultiFlights = async () => {
     }
   }
     if (flightFields.tripType === "roundTrip") {
+      console.log("selectedDateReturn.value.value 284" , selectedDateReturn.value.value);
       params.append("legs[1][origin]", destCityId.value);
       params.append("legs[1][destination]", cityId.value);
       params.append("legs[1][departure]", selectedDateReturn.value.value);

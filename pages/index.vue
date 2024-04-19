@@ -3,7 +3,17 @@
     <HomeHeader />
     <section class="home-container003">
       <homeSlider />
-      <homeFlySrearchForm :recommendeDestination="recommendedDestinationValue" />
+
+      <!-- <div class="home-container004">
+        <div class="home-container005">
+          <HomeBanner /> -->
+          <homeFlySrearchForm
+            :recommendeDestination="recommendedDestinationValue"
+          />
+        <!-- </div>
+      </div> -->
+
+
     </section>
     <div class="home-container028">
       <div class="home-container029">
@@ -12,10 +22,12 @@
         <span class="home-text008"> </span>
       </div>
     </div>
-    <homeRecomended @sendEmitSelectedDestination="SelectedRecommendedDestination"/>
+    <homeRecomended
+      @sendEmitSelectedDestination="SelectedRecommendedDestination"
+    />
     <h2>{{ selectedRecommendedDest }}</h2>
     <homePlan />
-    <homeServices/>
+    <homeServices />
     <!---- more here---->
     <div class="home-container100">
       <button type="button" class="home-button14 button">More Here →</button>
@@ -28,28 +40,25 @@
   </div>
 </template>
 <script>
-
 export default {
   props: ["recommendeDestination"],
 
-setup(){
-  const receiveDataFromB = (data) => {
+  setup() {
+    const receiveDataFromB = (data) => {
       // Capture the emitted event and store the data
       this.dataFromB = data;
-    }
+    };
 
     const selectedRecommendedDest = ref("");
     const SelectedRecommendedDestination = (dest) => {
       selectedRecommendedDest.value = dest;
-};
-
+    };
 
     return {
       SelectedRecommendedDestination,
       selectedRecommendedDest,
-      recommendedDestinationValue : selectedRecommendedDest
-
+      recommendedDestinationValue: selectedRecommendedDest,
     };
-}
+  },
 };
 </script>

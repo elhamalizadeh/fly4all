@@ -1,7 +1,21 @@
 <template>
   <!--------- Source  ------>
   <div class="dropdown home-container018">
-    
+    <div v-if="flightFields.itemsDataValue">
+      <!-- {{ flightFields.itemsDataValue[0].origin.city.title }} -->
+
+
+  <!-- {{ flightFields.itemsDataValue}} -->
+
+    <div v-for="(leg, index) in flightFields.itemsDataValue" :key="index" class="mt-5 text-teal-500">
+      <p><b>Origin[{{ index }}]</b>: {{ leg.origin.buffer.title }}</p>
+      <p><b>Destination[{{ index }}]</b>: {{ leg.destination.buffer.title }}</p>
+      <!-- <p>Origin[{{ index }}]: {{ leg.origin.city.title }}</p>
+      <p>Destination[{{ index }}]: {{ leg.destination.city.title  }}</p> -->
+      <!-- <p>Departure[{{ index }}]: {{ leg.departure  }}</p> -->
+    </div>
+   
+</div>
     <input
       class="home-textinput input"
       type="text"
@@ -18,8 +32,9 @@
       :name="`legs[${index}][origin]`"
       id="selectedAirportId"
     v-model="selectedCityId"
-
     />
+    <!-- v-model="selectedCityId" -->
+
     <!-- data-value -->
     <ul id="myUL" v-if="listVisible" class="dropdown-content">
       <div id="title">Search by city or airport</div>
@@ -78,12 +93,6 @@
       v-model="destCity"
       :required = required
     />
-    <!-- <input
-      type="hidden"
-      class="home-textinput input"
-      id="selectedAirportId"
-      v-model="hiddenInputValue"
-    /> -->
     <input 
     type="hidden"
       placeholder="To"
@@ -116,7 +125,6 @@
       ></path>
     </svg>
   </div>
-
   <!-- <homeTravellers /> -->
 </template>
 <script setup>
@@ -149,6 +157,7 @@ const props = defineProps({
 
 const emits = defineEmits(["citySelected", "destCitySelected"]);
 const city = ref("");
+
 //---------------------------------------
 // const originFromPropsInput = ref('');
 // if(props.originFromProps){
@@ -190,11 +199,12 @@ watch(
 
 //----------
 const cityPlaceholderText = computed(() => {
-      return flightFields.selectedCityId;
+        return flightFields.selectedCityTitle;
+      // return flightFields.selectedCityId;
     });
 
 const destCityPlaceholderText = computed(() => {
-      return flightFields.selectedDestCityId;
+      return flightFields.selectedDestCityTitle;
     });
 
     //--------
@@ -253,12 +263,14 @@ const handleDestCityInput = async () => {
 // Function to emit selected city to parent
 const selectCity = (id, title) => {
   city.value = title;
-  city.id = id;
+  // city.id = id;
+  flightFields.updateCityTitle(title);
+  flightFields.updateCityId(id);
   selectedCityId.value = id;
-  flightFields.updateCity(title , id , title)
-  emits("citySelected",city.id);
-  // emits('citySelected', { index: 100, cityId: city.id });
+  flightFields.updateCityTitle(title);
+  emits("citySelected",flightFields.cityId);
   listVisible.value = false;
+  console.log("flightFields.selectedCityId:" , flightFields.cityId)
 };
 
 // Function to emit selected destination city to parent
@@ -266,17 +278,18 @@ const selectDestCity = (id, title) => {
   destCity.value = title;
   destCity.id = id;
   selectedDestCityId.value = id;
-  flightFields.updateDestCity(title , id , title)
+  flightFields.updateDestCity(title);
   emits("destCitySelected", destCity.id);
   listVisibleDest.value = false;
 };
 
 const clearInputCity = () => {
-  city.value = ""; // Clear the city input field
+  city.value = "";
+  flightFields.updateCityTitle("");
   listVisible.value = false;
 };
 const clearInputDestCity = () => {
-  destCity.value = ""; // Clear the city input field
+  destCity.value = ""; 
   listVisibleDest.value = false;
 };
 

@@ -5,8 +5,9 @@
       <div class="home-container038">
         <div class="home-container039">
           <div class="home-container040">
+            <!-- <h1>itemsData is: {{ cityTitleFromSearchResult }} </h1> -->
             <!-- <FlySearchForm :itemsData="itemsData"/> -->
-            <HomeFlySrearchForm  :itemsData="itemsData" :returnValue = true />
+            <HomeFlySrearchForm />
           </div>
         </div>
       </div>
@@ -270,11 +271,14 @@
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
+const  flightFields  = useFlight();
 
     const route = useRoute();
     const flightResult = ref([]);
     const resultData = ref(null);
     const itemsData = ref({});
+    const cityIdFromSearchResult = ref("");
+    const cityTitleFromSearchResult = ref("")
 
     const searchResults = () => {
         const sessionId = route.query.sessionId;
@@ -289,18 +293,31 @@ import axios from "axios";
             },
           }
         ).then(response =>{
-          console.log("response", response);
-          itemsData.value = response;
-          // console.log("itemsData2", itemsData);
+          console.log("response", response.legs);///------
+          // itemsData.value = response.legs;
+          flightFields.updateItemsData(response.legs);
+          console.log("itemsDataValue 299 is:",flightFields.itemsDataValue);
+          cityIdFromSearchResult.value = response.legs[0].origin.city.id;
+          cityTitleFromSearchResult.value = response.legs[0].origin.city.title;
         }).catch(error => {
         console.error("Error fetching flight results:", error);
     });
     };
+    // console.log("itemsDataValue",flightFields.itemsDataValue);
+
+    console.log("cityTitleFromSearchResult" , cityTitleFromSearchResult.value)
+    // flightFields.updateCity(itemsData.leg[0].origin.city.Title);
+    // console.log("itemsData.leg[0].origin.city.Title" , itemsData.leg[0].origin.city.Title);
+
+
+
     onMounted(() => {
+      // flightFields.updateCity(cityIdFromSearchResult.value);
       if (route.query.sessionId) {
         searchResults();
         localStorage.setItem("sessionId", route.query.sessionId);
       }
+
     });
 
 </script>
