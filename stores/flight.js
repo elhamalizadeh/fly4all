@@ -23,19 +23,13 @@ export const useFlight = defineStore("flightFields", {
 
     updateDestCity(selectedDestCityTitle) {
       this.selectedDestCityTitle = selectedDestCityTitle;
-    //   console.log("selectedDestCityTitle 30:" ,selectedDestCityTitle)
     },
 
     updateTypeTrip(typeTripValue) {
       this.tripType = typeTripValue;
-    //   console.log("this.typeTrip in store:", this.tripType);
     },
     updateSelectedDate(value) {
       this.selectedDateFromStore = value;
-    //   console.log(
-    //     "this.selectedDateFromStore in store:",
-    //     this.selectedDateFromStore
-    //   );
     },
     updateSelectedReturnDate(value) {
       this.selectedReturnDateFromStore = value;

@@ -2,18 +2,11 @@
   <!--------- Source  ------>
   <div class="dropdown home-container018">
     <div v-if="flightFields.itemsDataValue">
-      <!-- {{ flightFields.itemsDataValue[0].origin.city.title }} -->
 
-
-  <!-- {{ flightFields.itemsDataValue}} -->
-
-    <div v-for="(leg, index) in flightFields.itemsDataValue" :key="index" class="mt-5 text-teal-500">
+    <!-- <div v-for="(leg, index) in flightFields.itemsDataValue" :key="index" class="mt-5 text-teal-500">
       <p><b>Origin[{{ index }}]</b>: {{ leg.origin.buffer.title }}</p>
       <p><b>Destination[{{ index }}]</b>: {{ leg.destination.buffer.title }}</p>
-      <!-- <p>Origin[{{ index }}]: {{ leg.origin.city.title }}</p>
-      <p>Destination[{{ index }}]: {{ leg.destination.city.title  }}</p> -->
-      <!-- <p>Departure[{{ index }}]: {{ leg.departure  }}</p> -->
-    </div>
+    </div> -->
    
 </div>
     <input
@@ -33,9 +26,6 @@
       id="selectedAirportId"
     v-model="selectedCityId"
     />
-    <!-- v-model="selectedCityId" -->
-
-    <!-- data-value -->
     <ul id="myUL" v-if="listVisible" class="dropdown-content">
       <div id="title">Search by city or airport</div>
       <li
@@ -125,7 +115,6 @@
       ></path>
     </svg>
   </div>
-  <!-- <homeTravellers /> -->
 </template>
 <script setup>
 import { ref, watch, onMounted, computed, defineEmits,defineProps } from "vue";
@@ -157,15 +146,6 @@ const props = defineProps({
 
 const emits = defineEmits(["citySelected", "destCitySelected"]);
 const city = ref("");
-
-//---------------------------------------
-// const originFromPropsInput = ref('');
-// if(props.originFromProps){
-//   originFromPropsInput.value = props.originFromProps;
-// }
-// city.value =originFromPropsInput;
-// console.log("originFromPropsInput:",originFromPropsInput);
-
 
 //---------------------------------------
 const selectedOriginAirport = ref("");
@@ -364,9 +344,5 @@ const changeCity = () => {
 .dropdown-content {
   display: block;
 }
-/*------flex--------*/
-/* .home-container017 {
-  display: grid;
-  grid-template-columns: 1fr 1fr 3fr 1fr;
-} */
+
 </style>

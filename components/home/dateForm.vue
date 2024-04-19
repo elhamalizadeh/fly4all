@@ -500,7 +500,6 @@ const dayFlags = computed(() => {
       selectedDateReturn.value = `${day} ${currentMonthYearReturn}`;
       flightFields.updateSelectedReturnDate(`${day} ${currentMonthYearReturn}`);
 
-      // isCalendarVisible.value = false; // Hide the calendar after date selection
       isCalendarVisibleReturn.value = false;
 
 

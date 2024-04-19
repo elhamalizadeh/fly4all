@@ -4,15 +4,12 @@
     <section class="home-container003">
       <homeSlider />
 
-      <!-- <div class="home-container004">
-        <div class="home-container005">
-          <HomeBanner /> -->
+          <div style="margin-top: 50px;">
+            <HomeBanner />
           <homeFlySrearchForm
             :recommendeDestination="recommendedDestinationValue"
           />
-        <!-- </div>
-      </div> -->
-
+        </div>
 
     </section>
     <div class="home-container028">

@@ -1,9 +1,9 @@
 <template>
   <div class="home-container004">
     <div class="home-container005">
-    <HomeBanner />
+      <HomeBanner />
       <!----------------tripType---------------->
-  
+
       <div class="home-container010">
         <div class="home-container011">
           <input
@@ -13,7 +13,6 @@
             value="oneWay"
             @change="handleTripTypeChange"
             :checked="flightFields.tripType === 'oneWay'"
-
           />
           <span class="home-text004">One-Way</span>
         </div>
@@ -25,7 +24,6 @@
             value="roundTrip"
             @change="handleTripTypeChange"
             :checked="flightFields.tripType === 'roundTrip'"
-
           />
           <span class="home-text005">Round-Trip</span>
         </div>
@@ -37,7 +35,6 @@
             value="multiDestination"
             @change="handleTripTypeChange"
             :checked="flightFields.tripType === 'multiDestination'"
-
           />
           <span class="home-text005">Multi-destination</span>
         </div>
@@ -91,7 +88,10 @@
       </div>
       <!-----  end v-for  --->
       <!-------- first inputFields ----->
-      <div class="home-container017" v-if="params.tripType == 'multiDestination'">
+      <div
+        class="home-container017"
+        v-if="params.tripType == 'multiDestination'"
+      >
         <homeInputCityFialds
           @citySelected="handleCitySelected"
           @destCitySelected="handleDestCitySelected"
@@ -112,7 +112,7 @@
           @destCitySelected="handleDestCitySelected"
           :index="0"
           :required="true"
-          :originFromProps = "originFromProps"
+          :originFromProps="originFromProps"
         />
         <homeDateForm
           @sendEmitCurrentMonthYear="CurrentMonthYearFunction"
@@ -161,26 +161,15 @@ import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 
 const self = getCurrentInstance();
-// console.log("self:" , self);
-const  flightFields  = useFlight();
+const flightFields = useFlight();
 
 const travelersCounter = useCounter();
 const props = defineProps({
   recommendedDestinationValue: String,
 });
 
-
-const tripTypeProps = ref('');
-    const originFromProps = ref('');
-
-// watch(() => props.itemsData, (newValue) => {
-//       if (props.returnValue && newValue) {
-//         tripTypeProps.value = newValue.tripType;
-//         originFromProps.value = newValue.leg[0].origin.city.id;
-//         // console.log("originFromProps 184 is:" , originFromProps.value);
-//       }
-//     });
-
+const tripTypeProps = ref("");
+const originFromProps = ref("");
 
 const router = useRouter();
 const tripType = ref("");
@@ -228,7 +217,7 @@ const handleMultiCitySelected = (selectCity, index) => {
 //------------------------handleMultiDestCitySelected ------********
 const handleMultiDestCitySelected = (selectDestCity, index) => {
   if (!destCityId[index]) {
-    destCityId[index] = {}; 
+    destCityId[index] = {};
   }
   destCityId[index] = selectDestCity;
   destCityIdByIndex.value = destCityId[index];
@@ -270,21 +259,23 @@ const searchMultiFlights = async () => {
       }
     }
     if (tripType.value === "roundTrip") {
-    if(!selectedDateReturn.value.value){
-      Swal.fire({
+      if (!selectedDateReturn.value.value) {
+        Swal.fire({
           icon: "error",
           text: "Fields are required.",
         });
         return;
+      }
     }
-  }
     if (flightFields.tripType === "roundTrip") {
-      console.log("selectedDateReturn.value.value 284" , selectedDateReturn.value.value);
+      console.log(
+        "selectedDateReturn.value.value 284",
+        selectedDateReturn.value.value
+      );
       params.append("legs[1][origin]", destCityId.value);
       params.append("legs[1][destination]", cityId.value);
       params.append("legs[1][departure]", selectedDateReturn.value.value);
     }
-
     params.append("adults", travelersCounter.adultsCount);
     params.append("children", travelersCounter.childrenCount);
     params.append("infants", travelersCounter.infantsCount);
@@ -302,7 +293,7 @@ const searchMultiFlights = async () => {
     });
     const sessionId = response.sessionId;
     const status = response.status;
-    // console.log("response 295" , response);
+    console.log("response 295", response);
     await router.push({
       name: "fly-search",
       query: { status, sessionId, lang: "EN" },

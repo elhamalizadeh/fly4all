@@ -3065,7 +3065,8 @@ p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  pa
     left: 0px;
     right: 0px;
     width: 1200px;
-    bottom: 100px;
+    top: 280px; 
+    /*  bottom:100px temparary removed  */
     height: 136px;
     margin: auto;
     z-index: 100;
