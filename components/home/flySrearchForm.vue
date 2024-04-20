@@ -75,33 +75,6 @@
         </div>
       </div>
       <!-------- end home-container017-->
-       <!-------- first inputFields ----->
-       <div
-        class="home-container017"
-        v-if="params.tripType == 'multiDestination'"
-      >
-        <homeInputCityFialds
-          @citySelected="handleCitySelected"
-          @destCitySelected="handleDestCitySelected"
-          :index="1"
-          :required="true"
-        />
-        <homeDateForm
-          @sendEmitCurrentMonthYear="CurrentMonthYearFunction"
-          @sendEmitCurrentMonthYearReturn="CurrentMonthYearFunctionReturn"
-          :tripType="params.tripType"
-          :index="1"
-        />
-<div v-if="params.tripType == 'multiDestination'">
-        <button
-              class="home-button02 button"
-              id="deleteBtn"
-              @click="deleteFunction(1)"
-            >
-              Delete
-            </button>
-          </div>
-      </div>
       <!-----  v-for for inputCityFields --->
       <div
         class="home-container017 multiInputDiv"
@@ -112,7 +85,7 @@
           <homeInputCityFialds
             @citySelected="handleMultiCitySelected($event, index)"
             @destCitySelected="handleMultiDestCitySelected($event, index)"
-            :index="index + 2"
+            :index="index + 1"
             v-model="item.inputCity"
             :tripType="params.tripType"
             v-if="params.tripType == 'multiDestination'"
@@ -124,7 +97,7 @@
             @sendEmitCurrentMonthYear="CurrentMonthYearFunction"
             @sendEmitCurrentMonthYearReturn="CurrentMonthYearFunctionReturn"
             v-model="item.date"
-            :index="index + 2"
+            :index="index + 1"
             :tripType="params.tripType"
             v-if="params.tripType == 'multiDestination'"
           />
@@ -195,10 +168,20 @@ const params = reactive({
   infants: 0,
 });
 
-onMounted(() => {
-  // Initialize tripType from the store
-  params.tripType = flightFields.typeTrip;
+
+// onMounted(() => {
+//   params.tripType = flightFields.typeTrip;
+
+// });
+
+watch(() => params.tripType, (newValue) => {
+  // params.tripType = flightFields.typeTrip;
+  handleTripTypeChange(newValue);
+  if (newValue === "multiDestination") {
+    addInputFunction();
+  }
 });
+
 const cityId = ref([]);
 const destCityId = ref([]);
 const cityIdByIndex = ref([]);
@@ -219,9 +202,9 @@ const handleMultiCitySelected = (selectCity, index) => {
     cityId[index] = {}; // Initialize object if not present
   }
   cityId[index] = selectCity;
-  console.log("index is:", index);
-  console.log("selectCity is 183:", selectCity);
-  console.log("cityId[index].value:", cityId[index]);
+  // console.log("index is:", index);
+  // console.log("selectCity is 183:", selectCity);
+  // console.log("cityId[index].value:", cityId[index]);
   cityIdByIndex.value = cityId[index];
 };
 

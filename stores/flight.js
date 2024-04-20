@@ -7,7 +7,7 @@ export const useFlight = defineStore("flightFields", {
       destCityId: "",
       selectedCityTitle: "",
       selectedDestCityTitle: "",
-      tripType: "",
+      tripType: "oneWay",
       selectedDateFromStore: "",
       selectedReturnDateFromStore: "",
       itemsDataValue:{}
