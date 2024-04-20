@@ -167,13 +167,13 @@ export default {
     const calendarYear = ref(new Date().getFullYear()); // Current year of the calendar
 
     const placeholderText = computed(() => {
-      // return selectedDate.value ? selectedDate.value : "Deprature";
-      return flightFields.selectedDateFromStore ? flightFields.selectedDateFromStore : "Deprature";
+      return selectedDate.value ? selectedDate.value : "Deprature";
+      // return flightFields.selectedDateFromStore ? flightFields.selectedDateFromStore : "Deprature";
     });
 
     const placeholderTextReturn = computed(() => {
-      // return selectedDateReturn.value ? selectedDateReturn.value : "Return";
-      return flightFields.selectedReturnDateFromStore ? flightFields.selectedReturnDateFromStore : "Return";
+      return selectedDateReturn.value ? selectedDateReturn.value : "Return";
+      // return flightFields.selectedReturnDateFromStore ? flightFields.selectedReturnDateFromStore : "Return";
         });
 
 
@@ -441,16 +441,14 @@ const dayFlags = computed(() => {
       }
 
       selectedDate.value = `${day} ${currentMonthYear}`;
-      flightFields.updateSelectedDate(`${day} ${currentMonthYear}`);
+      // flightFields.updateSelectedDate(`${day} ${currentMonthYear}`); // for placeholderText
 
-      console.log("selectedDate 432:" , selectedDate.value);
+      // console.log("selectedDate 432:" , selectedDate.value);
       isCalendarVisible.value = false; // Hide the calendar after date selection
-      // isCalendarVisibleReturn.value = false;
 
 
       // Add a class to change the background color
     const selectedDayElement = document.getElementById(`tdDayOfMonth${day}`);
-    console.log("selectedDayElement 419:" , selectedDayElement);
     selectedDayElement.classList.add('red-background');
 
 
@@ -482,7 +480,7 @@ const dayFlags = computed(() => {
      ---selectDateReturn Function14---
 ==========*/
     function selectDateReturn(day, currentMonthYearReturn) {
-      console.log("selected day:459" , day);
+      // console.log("selected day:459" , day);
       const [month, year] = currentMonthYearReturn.split(" ");
       // document.querySelector('#tdDayOfMonth' + day).style.backgroundColor = "lightgray";
       // Create a new Date object with the selected day, month, and year
@@ -498,7 +496,7 @@ const dayFlags = computed(() => {
       }
 
       selectedDateReturn.value = `${day} ${currentMonthYearReturn}`;
-      flightFields.updateSelectedReturnDate(`${day} ${currentMonthYearReturn}`);
+      // flightFields.updateSelectedReturnDate(`${day} ${currentMonthYearReturn}`);//for placeholderText
 
       isCalendarVisibleReturn.value = false;
 
