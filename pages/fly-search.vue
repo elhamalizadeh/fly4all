@@ -282,7 +282,6 @@ const searchInfo = () => {
     });
 };
 
-console.log("cityTitleFromSearchResult", cityTitleFromSearchResult.value);
 const searchProgressPercent = ref("");
 
 const searchProgress = () => {
@@ -294,14 +293,14 @@ const searchProgress = () => {
     },
   })
     .then((progress) => {
-      // console.log("progress is 297:", progress.percent);
+      console.log("progress is 297:", progress.percent);
       searchProgressPercent.value = progress.percent;
-      // if (progress.percent >= 50 && progress.percent < 100) {
-      //   setInterval(searchResults, 6000);
-      // } 
+      if (progress.percent >= 50 && progress.percent < 100) {
+        searchResults();
+      } else if(progress.percent === 100){
+        clearInterval(intervalValue.value);
+        searchResults();
 
-      if (progress.percent == 100) {
-        searchResults()
       }
     })
     .catch((error) => {
@@ -330,17 +329,15 @@ const searchResults = () => {
     });
 };
 
-
+const intervalValue = ref(null);
 onMounted(() => {
-  // flightFields.updateCity(cityIdFromSearchResult.value);
   if (route.query.sessionId) {
     searchInfo();
     localStorage.setItem("sessionId", route.query.sessionId);
-
-    searchProgress();
-    // setInterval(searchProgress, 15000);
+    intervalValue.value = setInterval(searchProgress, 3000);
   }
 });
+
 </script>
 <style scoped>
 @import url("../assets/css/fly-search.css");
