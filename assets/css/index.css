@@ -2621,7 +2621,8 @@ p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  pa
   border-bottom-right-radius: 20px;
 }
 .home-text079 {
-  color: rgb(255, 255, 255);
+  /* color: rgb(255, 255, 255); */
+  color:#000000;
   font-size: 20px;
   font-style: normal;
   font-weight: 700;
@@ -3721,7 +3722,8 @@ p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  pa
     border-bottom-right-radius: 20px;
   }
   .home-text079 {
-    color: rgb(255, 255, 255);
+    /* color: rgb(255, 255, 255); */
+    color:#000000;
     font-size: 20px;
     font-style: normal;
     font-weight: 700;
@@ -5108,7 +5110,8 @@ p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  pa
     background-color: #010e60;
   }
   .home-text079 {
-    color: #ffffff;
+    /* color: #ffffff; */
+    color:#000000;
     font-size: 18px;
     font-style: normal;
     font-weight: 700;
@@ -7930,7 +7933,7 @@ p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  pa
     height: 80px;
   }
   .home-text079 {
-    font-size: 24px;
+    font-size: 224px;
   }
   .home-text080 {
     font-size: 14px;

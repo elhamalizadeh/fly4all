@@ -22,7 +22,7 @@
           </div>
 
           <!---------------------flightResult----------------------->
-          <div v-for="flight in itemsData" :key="flight">
+          <div v-for="flight in flightsData" :key="flight.flightBufferReferenceId">
             <div class="fly-search-container115" style="margin-top: 3rem">
               <div class="fly-search-container116">
                 <img
@@ -43,10 +43,10 @@
               </div>
               <div class="fly-search-container118">
                 <span class="fly-search-text073">
-                  flight.legs[0].departure.time
+                  {{ flight.serviceInfo.legs[0].info.departure.time }}
                 </span>
                 <span class="home-text074">
-                  flight.legs[0].departure.airport.abb
+                  {{ flight.serviceInfo.legs[0].info.departure.airport.abb }}
                 </span>
               </div>
               <div class="fly-search-container119">
@@ -57,7 +57,7 @@
                 />
               </div>
               <div class="fly-search-container120">
-                <span class="home-text075"> flight.legs[0].duration </span>
+                <span class="home-text075"> {{ flight.serviceInfo.legs[0].duration }}</span>
                 <span class="home-text076">---------------</span>
                 <span class="home-text077">non stop</span>
               </div>
@@ -71,10 +71,10 @@
                 </div>
               </div>
               <div class="fly-search-container123">
-                <span class="home-text078"> flight.legs[0].arrival.time</span>
+                <span class="home-text078"> {{ flight.serviceInfo.legs[0].info.arrival.time }}</span>
                 <span class="home-text079">
-                  flight.legs[0].arrival.airport.abb |
-                  flight.legs[0].arrival.date_time
+                  {{ flight.serviceInfo.legs[0].info.arrival.airport.abb }}  |
+                  {{ flight.serviceInfo.legs[0].info.arrival.date_time }}
                 </span>
               </div>
               <div class="fly-search-container124"></div>
@@ -109,11 +109,11 @@
                 <div class="home-ch01"></div>
                 <div class="home-ch02">
                   <span class="home-ch02-text">
-                    flight.legs[0].departure.city - flight.legs[0].arrival.city
+                    {{ flight.serviceInfo.legs[0].info.departure.city }} - {{ flight.serviceInfo.legs[0].info.arrival.city }}
                   </span>
                 </div>
                 <div class="home-ch03">
-                  <span class="home-ch03-text"> flight.legs[0].duration </span>
+                  <span class="home-ch03-text"> {{ flight.serviceInfo.legs[0].info.duration }}</span>
                 </div>
                 <div class="home-ch04">
                   <span class="home-ch04-text">non stop</span>
@@ -146,23 +146,23 @@
               <div class="home-info03">
                 <div class="home-sh01">
                   <span class="home-sh01-text">
-                    flight.serviceInfo.legs[0].info.departure.time
+                    {{ flight.serviceInfo.legs[0].info.departure.time }}
                   </span>
                 </div>
                 <div class="home-sh02">
                   <span class="home-sh02-text">
-                    flight.serviceInfo.legs[0].info.departure.city
+                    {{ flight.serviceInfo.legs[0].info.departure.city }}
                   </span>
                 </div>
                 <div class="home-sh03"></div>
                 <div class="home-sh04">
                   <span class="home-sh04-text">
-                    flight.serviceInfo.legs[0].info.arrival.time
+                     {{ flight.serviceInfo.legs[0].info.arrival.time }} 
                   </span>
                 </div>
                 <div class="home-sh05">
                   <span class="home-sh05-text">
-                    flight.serviceInfo.legs[0].info.arrival.city
+                    {{ flight.serviceInfo.legs[0].info.arrival.city }}
                   </span>
                 </div>
               </div>
@@ -189,32 +189,32 @@
               <div class="home-info05">
                 <div class="home-qh01">
                   <span class="home-qh01-text">
-                    flight.serviceInfo.legs[0].info.flight_number
+                    {{ flight.serviceInfo.legs[0].info.flight_number }}
                   </span>
                 </div>
                 <div class="home-qh02">
                   <span class="home-qh02-text">
-                    flight.serviceInfo.legs[0].info.airline.title
+                    {{ flight.serviceInfo.legs[0].info.airline.title }}
                   </span>
                 </div>
                 <div class="home-qh03">
                   <span class="home-qh03-text">
-                    flight.serviceInfo.legs[0].info.airplane
+                   {{ flight.serviceInfo.legs[0].info.airplane }}
                   </span>
                 </div>
                 <div class="home-qh04">
                   <span class="home-qh04-text">
-                    flight.serviceInfo.legs[0].info.resBookDesigCode
+                    {{ flight.serviceInfo.legs[0].info.resBookDesigCode }}
                   </span>
                 </div>
                 <div class="home-qh05">
                   <span class="home-qh05-text">
-                    flight.serviceInfo.legs[0].info.cabin
+                    {{ flight.serviceInfo.legs[0].info.cabin }}
                   </span>
                 </div>
                 <div class="home-qh06">
                   <span class="home-qh06-text">
-                    flight.serviceInfo.legs[0].info.capacity
+                    {{ flight.serviceInfo.legs[0].info.capacity }}
                   </span>
                 </div>
               </div>
@@ -255,11 +255,11 @@ const flightFields = useFlight();
 const route = useRoute();
 const flightResult = ref([]);
 const resultData = ref(null);
-const itemsData = ref({});
+const flightsData = ref({});
 const cityIdFromSearchResult = ref("");
 const cityTitleFromSearchResult = ref("");
 
-const searchResults = () => {
+const searchInfo = () => {
   const sessionId = route.query.sessionId;
   $fetch("https://marketplace.beta.luxota.network/v1/search/info", {
     method: "GET",
@@ -283,12 +283,62 @@ const searchResults = () => {
 };
 
 console.log("cityTitleFromSearchResult", cityTitleFromSearchResult.value);
+const searchProgressPercent = ref("");
+
+const searchProgress = () => {
+  const sessionId = route.query.sessionId;
+  $fetch("https://marketplace.beta.luxota.network/v1/search/progress", {
+    method: "GET",
+    params: {
+      sessionId: sessionId,
+    },
+  })
+    .then((progress) => {
+      // console.log("progress is 297:", progress.percent);
+      searchProgressPercent.value = progress.percent;
+      // if (progress.percent >= 50 && progress.percent < 100) {
+      //   setInterval(searchResults, 6000);
+      // } 
+
+      if (progress.percent == 100) {
+        searchResults()
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching flight results:", error);
+    });
+};
+
+
+const searchResults = () => {
+  const sessionId = route.query.sessionId;
+  $fetch("https://marketplace.beta.luxota.network/v1/search/results", {
+    method: "GET",
+    params: {
+      sessionId: sessionId,
+      page: 1,
+      currency: 158,
+      lang: "en",
+    },
+  })
+    .then((response) => {
+      console.log("response Flight in 327:", response);
+      flightsData.value = response.data;
+    })
+    .catch((error) => {
+      console.error("Error fetching flight results:", error);
+    });
+};
+
 
 onMounted(() => {
   // flightFields.updateCity(cityIdFromSearchResult.value);
   if (route.query.sessionId) {
-    searchResults();
+    searchInfo();
     localStorage.setItem("sessionId", route.query.sessionId);
+
+    searchProgress();
+    // setInterval(searchProgress, 15000);
   }
 });
 </script>
