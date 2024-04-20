@@ -14,13 +14,15 @@
       type="text"
       id="selectedOption"
       @input="handleCityInput"
-      :placeholder="cityPlaceholderText"
+      placeholder="From"
       v-model="city"
       :required = required
     />
+    <!-- :placeholder="cityPlaceholderText" -->
+
     <input 
     type="hidden"
-    :placeholder="cityPlaceholderText"
+    placeholder="From"
       class="home-textinput input"
       :name="`legs[${index}][origin]`"
       id="selectedAirportId"
@@ -79,10 +81,11 @@
       id="selectedOptionDest"
       :name="`legs[${index}][destination]`"
       @input="handleDestCityInput"
-      :placeholder = "destCityPlaceholderText"
+      placeholder = "To"
       v-model="destCity"
       :required = required
     />
+    <!-- :placeholder = "destCityPlaceholderText" -->
     <input 
     type="hidden"
       placeholder="To"
@@ -177,15 +180,15 @@ watch(
   }
 );
 
-//----------
-const cityPlaceholderText = computed(() => {
-        return flightFields.selectedCityTitle;
-      // return flightFields.selectedCityId;
-    });
+//---------- to set the placeholder value ------
+// const cityPlaceholderText = computed(() => {
+//         return flightFields.selectedCityTitle;
+//       // return flightFields.selectedCityId;
+//     });
 
-const destCityPlaceholderText = computed(() => {
-      return flightFields.selectedDestCityTitle;
-    });
+// const destCityPlaceholderText = computed(() => {
+//       return flightFields.selectedDestCityTitle;
+//     });
 
     //--------
 const filter = ref("");
@@ -215,7 +218,6 @@ const handleCityInput = async () => {
 //------------------ destination--------------------
 
   const destCity = ref("");
-// const selectedDestAirport = ref("");
 const destAirports = ref([]);
 const showDestAirports = ref(false);
 
@@ -243,14 +245,15 @@ const handleDestCityInput = async () => {
 // Function to emit selected city to parent
 const selectCity = (id, title) => {
   city.value = title;
-  // city.id = id;
-  flightFields.updateCityTitle(title);
-  flightFields.updateCityId(id);
+  city.id = id;
   selectedCityId.value = id;
-  flightFields.updateCityTitle(title);
-  emits("citySelected",flightFields.cityId);
+  // flightFields.updateCityTitle(title); //----- to update the placeholderText
+  // flightFields.updateCityId(id);//----- to update the placeholderText
+  // flightFields.updateCityTitle(title);//----- to update the placeholderText
+  // emits("citySelected",flightFields.cityId);//----- to update the placeholderText
+  emits("citySelected",city.id);
   listVisible.value = false;
-  console.log("flightFields.selectedCityId:" , flightFields.cityId)
+  // console.log("flightFields.selectedCityId:" , flightFields.cityId)
 };
 
 // Function to emit selected destination city to parent
@@ -258,7 +261,7 @@ const selectDestCity = (id, title) => {
   destCity.value = title;
   destCity.id = id;
   selectedDestCityId.value = id;
-  flightFields.updateDestCity(title);
+  // flightFields.updateDestCity(title);//----- to update the placeholderText
   emits("destCitySelected", destCity.id);
   listVisibleDest.value = false;
 };
