@@ -36,26 +36,26 @@
     <HomeFooter />
   </div>
 </template>
-<script>
-export default {
-  props: ["recommendeDestination"],
+<script setup>
+import { defineProps, onMounted } from "vue";
+const  flightFields  = useFlight();
+const  travelersCounter  = useCounter();
 
-  setup() {
-    const receiveDataFromB = (data) => {
-      // Capture the emitted event and store the data
-      this.dataFromB = data;
-    };
+  const props = defineProps({
+    recommendeDestination: Object,
+});
 
     const selectedRecommendedDest = ref("");
     const SelectedRecommendedDestination = (dest) => {
       selectedRecommendedDest.value = dest;
     };
 
-    return {
-      SelectedRecommendedDestination,
-      selectedRecommendedDest,
-      recommendedDestinationValue: selectedRecommendedDest,
-    };
-  },
-};
+    onMounted(() => {
+      flightFields.updateTypeTrip("oneWay");
+      
+      travelersCounter.adultsCount =  1 ;
+      travelersCounter.childrenCount = 0 ;
+      travelersCounter.infantsCount = 0;
+    });
+
 </script>
