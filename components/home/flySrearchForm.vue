@@ -48,33 +48,6 @@
         <option value="business">Business</option>
         <option value="first">First</option>
       </select>
-<!---------------------------- default input field ----->
-      <div class="home-container017">
-        <homeInputCityFialds
-          @citySelected="handleCitySelected"
-          @destCitySelected="handleDestCitySelected"
-          :index="0"
-          :required="true"
-          :originFromProps="originFromProps"
-        />
-        <homeDateForm
-          @sendEmitCurrentMonthYear="CurrentMonthYearFunction"
-          @sendEmitCurrentMonthYearReturn="CurrentMonthYearFunctionReturn"
-          :tripType="params.tripType"
-          :index="0"
-        />
-
-        <!-- Travellers -->
-        <homeTravellers />
-        <div class="home-container026">
-          <svg viewBox="0 0 1097.142857142857 1024" class="home-icon24">
-            <path
-              d="M338.857 512c-59.429 1.714-113.143 27.429-151.429 73.143h-76.571c-57.143 0-110.857-27.429-110.857-90.857 0-46.286-1.714-201.714 70.857-201.714 12 0 71.429 48.571 148.571 48.571 26.286 0 51.429-4.571 76-13.143-1.714 12.571-2.857 25.143-2.857 37.714 0 52 16.571 103.429 46.286 146.286zM950.857 876c0 92.571-61.143 148-152.571 148h-499.429c-91.429 0-152.571-55.429-152.571-148 0-129.143 30.286-327.429 197.714-327.429 19.429 0 90.286 79.429 204.571 79.429s185.143-79.429 204.571-79.429c167.429 0 197.714 198.286 197.714 327.429zM365.714 146.286c0 80.571-65.714 146.286-146.286 146.286s-146.286-65.714-146.286-146.286 65.714-146.286 146.286-146.286 146.286 65.714 146.286 146.286zM768 365.714c0 121.143-98.286 219.429-219.429 219.429s-219.429-98.286-219.429-219.429 98.286-219.429 219.429-219.429 219.429 98.286 219.429 219.429zM1097.143 494.286c0 63.429-53.714 90.857-110.857 90.857h-76.571c-38.286-45.714-92-71.429-151.429-73.143 29.714-42.857 46.286-94.286 46.286-146.286 0-12.571-1.143-25.143-2.857-37.714 24.571 8.571 49.714 13.143 76 13.143 77.143 0 136.571-48.571 148.571-48.571 72.571 0 70.857 155.429 70.857 201.714zM1024 146.286c0 80.571-65.714 146.286-146.286 146.286s-146.286-65.714-146.286-146.286 65.714-146.286 146.286-146.286 146.286 65.714 146.286 146.286z"
-            ></path>
-          </svg>
-        </div>
-      </div>
-      <!-------- end home-container017-->
       <!-----  v-for for inputCityFields --->
       <div
         class="home-container017 multiInputDiv"
@@ -114,7 +87,33 @@
         </template>
       </div>
       <!-----  end v-for  --->
-    
+    <!---------------------------- default input field ----->
+    <div class="home-container017">
+        <homeInputCityFialds
+          @citySelected="handleCitySelected"
+          @destCitySelected="handleDestCitySelected"
+          :index="0"
+          :required="true"
+          :originFromProps="originFromProps"
+        />
+        <homeDateForm
+          @sendEmitCurrentMonthYear="CurrentMonthYearFunction"
+          @sendEmitCurrentMonthYearReturn="CurrentMonthYearFunctionReturn"
+          :tripType="params.tripType"
+          :index="0"
+        />
+
+        <!-- Travellers -->
+        <homeTravellers />
+        <div class="home-container026">
+          <svg viewBox="0 0 1097.142857142857 1024" class="home-icon24">
+            <path
+              d="M338.857 512c-59.429 1.714-113.143 27.429-151.429 73.143h-76.571c-57.143 0-110.857-27.429-110.857-90.857 0-46.286-1.714-201.714 70.857-201.714 12 0 71.429 48.571 148.571 48.571 26.286 0 51.429-4.571 76-13.143-1.714 12.571-2.857 25.143-2.857 37.714 0 52 16.571 103.429 46.286 146.286zM950.857 876c0 92.571-61.143 148-152.571 148h-499.429c-91.429 0-152.571-55.429-152.571-148 0-129.143 30.286-327.429 197.714-327.429 19.429 0 90.286 79.429 204.571 79.429s185.143-79.429 204.571-79.429c167.429 0 197.714 198.286 197.714 327.429zM365.714 146.286c0 80.571-65.714 146.286-146.286 146.286s-146.286-65.714-146.286-146.286 65.714-146.286 146.286-146.286 146.286 65.714 146.286 146.286zM768 365.714c0 121.143-98.286 219.429-219.429 219.429s-219.429-98.286-219.429-219.429 98.286-219.429 219.429-219.429 219.429 98.286 219.429 219.429zM1097.143 494.286c0 63.429-53.714 90.857-110.857 90.857h-76.571c-38.286-45.714-92-71.429-151.429-73.143 29.714-42.857 46.286-94.286 46.286-146.286 0-12.571-1.143-25.143-2.857-37.714 24.571 8.571 49.714 13.143 76 13.143 77.143 0 136.571-48.571 148.571-48.571 72.571 0 70.857 155.429 70.857 201.714zM1024 146.286c0 80.571-65.714 146.286-146.286 146.286s-146.286-65.714-146.286-146.286 65.714-146.286 146.286-146.286 146.286 65.714 146.286 146.286z"
+            ></path>
+          </svg>
+        </div>
+      </div>
+      <!-------- end home-container017-->
       <!----------  end inputFields  ------------>
       <button
         class="home-button02 button"
@@ -187,33 +186,35 @@ const destCityId = ref([]);
 const cityIdByIndex = ref([]);
 const destCityIdByIndex = ref([]);
 
-const handleCitySelected = (selectCity) => {
-  cityId.value = selectCity;
+const handleCitySelected = (selectOriginAirport) => {
+  cityId.value = selectOriginAirport;
+  console.log("cityId.value is 191:" ,cityId.value );
 };
 
 //------------------------handleDestCitySelected ------
-const handleDestCitySelected = (selectDestCity) => {
-  destCityId.value = selectDestCity;
+const handleDestCitySelected = (selectDestAirport) => {
+  destCityId.value = selectDestAirport;
+  console.log("destCityId.value is 197:" ,destCityId.value );
 };
 
 //------------------------handleMultiCitySelected ------********
-const handleMultiCitySelected = (selectCity, index) => {
+const handleMultiCitySelected = (selectOriginAirport, index) => {
   if (!cityId[index]) {
     cityId[index] = {}; // Initialize object if not present
   }
-  cityId[index] = selectCity;
+  cityId[index] = selectOriginAirport;
   // console.log("index is:", index);
-  // console.log("selectCity is 183:", selectCity);
+  // console.log("selectOriginAirport is 183:", selectOriginAirport);
   // console.log("cityId[index].value:", cityId[index]);
   cityIdByIndex.value = cityId[index];
 };
 
 //------------------------handleMultiDestCitySelected ------********
-const handleMultiDestCitySelected = (selectDestCity, index) => {
+const handleMultiDestCitySelected = (selectDestAirport, index) => {
   if (!destCityId[index]) {
     destCityId[index] = {};
   }
-  destCityId[index] = selectDestCity;
+  destCityId[index] = selectDestAirport;
   destCityIdByIndex.value = destCityId[index];
 };
 
@@ -243,8 +244,9 @@ const searchMultiFlights = async () => {
       if (dataInputs[key]) {
         const value = dataInputs[key];
         params.append(key, value);
+        console.log("dataInputs[key] 247:", key);
       } else {
-        console.log("dataInputs[key] 359:", key);
+        // console.log("dataInputs[key] 359:", key);
         Swal.fire({
           icon: "error",
           text: "Fields are required.",
@@ -262,10 +264,10 @@ const searchMultiFlights = async () => {
       }
     }
     if (flightFields.tripType === "roundTrip") {
-      console.log(
-        "selectedDateReturn.value.value 284",
-        selectedDateReturn.value.value
-      );
+      // console.log(
+      //   "selectedDateReturn.value.value 284",
+      //   selectedDateReturn.value.value
+      // );
       params.append("legs[1][origin]", destCityId.value);
       params.append("legs[1][destination]", cityId.value);
       params.append("legs[1][departure]", selectedDateReturn.value.value);
@@ -287,7 +289,7 @@ const searchMultiFlights = async () => {
     });
     const sessionId = response.sessionId;
     const status = response.status;
-    console.log("response 295", response);
+    // console.log("response 295", response);
     await router.push({
       name: "fly-search",
       query: { status, sessionId, lang: "EN" },

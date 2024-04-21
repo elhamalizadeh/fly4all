@@ -42,7 +42,7 @@
                   </div>
                 </div>
                 <div class="home-container040">
-                  <button type="button" class="home-button04 button" @click="recommended.updateSelectRecommended(flight.origin.city_en,flight.destination.city_en );recommended.handleCityInput(flight.origin.city_en)">
+                  <button type="button" class="home-button04 button" @click="recommended.updateSelectRecommended(flight.origin.city_en,flight.destination.city_en,flight.origin.airport_buffer_id,flight.origin.airport_buffer_title,flight.destination.airport_buffer_id,flight.destination.airport_buffer_title ); recommended.handleCityInput(flight.origin.city_en)">
                     <span class="home-text015">Facial services&nbsp;</span>
                     <svg viewBox="0 0 1024 1024" class="home-icon26">
                       <path
@@ -83,6 +83,7 @@ export default {
           "https://marketplace.beta.luxota.network/v1/popularroutes/flight?lang=en&currency=158"
         );
         popularFlights.value = response.data.data.slice(0, 3);
+        console.log("recommended 86:",response.data.data);
       } catch (error) {
         console.error("Error searching flights:", error);
       }

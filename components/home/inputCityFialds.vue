@@ -19,7 +19,6 @@
       :required = required
     />
     <!-- :placeholder="cityPlaceholderText" -->
-
     <input 
     type="hidden"
     placeholder="From"
@@ -35,7 +34,7 @@
         v-for="(airport, i) in airports"
         :key="i"
         :value="airport.id"
-        @click="selectCity(airport.id, airport.title)"
+        @click="selectOriginAirport(airport.id, airport.title)"
         style="cursor: pointer"
       >
         <span>{{ airport.title }}</span>
@@ -101,7 +100,7 @@
         v-for="(airport, i) in destAirports"
         :key="i"
         :value="airport.id"
-        @click="selectDestCity(airport.id, airport.title)"
+        @click="selectDestAirport(airport.id, airport.title)"
       >
         <span>{{ airport.title }}</span>
       </li>
@@ -164,8 +163,11 @@ watch(
   () => recommended.recomendedOrigin,
   (newValue) => {
     if (newValue) {
-      city.value = recommended.recomendedOrigin;
-      handleCityInput();
+      // city.value = recommended.recomendedOrigin;
+      city.value = recommended.recomendedOriginAirport;
+      // city.id = recommended.recomendedOriginAirportId;
+      selectedCityId.value = recommended.recomendedOriginAirportId;
+
     }
   }
 );
@@ -174,8 +176,9 @@ watch(
   () => recommended.recomendedDest,
   (newValue) => {
     if (newValue) {
-      destCity.value = recommended.recomendedDest;
-      handleDestCityInput();
+      destCity.value = recommended.recomendedDestAirport;
+  selectedDestCityId.value = recommended.recomendedDestAirportId;
+
     }
   }
 );
@@ -243,7 +246,7 @@ const handleDestCityInput = async () => {
 };
 
 // Function to emit selected city to parent
-const selectCity = (id, title) => {
+const selectOriginAirport = (id, title) => {
   city.value = title;
   city.id = id;
   selectedCityId.value = id;
@@ -257,7 +260,7 @@ const selectCity = (id, title) => {
 };
 
 // Function to emit selected destination city to parent
-const selectDestCity = (id, title) => {
+const selectDestAirport = (id, title) => {
   destCity.value = title;
   destCity.id = id;
   selectedDestCityId.value = id;
@@ -276,13 +279,15 @@ const clearInputDestCity = () => {
   listVisibleDest.value = false;
 };
 
+const temp = ref("");
+const tempId = ref("");
 const changeCity = () => {
-  const temp = city.value;
+  temp.value = city.value;
   city.value = destCity.value;
-  destCity.value = temp;
-  const tempId = city.id;
+  destCity.value = temp.value;
+  tempId.value = city.id;
   city.id = destCity.id;
-  destCity.id = tempId;
+  destCity.id = tempId.value;
   emits("citySelected", city.id);
   emits("destCitySelected", destCity.id);
 

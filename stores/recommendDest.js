@@ -5,13 +5,22 @@ export const useRecommendDest = defineStore("recommendDest", {
     return {
       recomendedOrigin: "",
       recomendedDest: "",
+      recomendedOriginAirportId:"",
+      recomendedOriginAirport:"",
+
+      recomendedDestAirportId:"",
+      recomendedDestAirport:""
 
         };
   },
   actions: {
-    updateSelectRecommended(origin, dest) {
+    updateSelectRecommended(origin, dest ,originAirportId,originAirport,destAirportId,destAirport,) {
       this.recomendedOrigin = origin;
       this.recomendedDest = dest;
+      this.recomendedOriginAirport = originAirport;
+      this.recomendedDestAirport = destAirport;
+      this.recomendedOriginAirportId = originAirportId;
+      this.recomendedDestAirportId = destAirportId
     },
 
   },
