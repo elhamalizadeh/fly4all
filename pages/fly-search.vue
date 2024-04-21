@@ -110,7 +110,7 @@ const searchResults = () => {
     },
   })
     .then((response) => {
-      console.log("response Flight in 327:", response.data);
+      console.log("response Flight in 327:", response);
       flightsData.value = response.data;
     })
     .catch((error) => {
