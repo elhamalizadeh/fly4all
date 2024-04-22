@@ -40,14 +40,17 @@ import { ref, onMounted , watch } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
 const flightFields = useFlight();
+const flightResults = useFlightResults();
 
 const route = useRoute();
 const flightResult = ref([]);
 const resultData = ref(null);
 const flightsData = ref({});
-const cityIdFromSearchResult = ref("");
-const cityTitleFromSearchResult = ref("");
+const originIdFromSearchResult = ref("");
+const originTitleFromSearchResult = ref("");
 
+
+//--- show the inputs data that has been sent to this page
 const searchInfo = () => {
   const sessionId = route.query.sessionId;
   $fetch("https://marketplace.beta.luxota.network/v1/search/info", {
@@ -59,12 +62,21 @@ const searchInfo = () => {
     },
   })
     .then((response) => {
-      console.log("response", response.legs); ///------
+      console.log("response 64:", response.legs); ///------
       // itemsData.value = response.legs;
       flightFields.updateItemsData(response.legs);
       console.log("itemsDataValue 299 is:", flightFields.itemsDataValue);
-      cityIdFromSearchResult.value = response.legs[0].origin.city.id;
-      cityTitleFromSearchResult.value = response.legs[0].origin.city.title;
+      originIdFromSearchResult.value = response.legs[0].origin.buffer.id;
+      originTitleFromSearchResult.value = response.legs[0].origin.buffer.title;
+      // console.log("cityIdFromSearchResult in 70:", originTitleFromSearchResult.value);
+
+      flightResults.updateOriginAirportTitle(response.legs[0].origin.buffer.title);
+      flightResults.updateOriginAirportId(response.legs[0].origin.buffer.id);
+
+      flightResults.updateDestAirportTitle(response.legs[0].destination.buffer.title);
+      flightResults.updateDestAirportId(response.legs[0].destination.buffer.id);
+      flightResults.setPage("flySearch")
+
     })
     .catch((error) => {
       console.error("Error fetching flight results:", error);
@@ -122,6 +134,7 @@ const searchResults = () => {
 
 const intervalValue = ref(null);
 onMounted(() => {
+  flightResults.setPage("flySearch")
   if (route.query.sessionId) {
     searchInfo();
     localStorage.setItem("sessionId", route.query.sessionId);

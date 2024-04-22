@@ -2,13 +2,11 @@
   <!--------- Source  ------>
   <div class="dropdown home-container018">
     <div v-if="flightFields.itemsDataValue">
-
-    <!-- <div v-for="(leg, index) in flightFields.itemsDataValue" :key="index" class="mt-5 text-teal-500">
+      <!-- <div v-for="(leg, index) in flightFields.itemsDataValue" :key="index" class="mt-5 text-teal-500">
       <p><b>Origin[{{ index }}]</b>: {{ leg.origin.buffer.title }}</p>
       <p><b>Destination[{{ index }}]</b>: {{ leg.destination.buffer.title }}</p>
     </div> -->
-   
-</div>
+    </div>
     <input
       class="home-textinput input"
       type="text"
@@ -16,16 +14,16 @@
       @input="handleCityInput"
       placeholder="From"
       v-model="city"
-      :required = required
+      :required="required"
     />
     <!-- :placeholder="cityPlaceholderText" -->
-    <input 
-    type="hidden"
-    placeholder="From"
+    <input
+      type="hidden"
+      placeholder="From"
       class="home-textinput input"
       :name="`legs[${index}][origin]`"
       id="selectedAirportId"
-    v-model="selectedCityId"
+      v-model="selectedCityId"
     />
     <ul id="myUL" v-if="listVisible" class="dropdown-content">
       <div id="title">Search by city or airport</div>
@@ -80,18 +78,18 @@
       id="selectedOptionDest"
       :name="`legs[${index}][destination]`"
       @input="handleDestCityInput"
-      placeholder = "To"
+      placeholder="To"
       v-model="destCity"
-      :required = required
+      :required="required"
     />
     <!-- :placeholder = "destCityPlaceholderText" -->
-    <input 
-    type="hidden"
+    <input
+      type="hidden"
       placeholder="To"
       class="home-textinput input"
       :name="`legs[${index}][destination]`"
       id="selectedDestAirportId"
-    v-model="selectedDestCityId"
+      v-model="selectedDestCityId"
     />
     <ul id="myUL" v-if="listVisibleDest" class="dropdown-content">
       <div id="title">Search by city or airport</div>
@@ -119,7 +117,7 @@
   </div>
 </template>
 <script setup>
-import { ref, watch, onMounted, computed, defineEmits,defineProps } from "vue";
+import { ref, watch, onMounted, computed, defineEmits, defineProps } from "vue";
 import axios from "axios";
 
 const recommended = useRecommendDest();
@@ -140,8 +138,8 @@ const params = reactive({
 });
 
 const props = defineProps({
-  index:Number,
-  required:Boolean,
+  index: Number,
+  required: Boolean,
   // originFromProps:Number
   // destCityDefaultFlySearch : String
 });
@@ -157,7 +155,8 @@ const airport = city.value.trim();
 const showSelectedAirport = ref(false);
 const listVisible = ref(false);
 const listVisibleDest = ref(false);
-const  flightFields  = useFlight();
+const flightFields = useFlight();
+const flightResults = useFlightResults();
 
 watch(
   () => recommended.recomendedOrigin,
@@ -167,7 +166,6 @@ watch(
       city.value = recommended.recomendedOriginAirport;
       // city.id = recommended.recomendedOriginAirportId;
       selectedCityId.value = recommended.recomendedOriginAirportId;
-
     }
   }
 );
@@ -177,8 +175,7 @@ watch(
   (newValue) => {
     if (newValue) {
       destCity.value = recommended.recomendedDestAirport;
-  selectedDestCityId.value = recommended.recomendedDestAirportId;
-
+      selectedDestCityId.value = recommended.recomendedDestAirportId;
     }
   }
 );
@@ -193,7 +190,7 @@ watch(
 //       return flightFields.selectedDestCityTitle;
 //     });
 
-    //--------
+//--------
 const filter = ref("");
 
 const handleCityInput = async () => {
@@ -220,7 +217,7 @@ const handleCityInput = async () => {
 
 //------------------ destination--------------------
 
-  const destCity = ref("");
+const destCity = ref("");
 const destAirports = ref([]);
 const showDestAirports = ref(false);
 
@@ -250,12 +247,17 @@ const selectOriginAirport = (id, title) => {
   city.value = title;
   city.id = id;
   selectedCityId.value = id;
+
+  flightResults.updateOriginAirportTitle(title);
+      flightResults.updateOriginAirportId(id);
+
+
   // flightFields.updateCityTitle(title); //----- to update the placeholderText
   // flightFields.updateCityId(id);//----- to update the placeholderText
   // flightFields.updateCityTitle(title);//----- to update the placeholderText
   // emits("citySelected",flightFields.cityId);//----- to update the placeholderText
-  emits("citySelected",city.id);
-  listVisible.value = false; 
+  emits("citySelected", city.id);
+  listVisible.value = false;
 
   // console.log("flightFields.selectedCityId:" , flightFields.cityId)
 };
@@ -265,18 +267,34 @@ const selectDestAirport = (id, title) => {
   destCity.value = title;
   destCity.id = id;
   selectedDestCityId.value = id;
+
+  flightResults.updateDestAirportTitle(title);
+      flightResults.updateDestAirportId(id);
   // flightFields.updateDestCity(title);//----- to update the placeholderText
   emits("destCitySelected", destCity.id);
   listVisibleDest.value = false;
 };
 
+onMounted(() => {
+  console.log("flightResults.page 271-------" ,flightResults.page)
+  if (flightResults.page == "flySearch") {
+    // alert("flySearch");
+    city.value = flightResults.originAirportTitle;
+    city.id = flightResults.originAirportId;
+    selectedCityId.value = flightResults.originAirportId;
+
+    destCity.value = flightResults.destAirportTitle;
+    destCity.id = flightResults.destAirportId;
+    selectedDestCityId.value = flightResults.destAirportId;
+  }
+});
 const clearInputCity = () => {
   city.value = "";
   flightFields.updateCityTitle("");
   listVisible.value = false;
 };
 const clearInputDestCity = () => {
-  destCity.value = ""; 
+  destCity.value = "";
   listVisibleDest.value = false;
 };
 
@@ -292,10 +310,10 @@ const changeCity = () => {
   emits("citySelected", city.id);
   emits("destCitySelected", destCity.id);
 
-  if(listVisible){
+  if (listVisible) {
     const tempAirport = airports.value;
     airports.value = destAirports.value;
-    destAirports.value = tempAirport
+    destAirports.value = tempAirport;
   }
 };
 </script>
@@ -353,5 +371,4 @@ const changeCity = () => {
 .dropdown-content {
   display: block;
 }
-
 </style>

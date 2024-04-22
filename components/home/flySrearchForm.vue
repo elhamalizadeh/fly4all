@@ -147,6 +147,7 @@ import Swal from "sweetalert2";
 
 const self = getCurrentInstance();
 const flightFields = useFlight();
+const flightResults = useFlightResults();
 
 const travelersCounter = useCounter();
 const props = defineProps({
@@ -222,6 +223,7 @@ const handleMultiDestCitySelected = (selectDestAirport, index) => {
 
 //------------------------searchMultiFlights ------*********
 const searchMultiFlights = async () => {
+  flightResults.setPage("flySearch")
   let dataInputs = {};
   // console.log("self:", self);
 

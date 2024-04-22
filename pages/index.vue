@@ -41,6 +41,8 @@
 import { defineProps, onMounted } from "vue";
 const  flightFields  = useFlight();
 const  travelersCounter  = useCounter();
+const flightResults = useFlightResults();
+
 
   const props = defineProps({
     recommendeDestination: Object,
@@ -57,6 +59,8 @@ const  travelersCounter  = useCounter();
       travelersCounter.adultsCount =  1 ;
       travelersCounter.childrenCount = 0 ;
       travelersCounter.infantsCount = 0;
+      flightResults.setPage("Home")
+
     });
 
 </script>
