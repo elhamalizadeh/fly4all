@@ -1,6 +1,8 @@
 <template>
   <div class="home-container004">
-    <div class="home-container005">
+    <!-- <div class="home-container005" v-if(props.page == "fly-search"){style="width:79%"}> -->
+        <div class="home-container005" :style="{ 'padding-right': paddingRL + 'px', 'padding-left': paddingRL + 'px' }">
+
       <HomeBanner />
       <!----------------tripType---------------->
 
@@ -148,7 +150,7 @@ const flightFields = useFlight();
 
 const travelersCounter = useCounter();
 const props = defineProps({
-  recommendedDestinationValue: String,
+  paddingRL : String
 });
 
 const tripTypeProps = ref("");

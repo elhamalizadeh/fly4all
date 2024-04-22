@@ -3,7 +3,7 @@
     <div class="fly-search-main">
       <flySearchMenu />
       <div class="home-container038">
-        <HomeFlySrearchForm />
+        <HomeFlySrearchForm :paddingRL="80"/>
       </div>
       <div class="fly-search-container060">
         <flySearchSidebar />
@@ -36,7 +36,7 @@
   </div>
 </template>
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted , watch } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
 const flightFields = useFlight();
@@ -73,12 +73,14 @@ const searchInfo = () => {
 
 const searchProgressPercent = ref("");
 
+
+//--- return percent and status---
 const searchProgress = () => {
-  const sessionId = route.query.sessionId;
+  const sessionIdProgress = route.query.sessionId;
   $fetch("https://marketplace.beta.luxota.network/v1/search/progress", {
     method: "GET",
     params: {
-      sessionId: sessionId,
+      sessionId: sessionIdProgress,
     },
   })
     .then((progress) => {
@@ -126,6 +128,13 @@ onMounted(() => {
     intervalValue.value = setInterval(searchProgress, 3000);
   }
 });
+
+watch(() => route.query.sessionId, (newValue) => {
+  searchInfo();
+    localStorage.setItem("sessionId", route.query.sessionId);
+  searchResults();
+});
+
 
 </script>
 <style scoped>

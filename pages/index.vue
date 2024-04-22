@@ -7,8 +7,9 @@
           <div style="margin-top: 50px;">
             <HomeBanner />
           <homeFlySrearchForm
-            :recommendeDestination="recommendedDestinationValue"
           />
+          <!-- :recommendeDestination="recommendedDestinationValue" -->
+
         </div>
 
     </section>
