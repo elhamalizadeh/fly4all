@@ -20,7 +20,11 @@ export const useRecommendDest = defineStore("recommendDest", {
       this.recomendedOriginAirport = originAirport;
       this.recomendedDestAirport = destAirport;
       this.recomendedOriginAirportId = originAirportId;
-      this.recomendedDestAirportId = destAirportId
+      this.recomendedDestAirportId = destAirportId;
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+   });
     },
 
   },

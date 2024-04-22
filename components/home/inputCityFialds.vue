@@ -255,7 +255,8 @@ const selectOriginAirport = (id, title) => {
   // flightFields.updateCityTitle(title);//----- to update the placeholderText
   // emits("citySelected",flightFields.cityId);//----- to update the placeholderText
   emits("citySelected",city.id);
-  listVisible.value = false;
+  listVisible.value = false; 
+
   // console.log("flightFields.selectedCityId:" , flightFields.cityId)
 };
 

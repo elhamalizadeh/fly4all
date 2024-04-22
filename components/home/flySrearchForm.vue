@@ -224,7 +224,7 @@ const searchMultiFlights = async () => {
   // console.log("self:", self);
 
   const inputs = self.vnode.el.querySelectorAll("[name]");
-  console.log("inputs in 245:", inputs);
+  console.log("inputs in 227:", inputs);
 
   inputs.forEach((input) => {
     const name = input.name;
@@ -244,7 +244,7 @@ const searchMultiFlights = async () => {
       if (dataInputs[key]) {
         const value = dataInputs[key];
         params.append(key, value);
-        console.log("dataInputs[key] 247:", key);
+        console.log("dataInputs[key] 247:", value);
       } else {
         // console.log("dataInputs[key] 359:", key);
         Swal.fire({
