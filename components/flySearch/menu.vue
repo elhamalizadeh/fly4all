@@ -212,7 +212,7 @@
                <nav
                  class="navigation-links-nav navigation-links-root-class-name8"
                >
-                 <span class="navigation-links-text"><span>Home</span></span>
+                 <span class="navigation-links-text"><NuxtLink to="/"><span>Home</span></NuxtLink></span>
                  <span class="navigation-links-text1">
                    <span>Flight</span>
                  </span>

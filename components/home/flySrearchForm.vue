@@ -151,7 +151,7 @@ const flightResults = useFlightResults();
 
 const travelersCounter = useCounter();
 const props = defineProps({
-  paddingRL : String
+  paddingRL : Number
 });
 
 const tripTypeProps = ref("");

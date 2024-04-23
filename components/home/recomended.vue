@@ -83,7 +83,7 @@ export default {
           "https://marketplace.beta.luxota.network/v1/popularroutes/flight?lang=en&currency=158"
         );
         popularFlights.value = response.data.data.slice(0, 3);
-        console.log("recommended 86:",response.data.data);
+        // console.log("recommended 86:",response.data.data);
       } catch (error) {
         console.error("Error searching flights:", error);
       }
