@@ -2,10 +2,6 @@
   <!--------- Source  ------>
   <div class="dropdown home-container018">
     <div v-if="flightFields.itemsDataValue">
-      <!-- <div v-for="(leg, index) in flightFields.itemsDataValue" :key="index" class="mt-5 text-teal-500">
-      <p><b>Origin[{{ index }}]</b>: {{ leg.origin.buffer.title }}</p>
-      <p><b>Destination[{{ index }}]</b>: {{ leg.destination.buffer.title }}</p>
-    </div> -->
     </div>
     <input
       class="home-textinput input"
@@ -16,7 +12,6 @@
       v-model="city"
       :required="required"
     />
-    <!-- :placeholder="cityPlaceholderText" -->
     <input
       type="hidden"
       placeholder="From"
@@ -82,7 +77,6 @@
       v-model="destCity"
       :required="required"
     />
-    <!-- :placeholder = "destCityPlaceholderText" -->
     <input
       type="hidden"
       placeholder="To"
@@ -140,8 +134,6 @@ const params = reactive({
 const props = defineProps({
   index: Number,
   required: Boolean,
-  // originFromProps:Number
-  // destCityDefaultFlySearch : String
 });
 
 const emits = defineEmits(["citySelected", "destCitySelected"]);
@@ -162,9 +154,7 @@ watch(
   () => recommended.recomendedOrigin,
   (newValue) => {
     if (newValue) {
-      // city.value = recommended.recomendedOrigin;
       city.value = recommended.recomendedOriginAirport;
-      // city.id = recommended.recomendedOriginAirportId;
       selectedCityId.value = recommended.recomendedOriginAirportId;
     }
   }
@@ -180,17 +170,20 @@ watch(
   }
 );
 
-//---------- to set the placeholder value ------
-// const cityPlaceholderText = computed(() => {
-//         return flightFields.selectedCityTitle;
-//       // return flightFields.selectedCityId;
-//     });
 
-// const destCityPlaceholderText = computed(() => {
-//       return flightFields.selectedDestCityTitle;
-//     });
+watch(() => flightResults.originAirportTitle, (newValue) => {
+  city.value = flightResults.originAirportTitle;
+    city.id = flightResults.originAirportId;
+    selectedCityId.value = flightResults.originAirportId;
 
-//--------
+    destCity.value = flightResults.destAirportTitle;
+    destCity.id = flightResults.destAirportId;
+    selectedDestCityId.value = flightResults.destAirportId;
+  
+
+});
+
+
 const filter = ref("");
 
 const handleCityInput = async () => {
@@ -203,7 +196,6 @@ const handleCityInput = async () => {
       .then((res) => {
         airports.value = res.data.data;
         listVisible.value = true;
-        // emits("citySelected", city);
       })
       .catch((error) => {
         console.log("error");
@@ -247,19 +239,8 @@ const selectOriginAirport = (id, title) => {
   city.value = title;
   city.id = id;
   selectedCityId.value = id;
-
-  flightResults.updateOriginAirportTitle(title);
-      flightResults.updateOriginAirportId(id);
-
-
-  // flightFields.updateCityTitle(title); //----- to update the placeholderText
-  // flightFields.updateCityId(id);//----- to update the placeholderText
-  // flightFields.updateCityTitle(title);//----- to update the placeholderText
-  // emits("citySelected",flightFields.cityId);//----- to update the placeholderText
   emits("citySelected", city.id);
   listVisible.value = false;
-
-  // console.log("flightFields.selectedCityId:" , flightFields.cityId)
 };
 
 // Function to emit selected destination city to parent
@@ -267,27 +248,22 @@ const selectDestAirport = (id, title) => {
   destCity.value = title;
   destCity.id = id;
   selectedDestCityId.value = id;
-
-  flightResults.updateDestAirportTitle(title);
-      flightResults.updateDestAirportId(id);
-  // flightFields.updateDestCity(title);//----- to update the placeholderText
   emits("destCitySelected", destCity.id);
   listVisibleDest.value = false;
 };
 
-onMounted(() => {
-  console.log("flightResults.page 271-------" ,flightResults.page)
-  if (flightResults.page == "flySearch") {
-    // alert("flySearch");
-    city.value = flightResults.originAirportTitle;
-    city.id = flightResults.originAirportId;
-    selectedCityId.value = flightResults.originAirportId;
+// onMounted(() => {
+//   if (flightResults.page == "flySearch") {
+//     city.value = flightResults.originAirportTitle;
+//     city.id = flightResults.originAirportId;
+//     selectedCityId.value = flightResults.originAirportId;
+//     destCity.value = flightResults.destAirportTitle;
+//     destCity.id = flightResults.destAirportId;
+//     selectedDestCityId.value = flightResults.destAirportId;
+//   }
+// });
 
-    destCity.value = flightResults.destAirportTitle;
-    destCity.id = flightResults.destAirportId;
-    selectedDestCityId.value = flightResults.destAirportId;
-  }
-});
+
 const clearInputCity = () => {
   city.value = "";
   flightFields.updateCityTitle("");

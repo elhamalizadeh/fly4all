@@ -1,12 +1,16 @@
 import { defineStore } from "pinia";
 
 export const useFlightResults = defineStore("flightResults", {
+  
   state: () => {
     return {
       originAirportTitle: "",
       originAirportId: "",
       destAirportTitle: "",
       destAirportId: "",
+      departureDate:"",
+      departureDateToSend:"",
+      arriveDate:"",
       page:"Home"
     };
   },
@@ -27,5 +31,14 @@ export const useFlightResults = defineStore("flightResults", {
     updateDestAirportId(destId) {
       this.destAirportId = destId;
     },
+    updateDepartureDate(date){
+        this.departureDate = date
+    },
+    updateArriveDate(date){
+        this.arriveDate = date;
+    },
+    updateDepartureDateToSend(date){
+        this.departureDateToSend = date
+    }
   },
 });

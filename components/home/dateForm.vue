@@ -24,7 +24,6 @@
         :name="`legs[${index}][departure]`" 
       />
       <div v-if="isCalendarVisible" class="calendar-box">
-        <!-- <div v-for="day in daysOfMonth" :key="day" @click="selectDate(day)">{{ day }}</div> -->
         <div class="calendar-box">
           <div class="nav-container">
             <button @click="previousMonth">Previous</button>
@@ -79,7 +78,6 @@
         v-if="tripTypeValue == 'roundTrip'"
       />
       <div v-if="isCalendarVisibleReturn" class="calendar-boxReturn">
-        <!-- <div v-for="day in daysOfMonth" :key="day" @click="selectDate(day)">{{ day }}</div> -->
         <div class="calendar-boxReturn">
           <div class="nav-container">
             <button @click="previousMonth">Previous</button>
@@ -122,18 +120,15 @@
           </table>
         </div>
       </div>
-      <!-- <h2>{{ tripTypeValue }}</h2> -->
     </div>
   </div>
 </template>
 <script>
-import { ref, computed , onMounted  } from "vue";
+import { ref, computed , onMounted , watch } from "vue";
 
 export default {
-  // props: ["tripType"],
   props: ['currentMonthYear','currentMonthYearReturn', 'currentYear', 'currentMonth',"tripType" ,"index"],
   setup(props, { emit }) {
-    // const tripType = props.tripType;
     const  flightFields  = useFlight();
     const currentDate = new Date();
     let currentYear = currentDate.getFullYear();
@@ -154,7 +149,7 @@ export default {
       "November",
       "December",
     ];
-
+    const flightResults = useFlightResults();
     const selectedDate = ref(""); // Holds the selected date
     const selectedDateToSend = ref("");
 
@@ -168,12 +163,10 @@ export default {
 
     const placeholderText = computed(() => {
       return selectedDate.value ? selectedDate.value : "Deprature";
-      // return flightFields.selectedDateFromStore ? flightFields.selectedDateFromStore : "Deprature";
     });
 
     const placeholderTextReturn = computed(() => {
       return selectedDateReturn.value ? selectedDateReturn.value : "Return";
-      // return flightFields.selectedReturnDateFromStore ? flightFields.selectedReturnDateFromStore : "Return";
         });
 
 
@@ -265,7 +258,6 @@ export default {
 
     const daysBeforeCurrentDate = [];
     const day = ref("");
-    // const currentDate = new Date(); // Get the current date
 const startOfYear = new Date(currentDate.getFullYear(), 0, 0); // Get the start of the current year
 const diff = currentDate - startOfYear; // Calculate the difference between the current date and the start of the year
 const oneDay = 1000 * 60 * 60 * 24; // Calculate the number of milliseconds in a day
@@ -300,14 +292,6 @@ const dayFlags = computed(() => {
 });
 
 
-// console.log("dayToCheck.getMonth()+1:",dayToCheck.getMonth()+1);
-// console.log("currentMonth:",currentMonth);
-// console.log("currentDay:",currentDay);
-
-
-
-
-
 
 
 
@@ -338,24 +322,14 @@ const dayFlags = computed(() => {
       return targetYearMonth < currentYearMonth + 12; // Enable next button if target month is within 12 months ahead of current month
     });
 
-
-
     //------
     const currentMonthYear = ref(`${monthNames[currentMonth]} ${currentYear}`);
     const currentMonthYearEmit = `${monthNames[currentMonth]} ${currentYear}`;
-
     const currentMonthYearReturn = ref(`${monthNames[currentMonth]} ${currentYear}`);
     const currentMonthYearReturnEmit = `${monthNames[currentMonth]} ${currentYear}`;
-
-
-
-    // console.log("currentMonthYear 329:",currentMonthYear.value);
-    // console.log("currentMonthYearReturn 329:",currentMonthYearReturn.value);
-
     emit("sendEmitCurrentMonthYear", selectedDateToSend);
     emit("sendEmitCurrentMonthYearReturn", selectedDateReturnToSend);
 
-    //-----
 
 
 /*=========
@@ -423,11 +397,13 @@ const dayFlags = computed(() => {
 /*=========
      ---selectDate Function13---
 ==========*/  
-    // Function to handle date selection from the calendar
+    if (flightResults.page == "flySearch") {
+        selectedDate.value = flightResults.departureDate;
+      }
+
     function selectDate(day, currentMonthYear) {
       console.log("selected day:395" , day);
       const [month, year] = currentMonthYear.split(" ");
-      // document.querySelector('#tdDayOfMonth' + day).style.backgroundColor = "lightgray";
       // Create a new Date object with the selected day, month, and year
       const selectedDateObject = new Date(`${year},${month},${day}`);
 
@@ -440,10 +416,12 @@ const dayFlags = computed(() => {
         return;
       }
 
+      // if (flightResults.page == "flySearch") {
+      //   flightResults.updateDepartureDate(`${day} ${currentMonthYear}`); // for placeholderText
+      // }else
       selectedDate.value = `${day} ${currentMonthYear}`;
-      // flightFields.updateSelectedDate(`${day} ${currentMonthYear}`); // for placeholderText
-
-      // console.log("selectedDate 432:" , selectedDate.value);
+      // flightResults.updateDepartureDate(`${day} ${currentMonthYear}`);
+      // flightResults.updateDepartureDateToSend(`${day} ${currentMonthYear}`); // for placeholderText
       isCalendarVisible.value = false; // Hide the calendar after date selection
 
 
@@ -496,8 +474,6 @@ const dayFlags = computed(() => {
       }
 
       selectedDateReturn.value = `${day} ${currentMonthYearReturn}`;
-      // flightFields.updateSelectedReturnDate(`${day} ${currentMonthYearReturn}`);//for placeholderText
-
       isCalendarVisibleReturn.value = false;
 
 
@@ -526,48 +502,6 @@ const dayFlags = computed(() => {
     }
 
 
-    // function selectDateReturn(day, currentMonthYear) {
-    //   const [month, year] = currentMonthYear.split(" ");
-
-    //   // Create a new Date object with the selected day, month, and year
-    //   const selectedDateObject = new Date(`${year},${month},${day}`);
-
-    //   // Check if the selected date is before the current date
-    //   if (
-    //     selectedDateObject < currentDate ||
-    //     selectedDateObject < new Date(selectedDate.value)
-    //   ) {
-    //     // Do not allow selection of dates before the current date
-    //     return;
-    //   }
-
-    //   selectedDateReturn.value = `${day} ${currentMonthYear}`;
-    //   isCalendarVisibleReturn.value = false;
-
-    //   // Function to format the date to YYYY-MM-DD
-    //   function formatDate(date) {
-    //     const year = date.getFullYear();
-    //     const month = String(date.getMonth() + 1).padStart(2, "0"); // Adding 1 to month as it's zero-based
-    //     const day = String(date.getDate()).padStart(2, "0");
-    //     return `${year}-${month}-${day}`;
-    //   }
-
-    //   // Get the formatted date in YYYY-MM-DD format
-    //   const formattedDate = formatDate(selectedDateObject);
-
-    //   // Update selectedDate with the formatted date
-    //   selectedDateReturnToSend.value = formattedDate;
-
-    //   // Hide the calendar after date selection
-    //   isCalendarVisible.value = false;
-    //   isCalendarVisibleReturn.value = false;
-    // }
-
-
-
-
-
-
 
 /*=========
 ---generateDaysOfMonth Function15---    unused
@@ -587,7 +521,6 @@ const dayFlags = computed(() => {
     // an array consists of weeks and days of weeks
 
     calendar.value = updateCalendar(currentYear, currentMonth); // ---- to edit the default month by first load
-// console.log("calendar.value: " , calendar.value);
     function hoverBackground(event) {
       // event.target.style.backgroundColor = "lightgray";
     }
@@ -624,11 +557,19 @@ const dayFlags = computed(() => {
       document.addEventListener("click", closeCalendarOnClickOutside);
     });
 
+
     // Remove event listener when component is unmounted to prevent memory leaks
     onUnmounted(() => {
       document.removeEventListener("click", closeCalendarOnClickOutside);
     });
 
+
+    watch(() => flightResults.departureDate, (newValue) => {
+      selectedDate.value = flightResults.departureDate;
+      selectedDateToSend.value = flightResults.departureDateToSend;
+
+
+});
 
 //------------------
     return {

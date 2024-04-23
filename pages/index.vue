@@ -59,7 +59,18 @@ const flightResults = useFlightResults();
       travelersCounter.adultsCount =  1 ;
       travelersCounter.childrenCount = 0 ;
       travelersCounter.infantsCount = 0;
-      flightResults.setPage("Home")
+      flightResults.setPage("Home");
+
+      flightResults.originAirportTitle = "";
+    flightResults.originAirportId = "";
+    flightResults.originAirportId = "";
+
+    flightResults.destAirportTitle = "";
+    flightResults.destAirportId = "";
+    flightResults.destAirportId = "";
+
+    flightResults.departureDate = "";;
+    flightResults.departureDateToSend = "";;
 
     });
 

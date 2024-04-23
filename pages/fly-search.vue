@@ -66,6 +66,7 @@ const searchInfo = () => {
       // itemsData.value = response.legs;
       flightFields.updateItemsData(response.legs);
       console.log("itemsDataValue 299 is:", flightFields.itemsDataValue);
+
       originIdFromSearchResult.value = response.legs[0].origin.buffer.id;
       originTitleFromSearchResult.value = response.legs[0].origin.buffer.title;
       // console.log("cityIdFromSearchResult in 70:", originTitleFromSearchResult.value);
@@ -75,6 +76,8 @@ const searchInfo = () => {
 
       flightResults.updateDestAirportTitle(response.legs[0].destination.buffer.title);
       flightResults.updateDestAirportId(response.legs[0].destination.buffer.id);
+      flightResults.updateDepartureDate(response.legs[0].departure);
+      flightResults.updateDepartureDateToSend(response.legs[0].departure);
       flightResults.setPage("flySearch")
 
     })
@@ -134,18 +137,20 @@ const searchResults = () => {
 
 const intervalValue = ref(null);
 onMounted(() => {
-  flightResults.setPage("flySearch")
+  flightResults.setPage("flySearch");
+  searchInfo();
   if (route.query.sessionId) {
-    searchInfo();
     localStorage.setItem("sessionId", route.query.sessionId);
     intervalValue.value = setInterval(searchProgress, 3000);
   }
 });
 
+//---- to change the results by entering new input values
 watch(() => route.query.sessionId, (newValue) => {
   searchInfo();
     localStorage.setItem("sessionId", route.query.sessionId);
-  searchResults();
+    intervalValue.value = setInterval(searchProgress, 3000);
+  // searchResults();
 });
 
 
