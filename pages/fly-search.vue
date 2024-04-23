@@ -78,6 +78,11 @@ const searchInfo = () => {
       flightResults.updateDestAirportId(response.legs[0].destination.buffer.id);
       flightResults.updateDepartureDate(response.legs[0].departure);
       flightResults.updateDepartureDateToSend(response.legs[0].departure);
+
+      if(flightFields.tripType == 'roundTrip'){
+      flightResults.updateDepartureDateReturn(response.legs[1].departure);
+      flightResults.updateDepartureDateReturnToSend(response.legs[1].departure);
+      }
       flightResults.setPage("flySearch")
 
     })
@@ -111,6 +116,7 @@ const searchProgress = () => {
     })
     .catch((error) => {
       console.error("Error fetching flight results:", error);
+      clearInterval(intervalValue.value);
     });
 };
 

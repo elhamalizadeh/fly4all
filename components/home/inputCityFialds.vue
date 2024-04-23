@@ -203,7 +203,6 @@ const handleCityInput = async () => {
   } else {
     showAirports = false;
     airports = ref([]);
-    console.log("error dare line 40");
   }
 };
 
@@ -230,7 +229,7 @@ const handleDestCityInput = async () => {
   } else {
     showDestAirports = false;
     destAirports = ref([]);
-    console.log("error dare line 40");
+    console.log("error");
   }
 };
 
@@ -251,18 +250,6 @@ const selectDestAirport = (id, title) => {
   emits("destCitySelected", destCity.id);
   listVisibleDest.value = false;
 };
-
-// onMounted(() => {
-//   if (flightResults.page == "flySearch") {
-//     city.value = flightResults.originAirportTitle;
-//     city.id = flightResults.originAirportId;
-//     selectedCityId.value = flightResults.originAirportId;
-//     destCity.value = flightResults.destAirportTitle;
-//     destCity.id = flightResults.destAirportId;
-//     selectedDestCityId.value = flightResults.destAirportId;
-//   }
-// });
-
 
 const clearInputCity = () => {
   city.value = "";

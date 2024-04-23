@@ -10,6 +10,8 @@ export const useFlightResults = defineStore("flightResults", {
       destAirportId: "",
       departureDate:"",
       departureDateToSend:"",
+      departureDateReturn:"",
+      departureDateReturnToSend:"",
       arriveDate:"",
       page:"Home"
     };
@@ -34,11 +36,17 @@ export const useFlightResults = defineStore("flightResults", {
     updateDepartureDate(date){
         this.departureDate = date
     },
-    updateArriveDate(date){
-        this.arriveDate = date;
-    },
+  
     updateDepartureDateToSend(date){
         this.departureDateToSend = date
-    }
+    },
+
+    updateDepartureDateReturn(date){
+      this.departureDateReturn = date;
+  },
+
+  updateDepartureDateReturnToSend(date){
+    this.departureDateReturnToSend = date;
+},
   },
 });

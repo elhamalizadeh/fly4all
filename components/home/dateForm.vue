@@ -2,8 +2,11 @@
   <div class="home-container024">
     <div
       class="calendar" 
-      :class="{ 'flex-display': tripTypeValue === 'roundTrip'}"
+     :class="{ 'flex-display': flightFields.tripType == 'roundTrip'}"
+
     >
+     <!-- :class="{ 'flex-display': tripTypeValue === 'roundTrip'}" -->
+
       <!------------ deprature --------->
       <input
         class="home-textinput3 input"
@@ -75,8 +78,10 @@
         readonly
         :placeholder="placeholderTextReturn"
         required
-        v-if="tripTypeValue == 'roundTrip'"
+        v-if="flightFields.tripType == 'roundTrip'"
       />
+      <!-- v-if="flightFields.tripType == 'roundTrip'"  flightFields.tripType-->
+     <!-- v-if="tripTypeValue == 'roundTrip'" -->
       <div v-if="isCalendarVisibleReturn" class="calendar-boxReturn">
         <div class="calendar-boxReturn">
           <div class="nav-container">
@@ -130,6 +135,7 @@ export default {
   props: ['currentMonthYear','currentMonthYearReturn', 'currentYear', 'currentMonth',"tripType" ,"index"],
   setup(props, { emit }) {
     const  flightFields  = useFlight();
+    console.log("flightFields.tripType:==============",flightFields.tripType);
     const currentDate = new Date();
     let currentYear = currentDate.getFullYear();
     let currentMonth = currentDate.getMonth();
@@ -287,7 +293,6 @@ const dayFlags = computed(() => {
     for (let i = 1; i <= daysBeforeCurrentDate.length; i++) {
         flags[i] = true; // Set flag to true for days before the current day of the year
     }
-    // console.log("flags:",flags);
     return flags;
 });
 
@@ -399,10 +404,12 @@ const dayFlags = computed(() => {
 ==========*/  
     if (flightResults.page == "flySearch") {
         selectedDate.value = flightResults.departureDate;
+        if(flightFields.tripType == 'roundTrip'){
+        selectedDateReturn.value = flightResults.departureDateReturn;
+        }
       }
 
     function selectDate(day, currentMonthYear) {
-      console.log("selected day:395" , day);
       const [month, year] = currentMonthYear.split(" ");
       // Create a new Date object with the selected day, month, and year
       const selectedDateObject = new Date(`${year},${month},${day}`);
@@ -412,16 +419,10 @@ const dayFlags = computed(() => {
         selectedDateObject < currentDate ||
         selectedDateObject > new Date(selectedDateReturn.value)
       ) {
-        // alert(day);
         return;
       }
 
-      // if (flightResults.page == "flySearch") {
-      //   flightResults.updateDepartureDate(`${day} ${currentMonthYear}`); // for placeholderText
-      // }else
       selectedDate.value = `${day} ${currentMonthYear}`;
-      // flightResults.updateDepartureDate(`${day} ${currentMonthYear}`);
-      // flightResults.updateDepartureDateToSend(`${day} ${currentMonthYear}`); // for placeholderText
       isCalendarVisible.value = false; // Hide the calendar after date selection
 
 
@@ -458,31 +459,23 @@ const dayFlags = computed(() => {
      ---selectDateReturn Function14---
 ==========*/
     function selectDateReturn(day, currentMonthYearReturn) {
-      // console.log("selected day:459" , day);
       const [month, year] = currentMonthYearReturn.split(" ");
       // document.querySelector('#tdDayOfMonth' + day).style.backgroundColor = "lightgray";
       // Create a new Date object with the selected day, month, and year
       const selectedReturnDateObject = new Date(`${year},${month},${day}`);
-
       // Check if the selected date is before the current date
       if (
         selectedReturnDateObject < currentDate ||
         selectedReturnDateObject < new Date(selectedDate.value)
       ) {
-        // alert(day);
         return;
       }
 
       selectedDateReturn.value = `${day} ${currentMonthYearReturn}`;
       isCalendarVisibleReturn.value = false;
-
-
       // Add a class to change the background color
     const selectedDayElementReturn = document.getElementById(`tdDayOfMonthReturn${day}`);
-    console.log("selectedDayElementReturn 480:" , selectedDayElementReturn);
     selectedDayElementReturn.classList.add('red-background');
-
-
       // Function to format the date to YYYY-MM-DD
       function formatDate(date) {
         const year = date.getFullYear();
@@ -490,7 +483,6 @@ const dayFlags = computed(() => {
         const day = String(date.getDate()).padStart(2, "0");
         return `${year}-${month}-${day}`;
       }
-
       // Get the formatted date in YYYY-MM-DD format
       const formattedDate = formatDate(selectedReturnDateObject);
 
@@ -533,7 +525,6 @@ const dayFlags = computed(() => {
      ---tripTypeValue Function16---
 ==========*/  
     const tripTypeValue = computed(() => {
-      // You can return any value here, but for a computed property, it's common to return a derived value based on props or other reactive variables
       return props.tripType;
     });
 
@@ -567,7 +558,8 @@ const dayFlags = computed(() => {
     watch(() => flightResults.departureDate, (newValue) => {
       selectedDate.value = flightResults.departureDate;
       selectedDateToSend.value = flightResults.departureDateToSend;
-
+      selectedDateReturn.value = flightResults.departureDateReturn;
+      selectedDateReturnToSend.value = flightResults.departureDateReturnToSend;
 
 });
 
@@ -589,7 +581,6 @@ const dayFlags = computed(() => {
       toggleCalendarReturn,
       selectDate,
       selectDateReturn,
-      // daysOfMonth: generateDaysOfMonth(),
       placeholder,
       calendarMonth,
       calendarYear,
@@ -606,6 +597,8 @@ const dayFlags = computed(() => {
       calendarWithDayOfYear,
       day, 
       dayOfYear,
+      flightFields,
+      flightResults
     };
   },
 };

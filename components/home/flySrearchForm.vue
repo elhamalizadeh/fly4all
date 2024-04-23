@@ -268,10 +268,10 @@ const searchMultiFlights = async () => {
       }
     }
     if (flightFields.tripType === "roundTrip") {
-      // console.log(
-      //   "selectedDateReturn.value.value 284",
-      //   selectedDateReturn.value.value
-      // );
+      console.log(
+        "selectedDateReturn.value.value 284",
+        selectedDateReturn.value.value
+      );
       params.append("legs[1][origin]", destCityId.value);
       params.append("legs[1][destination]", cityId.value);
       params.append("legs[1][departure]", selectedDateReturn.value.value);
