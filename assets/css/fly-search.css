@@ -1759,6 +1759,7 @@
   border-width: 1px;
   border-radius: 20px;
   background-color: #ffffff;
+  z-index: 0;
 }
 .home-container097 {
   flex: 0 0 auto;

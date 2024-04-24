@@ -67,6 +67,8 @@
             id="inputCityFields"
             :required="false"
           />
+          <!-- :tripType="params.tripType" -->
+          <!-- v-if="params.tripType == 'multiDestination'" -->
 
           <homeDateForm
             @sendEmitCurrentMonthYear="CurrentMonthYearFunction"
@@ -126,7 +128,7 @@
         Add trip
       </button>
       <div class="home-container027">
-        <button @click="searchMultiFlights()" class="home-button02 button">
+        <button @click="searchFlightsSessionId()" class="home-button02 button">
           Destination Now →
         </button>
       </div>
@@ -151,7 +153,8 @@ const flightResults = useFlightResults();
 
 const travelersCounter = useCounter();
 const props = defineProps({
-  paddingRL : Number
+  paddingRL : Number,
+  tripsCount : Number
 });
 
 const tripTypeProps = ref("");
@@ -221,8 +224,8 @@ const handleMultiDestCitySelected = (selectDestAirport, index) => {
   destCityIdByIndex.value = destCityId[index];
 };
 
-//------------------------searchMultiFlights ------*********
-const searchMultiFlights = async () => {
+//------------------------searchFlightsSessionId function ------*********
+const searchFlightsSessionId = async () => {
   flightResults.setPage("flySearch")
   let dataInputs = {};
   // console.log("self:", self);
@@ -293,6 +296,7 @@ const searchMultiFlights = async () => {
     });
     const sessionId = response.sessionId;
     const status = response.status;
+    flightFields.updateSessionIdStore(response.sessionId);
     // console.log("response 295", response);
     await router.push({
       name: "fly-search",
@@ -318,6 +322,17 @@ const handleTripTypeChange = () => {
 };
 
 const trips = ref([]);
+
+// if(flightResults.page === 'flySearch'){
+// for(i = 0; i< props.tripsCount; i++){
+//   trips.value.push({
+//       inputCity: "",
+//       date: "",
+//     });
+
+//   }
+// }
+
 
 //-----------deleteBtn---
 const deleteFunction = (index) => {

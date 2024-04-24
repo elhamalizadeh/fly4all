@@ -3,7 +3,7 @@
     <div class="fly-search-main">
       <flySearchMenu />
       <div class="home-container038">
-        <HomeFlySrearchForm :paddingRL="80" />
+        <HomeFlySrearchForm :paddingRL="80" :tripsCount="flightFields.legsCount"/>
       </div>
       <div v-if="loading" class="flex flex-row justify-center bg-orange-500 my-10">
             <div><h1>Loading ...</h1></div>
@@ -24,7 +24,9 @@
             </div>
           </div>
           <!------- main content ------>
+          
      <FlySearchMainContent v-else/>
+     
      <!---------------------->
       <div class="home-margin-info"></div>
       <flySearchFooter />
@@ -46,8 +48,12 @@ const originIdFromSearchResult = ref("");
 const originTitleFromSearchResult = ref("");
 const loading = ref(true);
 
+
+const renderPage = computed(() => flightResults.renderFlightResultPage);
+
 //----- searchInfo function in flight.js store-----
 flightFields.searchInfo();
+
 const searchProgressPercent = ref("");
 
 //--- return percent and status---
@@ -60,14 +66,15 @@ const searchProgress = () => {
     },
   })
     .then((progress) => {
-      console.log("progress is 297:", progress.percent);
+      // console.log("progress is 297:", progress.percent);
       searchProgressPercent.value = progress.percent;
-      if (progress.percent >= 50 && progress.percent < 100) {
+      if (searchProgressPercent.value >= 50 && searchProgressPercent.value < 100) {
         flightResults.searchResults();
-      } else if (progress.percent === 100) {
+      } else if (searchProgressPercent.value === 100) {
         clearInterval(intervalValue.value);
         loading.value = false;
         flightResults.searchResults();
+
       }
     })
     .catch((error) => {
@@ -79,9 +86,11 @@ const searchProgress = () => {
 //----- searchResults function in flightResults.js store-----
 flightResults.searchResults();
 
+//----------------------
 const intervalValue = ref(null);
 onMounted(() => {
   flightResults.setPage("flySearch");
+  flightFields.updateSessionIdStore(route.query.sessionId);
   flightFields.searchInfo();
   if (route.query.sessionId) {
     localStorage.setItem("sessionId", route.query.sessionId);
@@ -89,16 +98,16 @@ onMounted(() => {
   }
 });
 
-//---- to change the results by entering new input values
-watch(
-  () => route.query.sessionId,
-  (newValue) => {
-    flightFields.searchInfo();
-    localStorage.setItem("sessionId", route.query.sessionId);
-    intervalValue.value = setInterval(searchProgress, 3000);
-    // searchResults();
-  }
-);
+
+     watch(() => route.query.sessionId, (newVal,oldVal) => {
+          if(newVal){
+          flightFields.searchInfo();
+          localStorage.setItem("sessionId", route.query.sessionId);
+          flightFields.updateSessionIdStore(route.query.sessionId);
+          searchProgress();
+          }
+     })
+
 </script>
 <style scoped>
 @import url("../assets/css/fly-search.css");

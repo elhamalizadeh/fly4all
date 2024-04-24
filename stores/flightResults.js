@@ -1,53 +1,51 @@
 import { defineStore } from "pinia";
 import { useRoute } from "vue-router";
-// import { useFlight } from "./flight"; 
-
+import { useFlight } from "./flight";
 
 export const useFlightResults = defineStore("flightResults", {
-  
   state: () => {
     return {
-      flightsData:{},
+      flightsData: {},
       originAirportTitle: "",
       originAirportId: "",
       destAirportTitle: "",
       destAirportId: "",
-      departureDate:"",
-      departureDateToSend:"",
-      departureDateReturn:"",
-      departureDateReturnToSend:"",
-      arriveDate:"",
-      page:"Home"
+      departureDate: "",
+      departureDateToSend: "",
+      departureDateReturn: "",
+      departureDateReturnToSend: "",
+      arriveDate: "",
+      page: "Home",
     };
   },
   actions: {
-
     //-----------------
-searchResults(){
-  const route = useRoute(); 
-  // const flightResults = useFlightResults(); 
-  const sessionId = route.query.sessionId;
-  $fetch("https://marketplace.beta.luxota.network/v1/search/results", {
-    method: "GET",
-    params: {
-      sessionId: sessionId,
-      page: 1,
-      currency: 158,
-      lang: "en",
-    },
-  })
-    .then((response) => {
-      console.log("response Flight in 327:", response);
-      this.flightsData = response.data;
-    })
-    .catch((error) => {
-      console.error("Error fetching flight results:", error);
-    });
-},
+    searchResults() {
+      const route = useRoute();
+      const flightFields = useFlight();
 
-//---------------------------
-    setPage(pageTitle){
-        this.page = pageTitle
+      console.log("sessionId is ------", flightFields.sessionIdStore);
+      $fetch("https://marketplace.beta.luxota.network/v1/search/results", {
+        method: "GET",
+        params: {
+          sessionId: flightFields.sessionIdStore,
+          page: 1,
+          currency: 158,
+          lang: "en",
+        },
+      })
+        .then((response) => {
+          console.log("response Flight in 327:", response);
+          this.flightsData = response.data;
+        })
+        .catch((error) => {
+          console.error("Error fetching flight results:", error);
+        });
+    },
+
+    //---------------------------
+    setPage(pageTitle) {
+      this.page = pageTitle;
     },
     updateOriginAirportTitle(originTitle) {
       this.originAirportTitle = originTitle;
@@ -62,20 +60,20 @@ searchResults(){
     updateDestAirportId(destId) {
       this.destAirportId = destId;
     },
-    updateDepartureDate(date){
-        this.departureDate = date
-    },
-  
-    updateDepartureDateToSend(date){
-        this.departureDateToSend = date
+    updateDepartureDate(date) {
+      this.departureDate = date;
     },
 
-    updateDepartureDateReturn(date){
+    updateDepartureDateToSend(date) {
+      this.departureDateToSend = date;
+    },
+
+    updateDepartureDateReturn(date) {
       this.departureDateReturn = date;
-  },
+    },
 
-  updateDepartureDateReturnToSend(date){
-    this.departureDateReturnToSend = date;
-},
+    updateDepartureDateReturnToSend(date) {
+      this.departureDateReturnToSend = date;
+    },
   },
 });
